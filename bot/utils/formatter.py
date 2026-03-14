@@ -5,7 +5,7 @@ Discord embed template builders.
 import discord
 import platform
 import psutil
-from datetime import datetime, timezone
+from datetime import datetime
 
 from bot.config import VERSION
 
@@ -76,8 +76,22 @@ def token_list_embed(tokens: list[dict]) -> discord.Embed:
         hint = t.get("token_hint", "????")
         label = t.get("label", "default")
         active = "🟢" if t.get("is_active") else "🔴"
-        last_run = t.get("last_run_at", "Chưa chạy")
-        next_run = t.get("next_run_at", "N/A")
+
+        last_run = "Chưa"
+        if t.get('last_run_at'):
+            try:
+                lr_dt = datetime.fromisoformat(str(t['last_run_at']))
+                last_run = f"<t:{int(lr_dt.timestamp())}:R>"
+            except Exception:
+                last_run = str(t['last_run_at'])
+
+        next_run = "N/A"
+        if t.get('next_run_at'):
+            try:
+                nr_dt = datetime.fromisoformat(str(t['next_run_at']))
+                next_run = f"<t:{int(nr_dt.timestamp())}:R>"
+            except Exception:
+                next_run = str(t['next_run_at'])
 
         embed.add_field(
             name=f"{active} {label} (`...{hint}`)",

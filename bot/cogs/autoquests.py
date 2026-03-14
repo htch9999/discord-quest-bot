@@ -219,12 +219,28 @@ class AutoQuestsCog(commands.Cog):
             running = "▶️ Đang chạy" if task_manager.is_running(uid, t["id"]) else ""
             hint = t.get("token_hint", "????")
 
+            last_run = "Chưa"
+            if t.get('last_run_at'):
+                try:
+                    lr_dt = datetime.fromisoformat(str(t['last_run_at']))
+                    last_run = f"<t:{int(lr_dt.timestamp())}:R>"
+                except Exception:
+                    last_run = str(t['last_run_at'])
+
+            next_run = "N/A"
+            if t.get('next_run_at'):
+                try:
+                    nr_dt = datetime.fromisoformat(str(t['next_run_at']))
+                    next_run = f"<t:{int(nr_dt.timestamp())}:R>"
+                except Exception:
+                    next_run = str(t['next_run_at'])
+
             embed.add_field(
                 name=f"{t['label']} (`...{hint}`)",
                 value=(
                     f"Trạng thái: {active} {running}\n"
-                    f"Lần chạy cuối: {t.get('last_run_at', 'Chưa')}\n"
-                    f"Lần chạy tiếp: {t.get('next_run_at', 'N/A')}"
+                    f"Lần chạy cuối: {last_run}\n"
+                    f"Lần chạy tiếp: {next_run}"
                 ),
                 inline=False,
             )

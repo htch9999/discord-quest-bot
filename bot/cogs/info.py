@@ -3,6 +3,7 @@
 """
 
 import time
+from datetime import datetime
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -81,9 +82,14 @@ class InfoCog(commands.Cog):
         ]
         if next_runs:
             next_runs.sort()
+            try:
+                dt = datetime.fromisoformat(str(next_runs[0]))
+                timestamp = f"<t:{int(dt.timestamp())}:R>"
+            except Exception:
+                timestamp = str(next_runs[0])
             embed.add_field(
                 name="⏰ Lần chạy tự động tiếp theo",
-                value=next_runs[0],
+                value=timestamp,
                 inline=False,
             )
 
