@@ -58,4 +58,4 @@ SUPPORTED_TASKS: list[str] = [
 ]
 
 # ── Version ──────────────────────────────────────────────────────────────────
-VERSION: str = "1.0.0"
+VERSION: str = "2.0 Public Beta"

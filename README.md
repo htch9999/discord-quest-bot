@@ -1,14 +1,14 @@
 <div align="center">
 
-# Discord Quest Bot
+# Auto Quests Bot
 
-**Tự động hoàn thành mọi quest Discord — bảo mật, song song, real-time.**
+**Professional Discord Quest Automation. Secure, parallel execution with zero token exposure.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Discord.py](https://img.shields.io/badge/discord.py-2.3+-blue.svg)](https://discordpy.readthedocs.io)
 
-[Add to Discord](#) · [Join Server](#) · [Website](https://ctdoteam.github.io/discord-quest-bot/) · [Self-host Guide](#self-host)
+[Add to Discord](https://discord.com/oauth2/authorize?client_id=1482428478916657244) · [Join Server](https://discord.gg/gTVPwvNeEH) · [Website](https://discord-autoquests.vercel.app) · [Self-host Guide](#self-host)
 
 </div>
 
@@ -19,27 +19,27 @@
 | Feature                    | Description                                            |
 | -------------------------- | ------------------------------------------------------ |
 | **Parallel Execution**     | Up to 6 quests simultaneously with isolated threads    |
-| **AES-256-GCM Encryption** | Per-user derived keys. Token never touches a log       |
-| **Auto Scheduler**         | Runs every 2 days, DMs results automatically           |
-| **Live Progress**          | Single message, real-time updates with progress bars   |
-| **Token Security**         | Ephemeral commands, masked display, zero exposure      |
-| **All Quest Types**        | WATCH_VIDEO · PLAY_ON_DESKTOP · STREAM · PLAY_ACTIVITY |
-| **Crash Recovery**         | Interrupted sessions resume automatically              |
-| **Open Source**            | 100% public source code, self-host ready               |
+| **Zero-Knowledge Security**| AES-256-GCM encryption with per-user derived keys      |
+| **Intelligent Scheduling** | Smart scheduler autonomously checks for new quests     |
+| **Real-Time Telemetry**    | Live metrics provided via dynamic real-time messages   |
+| **Absolute Privacy**       | Ephemeral integrations and perpetually masked display  |
+| **Universal Compatibility**| Watch Video · Play Desktop Game · Stream · Activities  |
+| **Crash Recovery**         | Automatically resumes interrupted workflows            |
+| **Open Source**            | 100% transparent public code, ideal for self-hosting   |
 
 ## Quick Start
 
 ### Use the public bot
 
-1. [Invite the bot](#) to your server
-2. Run `/quests <your_discord_token>` for one-time execution
-3. Or `/autoquests <token> [label]` for automatic scheduling
+1. [Invite the bot](https://discord.com/oauth2/authorize?client_id=1482428478916657244) to your server
+2. Run `/quests <your_discord_token>` for a secure, one-time execution footprint
+3. Or `/autoquests <token> [label]` for intelligent scheduling and automated background runs
 
 ### Self-host
 
 ```bash
 # Clone
-git clone https://github.com/ctdoteam/discord-quest-bot.git
+git clone https://github.com/htch9999/discord-quest-bot.git
 cd discord-quest-bot
 
 # Setup
@@ -57,14 +57,14 @@ python -m bot.main
 
 ## Commands
 
-### One-time
+### Standalone
 
 | Command           | Description                          |
 | ----------------- | ------------------------------------ |
 | `/quests <token>` | Run quests once, token is NOT stored |
 | `/help`           | Detailed usage guide                 |
 
-### Auto (saved token)
+### Automated Modes (saved token)
 
 | Command                       | Description                        |
 | ----------------------------- | ---------------------------------- |
@@ -73,7 +73,7 @@ python -m bot.main
 | `/autoquests pause [label]`   | Pause auto-schedule                |
 | `/autoquests resume [label]`  | Resume auto-schedule               |
 
-### Management
+### Lifecycle Mgmt
 
 | Command                          | Description                        |
 | -------------------------------- | ---------------------------------- |
@@ -81,7 +81,7 @@ python -m bot.main
 | `/autoquests remove <label>`     | Delete token + all associated data |
 | `/autoquests rename <old> <new>` | Rename a token label               |
 
-### Info
+### Analytics
 
 | Command                      | Description          |
 | ---------------------------- | -------------------- |
@@ -94,7 +94,7 @@ python -m bot.main
 ```
 bot/
 ├── main.py              # Entry point + FastAPI integration
-├── config.py            # Environment config
+├── config.py            # Environment config (v2.0 Public Beta)
 ├── api/
 │   └── stats_router.py  # Public stats API (4 endpoints)
 ├── cogs/
@@ -131,13 +131,15 @@ The bot includes a built-in FastAPI server (port 8099) for the website:
 
 ## Security
 
+We operate under zero-trust models. Everything we do is publicly verifiable.
+
 - **Encryption**: AES-256-GCM with PBKDF2 key derivation (260,000 iterations)
 - **Per-user keys**: Derived from `MASTER_SECRET` + Discord user ID
-- **Zero logging**: Token never appears in any log output
+- **Zero logging**: Strict no-log policy regarding connection tokens and session footprints
 - **Ephemeral commands**: All responses visible only to the command user
 - **Masked display**: Tokens shown as `MTA...xyz` in any UI
 
-> **Warning**: `MASTER_SECRET` loss = irreversible token loss. Back it up.
+> **Warning**: `MASTER_SECRET` loss = irreversible token loss. Back it up securely.
 
 ## Deployment
 
@@ -156,9 +158,9 @@ docker build -t quest-bot .
 docker run -d --env-file .env quest-bot
 ```
 
-### Website (GitHub Pages)
+### Website (GitHub Pages / Vercel)
 
-The `website/` directory contains the static frontend. Push to GitHub and enable Pages from the `gh-pages` branch, or use the included workflow:
+The `website/` directory contains the static frontend. Push to GitHub and enable Pages from the `gh-pages` branch, use Vercel, or use the included workflow:
 
 ```bash
 # The workflow at .github/workflows/deploy-pages.yml
@@ -183,10 +185,10 @@ MIT — see [LICENSE](LICENSE)
 
 ## Disclaimer
 
-This project is not affiliated with Discord Inc. Use at your own discretion. Any automation carries inherent risk.
+This independent open-source release is not affiliated with Discord Inc. Use at your own discretion. Any automation carries inherent structural risk.
 
 ---
 
 <div align="center">
-Made by <a href="https://github.com/htch9999">@htch9999🌷</a>
+Developed by <a href="https://github.com/htch9999">@htch9999</a>
 </div>
