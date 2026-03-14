@@ -23,8 +23,13 @@
     window.triggerCounter = function() {
       document.querySelectorAll('[data-count-to]').forEach(el=>{
         const t=parseInt(el.dataset.countTo,10);
-        if(!isNaN(t) && !el.dataset.counted) {
+        if(isNaN(t)) return;
+        
+        // If the value has changed or it hasn't been counted yet, run animation
+        const lastTarget = parseInt(el.dataset.lastTarget, 10);
+        if (!el.dataset.counted || t !== lastTarget) {
           el.dataset.counted='1';
+          el.dataset.lastTarget = t;
           anim(el,t,1200);
         }
       });

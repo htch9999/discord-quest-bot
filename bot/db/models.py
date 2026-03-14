@@ -48,4 +48,10 @@ CREATE TABLE IF NOT EXISTS run_sessions (
     status          TEXT,
     summary         TEXT
 );
+
+-- Chỉ mục tối ưu hiệu năng
+CREATE INDEX IF NOT EXISTS idx_tokens_uid ON saved_tokens(discord_uid);
+CREATE INDEX IF NOT EXISTS idx_stats_user ON quest_stats(discord_uid);
+CREATE INDEX IF NOT EXISTS idx_stats_type ON quest_stats(task_type);
+CREATE INDEX IF NOT EXISTS idx_stats_date ON quest_stats(completed_at);
 """
