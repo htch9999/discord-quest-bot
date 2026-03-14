@@ -35,11 +35,11 @@
     if (desc !== 'meta.description') { const m = document.querySelector('meta[name="description"]'); if (m) m.setAttribute('content', desc); }
     document.documentElement.lang = currentLang;
     document.querySelectorAll('[data-lang-value]').forEach(el => { el.classList.toggle('active', el.dataset.langValue === currentLang); });
-    const btn = document.getElementById('lang-btn');
-    if (btn) {
+    const btns = document.querySelectorAll('#lang-btn, #lang-btn-mobile');
+    btns.forEach(btn => {
       const names = { vi: 'VI', en: 'EN', ja: 'JA' };
       btn.querySelector('.dd-label').textContent = names[currentLang] || currentLang.toUpperCase();
-    }
+    });
   }
 
   async function load(lang) {

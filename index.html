@@ -596,6 +596,51 @@
           <li><a href="#commands" data-i18n="nav.commands">Lệnh</a></li>
           <li><a href="#live-stats" data-i18n="nav.stats">Thống kê</a></li>
           <li><a href="#faq">FAQ</a></li>
+          
+          <!-- MOBILE ACTIONS (Hidden on Desktop) -->
+          <li class="nav-actions-mobile" style="display: none;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <!-- Language -->
+              <div class="nav-dropdown">
+                <button class="nav-dropdown-btn" id="lang-btn-mobile" aria-label="Language">
+                  <svg class="icon icon-sm"><use href="#i-globe" /></svg>
+                  <span class="dd-label">VI</span>
+                  <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                  <div class="nav-dropdown-item active" data-lang-value="vi">Tiếng Việt</div>
+                  <div class="nav-dropdown-item" data-lang-value="en">English</div>
+                  <div class="nav-dropdown-item" data-lang-value="ja">日本語</div>
+                </div>
+              </div>
+              <!-- Theme -->
+              <div class="nav-dropdown">
+                <button class="nav-dropdown-btn" id="theme-btn-mobile" aria-label="Theme">
+                  <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+                  <span class="dd-label">Dark</span>
+                  <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                  <div class="nav-dropdown-item active" data-theme-value="dark">
+                    <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+                    <span data-i18n="theme.dark">Tối</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-theme-value="light">
+                    <svg class="icon icon-sm"><use href="#i-sun" /></svg>
+                    <span data-i18n="theme.light">Sáng</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-theme-value="system">
+                    <svg class="icon icon-sm"><use href="#i-monitor" /></svg>
+                    <span data-i18n="theme.system">Hệ thống</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+               class="btn btn-primary"
+               style="padding: 0.5rem 1rem; font-size: 0.85rem; justify-content: center; width: 100%;"
+               data-i18n="hero.cta_add">Thêm vào Discord</a>
+          </li>
         </ul>
 
         <div class="nav-right">

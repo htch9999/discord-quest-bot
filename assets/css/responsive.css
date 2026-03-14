@@ -11,7 +11,20 @@
   .container { padding: 0 1.25rem; }
   .nav-links { display: none; }
   .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; gap: 0.75rem; }
-  .nav-mobile-toggle { display: block; }
+  
+  /* Hide the desktop actions on mobile navbar and show hamburger */
+  .nav-right .nav-dropdown, .nav-right .btn-primary { display: none; }
+  .nav-mobile-toggle { display: block; margin-left: auto; }
+  
+  /* When hamburger is open, show the actions stacked inside the menu */
+  .nav-links.open .nav-actions-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
   .hero { min-height: auto; padding: 7rem 0 3rem; }
   .hero-cta { flex-direction: column; align-items: stretch; width: 100%; gap: 0.75rem; }
   .hero-cta .btn { width: 100%; justify-content: center; }
