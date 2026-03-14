@@ -2,7 +2,9 @@
  * Main JS — bootstrap, scroll, dropdowns, FAQ, command tabs
  */
 (function () {
-  window.API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:8099' : '';
+  window.API_BASE = window.location.hostname === 'localhost'
+    ? 'http://localhost:8099'
+    : 'http://42.114.35.87';
 
   document.addEventListener('DOMContentLoaded', async () => {
     if (window.i18nInit) await window.i18nInit();
