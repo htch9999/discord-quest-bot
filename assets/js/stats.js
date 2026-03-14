@@ -22,7 +22,14 @@
 
   async function fetch_() {
     const API = window.API_BASE || '';
-    try { const r=await fetch(`${API}/v1/stats/public`); if(!r.ok)return; const d=await r.json(); updateHero(d); updateDash(d); } catch(e){}
+    try { 
+      const r=await fetch(`${API}/v1/stats/public`); 
+      if(!r.ok)return; 
+      const d=await r.json(); 
+      updateHero(d); 
+      updateDash(d); 
+      if (window.triggerCounter) window.triggerCounter();
+    } catch(e){}
   }
 
   window.statsInit = function() { fetch_(); setInterval(fetch_, INTERVAL); };
