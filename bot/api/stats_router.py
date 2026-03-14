@@ -57,16 +57,79 @@ def create_api(bot) -> FastAPI:
     def _set_cache(key: str, data: dict):
         _cache[key] = (time.time(), data)
 
+    # ── Background Stats Updater ─────────────────────────────────────────
+    # Updates the heavy DB aggregations every 60 seconds independently of API requests
+    _bg_task = None
+    _stats_data = {
+        "total_users": 0,
+        "total_quests_completed": 0,
+        "quests_today": 0,
+        "quests_this_week": 0,
+        "quest_type_breakdown": {}
+    }
+
+    async def _update_stats_loop():
+        while True:
+            try:
+                db = bot.db
+                _stats_data["total_users"] = await db.count_unique_users()
+                _stats_data["total_quests_completed"] = await db.count_total_quests_done()
+                
+                # Breakdown
+                try:
+                    cur = await db._db.execute(
+                        "SELECT task_type, COUNT(*) as cnt FROM quest_stats GROUP BY task_type"
+                    )
+                    rows = await cur.fetchall()
+                    total = sum(r["cnt"] for r in rows) or 1
+                    _stats_data["quest_type_breakdown"] = {r["task_type"]: round(r["cnt"] / total, 2) for r in rows}
+                except Exception:
+                    pass
+
+                # Quests today / this week
+                now = datetime.now(timezone.utc)
+                today_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+                week_start = (now.replace(hour=0, minute=0, second=0, microsecond=0)
+                              .__class__(now.year, now.month, now.day - now.weekday())).isoformat()
+
+                try:
+                    cur = await db._db.execute(
+                        "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                        (today_start,)
+                    )
+                    row = await cur.fetchone()
+                    _stats_data["quests_today"] = row["cnt"] if row else 0
+
+                    cur = await db._db.execute(
+                        "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                        (week_start,)
+                    )
+                    row = await cur.fetchone()
+                    _stats_data["quests_this_week"] = row["cnt"] if row else 0
+                except Exception:
+                    pass
+            except Exception as e:
+                pass
+                
+            await asyncio.sleep(60)
+
+    @api.on_event("startup")
+    async def startup_event():
+        nonlocal _bg_task
+        _bg_task = asyncio.create_task(_update_stats_loop())
+
+    @api.on_event("shutdown")
+    async def shutdown_event():
+        if _bg_task:
+            _bg_task.cancel()
+
     # ── GET /v1/stats/public ─────────────────────────────────────────────
     @api.get("/v1/stats/public")
     async def stats_public():
-        cached = _get_cached("stats_public", ttl=30)
+        cached = _get_cached("stats_public", ttl=10) # Reduced ttl for faster live updates for active stats
         if cached:
             return cached
 
-        db = bot.db
-        total_users = await db.count_unique_users()
-        total_quests = await db.count_total_quests_done()
         guild_count = len(bot.guilds) if bot.is_ready() else 0
         latency_ms = round(bot.latency * 1000, 1) if bot.is_ready() else -1
         uptime_secs = int(time.time() - bot.start_time)
@@ -74,53 +137,16 @@ def create_api(bot) -> FastAPI:
         # Active sessions from task manager
         tm_status = bot.task_manager.get_status()
 
-        # Quest type breakdown from DB
-        breakdown = {}
-        try:
-            cur = await db._db.execute(
-                "SELECT task_type, COUNT(*) as cnt FROM quest_stats GROUP BY task_type"
-            )
-            rows = await cur.fetchall()
-            total = sum(r["cnt"] for r in rows) or 1
-            breakdown = {r["task_type"]: round(r["cnt"] / total, 2) for r in rows}
-        except Exception:
-            pass
-
-        # Quests today / this week
-        now = datetime.now(timezone.utc)
-        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
-        week_start = (now.replace(hour=0, minute=0, second=0, microsecond=0)
-                      .__class__(now.year, now.month, now.day - now.weekday())).isoformat()
-
-        quests_today = 0
-        quests_week = 0
-        try:
-            cur = await db._db.execute(
-                "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
-                (today_start,)
-            )
-            row = await cur.fetchone()
-            quests_today = row["cnt"] if row else 0
-
-            cur = await db._db.execute(
-                "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
-                (week_start,)
-            )
-            row = await cur.fetchone()
-            quests_week = row["cnt"] if row else 0
-        except Exception:
-            pass
-
         data = {
-            "total_users": total_users,
-            "total_quests_completed": total_quests,
-            "quests_today": quests_today,
-            "quests_this_week": quests_week,
+            "total_users": _stats_data["total_users"],
+            "total_quests_completed": _stats_data["total_quests_completed"],
+            "quests_today": _stats_data["quests_today"],
+            "quests_this_week": _stats_data["quests_this_week"],
             "active_sessions": tm_status["active_tasks"],
             "uptime_seconds": uptime_secs,
             "bot_ping_ms": latency_ms,
             "guild_count": guild_count,
-            "quest_type_breakdown": breakdown,
+            "quest_type_breakdown": _stats_data["quest_type_breakdown"],
             "cached_at": datetime.now(timezone.utc).isoformat(),
         }
         _set_cache("stats_public", data)
