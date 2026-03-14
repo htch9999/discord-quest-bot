@@ -4,7 +4,7 @@
 (function () {
   window.API_BASE = window.location.hostname === 'localhost'
     ? 'http://localhost:8099'
-    : 'http://42.114.35.87';
+    : 'https://htchserver.tail21b05e.ts.net';
 
   document.addEventListener('DOMContentLoaded', async () => {
     if (window.i18nInit) await window.i18nInit();
