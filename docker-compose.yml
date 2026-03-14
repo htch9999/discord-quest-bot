@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  quest-bot:
+    build: .
+    container_name: discord-quest-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - TZ=Asia/Ho_Chi_Minh

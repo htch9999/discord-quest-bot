@@ -1,0 +1,41 @@
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+*.egg
+
+# ─── Environment ───
+.env
+.env.local
+.env.*.local
+
+# ─── Data ───
+data/
+*.db
+*.sqlite3
+
+# ─── IDE ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── OS ───
+.DS_Store
+Thumbs.db
+
+# ─── Node (if any) ───
+node_modules/
+
+# ─── Logs ───
+*.log
+
+# ─── Gemini agent ───
+.gemini/
+.token

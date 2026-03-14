@@ -1,0 +1,213 @@
+"""
+Public Stats API — FastAPI router.
+
+Provides read-only aggregate statistics for the website frontend.
+All endpoints are public, CORS-enabled, and cached in-memory.
+"""
+
+import time
+import asyncio
+from datetime import datetime, timezone
+from typing import Optional
+
+import aiohttp
+import psutil
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from bot.config import VERSION
+
+
+def create_api(bot) -> FastAPI:
+    """Create a FastAPI app wired to the bot instance."""
+
+    api = FastAPI(
+        title="Discord Quest Bot API",
+        version=VERSION,
+        docs_url=None,    # disable Swagger UI in production
+        redoc_url=None,
+    )
+
+    # ── CORS ─────────────────────────────────────────────────────────────
+    api.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "https://htch9999.github.io",
+            "http://localhost:3000",
+            "http://localhost:5500",
+            "http://127.0.0.1:5500",
+        ],
+        allow_methods=["GET"],
+        allow_headers=["*"],
+    )
+
+    # ── In-memory cache ──────────────────────────────────────────────────
+    _cache: dict[str, tuple[float, dict]] = {}
+
+    def _get_cached(key: str, ttl: int = 30) -> Optional[dict]:
+        if key in _cache:
+            ts, data = _cache[key]
+            if time.time() - ts < ttl:
+                return data
+        return None
+
+    def _set_cache(key: str, data: dict):
+        _cache[key] = (time.time(), data)
+
+    # ── GET /v1/stats/public ─────────────────────────────────────────────
+    @api.get("/v1/stats/public")
+    async def stats_public():
+        cached = _get_cached("stats_public", ttl=30)
+        if cached:
+            return cached
+
+        db = bot.db
+        total_users = await db.count_unique_users()
+        total_quests = await db.count_total_quests_done()
+        guild_count = len(bot.guilds) if bot.is_ready() else 0
+        latency_ms = round(bot.latency * 1000, 1) if bot.is_ready() else -1
+        uptime_secs = int(time.time() - bot.start_time)
+
+        # Active sessions from task manager
+        tm_status = bot.task_manager.get_status()
+
+        # Quest type breakdown from DB
+        breakdown = {}
+        try:
+            cur = await db._db.execute(
+                "SELECT task_type, COUNT(*) as cnt FROM quest_stats GROUP BY task_type"
+            )
+            rows = await cur.fetchall()
+            total = sum(r["cnt"] for r in rows) or 1
+            breakdown = {r["task_type"]: round(r["cnt"] / total, 2) for r in rows}
+        except Exception:
+            pass
+
+        # Quests today / this week
+        now = datetime.now(timezone.utc)
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+        week_start = (now.replace(hour=0, minute=0, second=0, microsecond=0)
+                      .__class__(now.year, now.month, now.day - now.weekday())).isoformat()
+
+        quests_today = 0
+        quests_week = 0
+        try:
+            cur = await db._db.execute(
+                "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                (today_start,)
+            )
+            row = await cur.fetchone()
+            quests_today = row["cnt"] if row else 0
+
+            cur = await db._db.execute(
+                "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                (week_start,)
+            )
+            row = await cur.fetchone()
+            quests_week = row["cnt"] if row else 0
+        except Exception:
+            pass
+
+        data = {
+            "total_users": total_users,
+            "total_quests_completed": total_quests,
+            "quests_today": quests_today,
+            "quests_this_week": quests_week,
+            "active_sessions": tm_status["active_tasks"],
+            "uptime_seconds": uptime_secs,
+            "bot_ping_ms": latency_ms,
+            "guild_count": guild_count,
+            "quest_type_breakdown": breakdown,
+            "cached_at": datetime.now(timezone.utc).isoformat(),
+        }
+        _set_cache("stats_public", data)
+        return data
+
+    # ── GET /v1/stats/server ─────────────────────────────────────────────
+    @api.get("/v1/stats/server")
+    async def stats_server():
+        cached = _get_cached("stats_server", ttl=30)
+        if cached:
+            return cached
+
+        guild_count = len(bot.guilds) if bot.is_ready() else 0
+        total_members = sum(g.member_count or 0 for g in bot.guilds) if bot.is_ready() else 0
+
+        data = {
+            "guild_count": guild_count,
+            "total_members": total_members,
+            "cached_at": datetime.now(timezone.utc).isoformat(),
+        }
+        _set_cache("stats_server", data)
+        return data
+
+    # ── GET /v1/health ───────────────────────────────────────────────────
+    @api.get("/v1/health")
+    async def health():
+        bot_ready = bot.is_ready()
+        uptime = int(time.time() - bot.start_time)
+        mem = psutil.Process().memory_info()
+
+        status = "operational" if bot_ready else "degraded"
+
+        return {
+            "status": status,
+            "bot_ready": bot_ready,
+            "uptime_seconds": uptime,
+            "memory_mb": round(mem.rss / 1024 / 1024, 1),
+            "cpu_percent": psutil.cpu_percent(interval=0),
+            "version": VERSION,
+            "response_time_ms": round(bot.latency * 1000, 1) if bot_ready else -1,
+        }
+
+    # ── GET /v1/github ───────────────────────────────────────────────────
+    @api.get("/v1/github")
+    async def github_stats():
+        cached = _get_cached("github", ttl=300)  # 5 min cache
+        if cached:
+            return cached
+
+        repo = "htch9999/discord-quest-bot"
+        data = {}
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"https://api.github.com/repos/{repo}",
+                    headers={"Accept": "application/vnd.github.v3+json"},
+                    timeout=aiohttp.ClientTimeout(total=5),
+                ) as resp:
+                    if resp.status == 200:
+                        gh = await resp.json()
+                        data = {
+                            "stars": gh.get("stargazers_count", 0),
+                            "forks": gh.get("forks_count", 0),
+                            "open_issues": gh.get("open_issues_count", 0),
+                            "last_commit": gh.get("pushed_at", ""),
+                            "language": gh.get("language", "Python"),
+                            "description": gh.get("description", ""),
+                        }
+
+                # Fetch latest release
+                async with session.get(
+                    f"https://api.github.com/repos/{repo}/releases/latest",
+                    headers={"Accept": "application/vnd.github.v3+json"},
+                    timeout=aiohttp.ClientTimeout(total=5),
+                ) as resp:
+                    if resp.status == 200:
+                        rel = await resp.json()
+                        data["latest_release"] = rel.get("tag_name", "")
+                    else:
+                        data["latest_release"] = ""
+        except Exception:
+            data = {
+                "stars": 0, "forks": 0, "open_issues": 0,
+                "last_commit": "", "latest_release": "",
+                "language": "Python", "description": "",
+            }
+
+        data["cached_at"] = datetime.now(timezone.utc).isoformat()
+        _set_cache("github", data)
+        return data
+
+    return api
