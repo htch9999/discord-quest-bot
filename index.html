@@ -1233,9 +1233,12 @@
             <li data-i18n="token.step3">Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:</li>
           </ul>
           
-          <div class="code-block" style="margin-bottom: 1.5rem;">
-            <div class="code-block-header">
+          <div class="code-block" style="margin-bottom: 1.5rem; position: relative;">
+            <div class="code-block-header" style="display: flex; justify-content: space-between; align-items: center;">
               <span>Console Script</span>
+              <button class="copy-btn" onclick="copyConsoleScript(this)" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">
+                Copy
+              </button>
             </div>
             <pre><code>const iframe = document.createElement('iframe');
 console.log(

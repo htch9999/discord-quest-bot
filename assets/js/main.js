@@ -64,4 +64,24 @@
       });
     });
   });
+
+  // Token Copy Script
+  window.copyConsoleScript = function(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre code');
+    if (pre) {
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        const oldText = btn.textContent;
+        btn.textContent = window.t ? (window.t('token.copied') || 'Copied!') : 'Copied!';
+        btn.style.color = 'var(--text-accent)';
+        btn.style.borderColor = 'var(--text-accent)';
+        setTimeout(() => {
+          btn.textContent = oldText;
+          btn.style.color = 'var(--text-secondary)';
+          btn.style.borderColor = 'var(--border)';
+        }, 2000);
+      }).catch(err => {
+        console.error("Failed to copy text: ", err);
+      });
+    }
+  };
 })();

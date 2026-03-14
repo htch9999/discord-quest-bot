@@ -34,9 +34,11 @@ def create_api(bot) -> FastAPI:
         CORSMiddleware,
         allow_origins=[
             "https://htch9999.github.io",
+            "https://discord-autoquests.vercel.app",
             "http://localhost:3000",
             "http://localhost:5500",
             "http://127.0.0.1:5500",
+            "*", # Allow all for public stats API to avoid future CORS issues
         ],
         allow_methods=["GET"],
         allow_headers=["*"],
