@@ -160,11 +160,11 @@ docker run -d --env-file .env quest-bot
 
 ### Website (GitHub Pages / Vercel)
 
-The `website/` directory contains the static frontend. Push to GitHub and enable Pages from the `gh-pages` branch, use Vercel, or use the included workflow:
+The root directory contains the static frontend (`index.html` and `assets/`). You can deploy this easily to Vercel, or use the included GitHub Actions workflow:
 
 ```bash
 # The workflow at .github/workflows/deploy-pages.yml
-# auto-deploys website/ to GitHub Pages on push to main
+# auto-deploys the root website files to GitHub Pages on push to main
 ```
 
 ## Environment Variables
