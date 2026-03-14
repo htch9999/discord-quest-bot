@@ -165,11 +165,18 @@ class QuestScheduler:
                             try:
                                 user = await self.bot.fetch_user(int(_uid))
                                 completed = len(engine.completed_ids)
-                                await user.send(
-                                    f"✅ Auto-run **{_label}** hoàn thành: "
-                                    f"{completed} quest(s).\n"
-                                    f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
-                                )
+                                if completed == 0:
+                                    msg = (
+                                        f"📭 Auto-run **{_label}**: Không có nhiệm vụ khả dụng nào lúc này.\n"
+                                        f"Lần kiểm tra tiếp theo: <t:{int(next_run.timestamp())}:R>"
+                                    )
+                                else:
+                                    msg = (
+                                        f"✅ Auto-run **{_label}** hoàn thành: "
+                                        f"{completed} quest(s).\n"
+                                        f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
+                                    )
+                                await user.send(msg)
                             except Exception:
                                 pass
 
