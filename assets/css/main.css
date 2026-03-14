@@ -98,6 +98,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 
 .nav-right { display: flex; align-items: center; gap: 0.75rem; }
 
+.nav-actions-mobile { display: none; }
+
 .nav-dropdown { position: relative; }
 .nav-dropdown-btn {
   background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--border-radius-sm);

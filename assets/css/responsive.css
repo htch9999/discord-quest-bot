@@ -18,7 +18,7 @@
   
   /* When hamburger is open, show the actions stacked inside the menu */
   .nav-links.open .nav-actions-mobile {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     gap: 0.75rem;
     margin-top: 1rem;
