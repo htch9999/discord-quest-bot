@@ -2,7 +2,6 @@
  * Live stats fetcher — polls /v1/stats/public every 30s
  */
 (function () {
-  const API = window.API_BASE || '';
   const INTERVAL = 30000;
 
   function fmt(n) { return n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : n.toLocaleString(); }
@@ -22,6 +21,7 @@
   }
 
   async function fetch_() {
+    const API = window.API_BASE || '';
     try { const r=await fetch(`${API}/v1/stats/public`); if(!r.ok)return; const d=await r.json(); updateHero(d); updateDash(d); } catch(e){}
   }
 
