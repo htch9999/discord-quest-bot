@@ -587,7 +587,7 @@
       <div class="container">
         <a href="#" class="nav-brand">
           <svg class="icon"><use href="#i-zap" /></svg>
-          <span>Quest Bot</span>
+          <span>Auto Quest Bot</span>
         </a>
 
         <ul class="nav-links" id="nav-links">
@@ -1222,21 +1222,66 @@
       <div class="container">
         <div class="section-header reveal">
           <h2 data-i18n="token.title">Cách lấy Discord Token</h2>
-          <p data-i18n="token.subtitle">Lấy token an toàn từ trình duyệt của bạn</p>
+          <p data-i18n="token.subtitle">
+            Lấy token an toàn từ trình duyệt của bạn
+          </p>
         </div>
-        
-        <div class="card reveal token-container" style="max-width: 800px; margin: 0 auto; text-align: left;">
-          <h3 data-i18n="token.new_method_title" style="margin-bottom: 1rem;">Phương pháp mới (Khuyên dùng)</h3>
-          <ul class="token-list" style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
-            <li data-i18n="token.step1">Mở Developer Tools bằng phím <code>F12</code> hoặc <code>Ctrl + Shift + I</code>.</li>
-            <li data-i18n="token.step2">Bật chế độ giả lập thiết bị di động (Mobile Device Emulation) bằng <code>Ctrl + Shift + M</code>.</li>
-            <li data-i18n="token.step3">Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:</li>
+
+        <div
+          class="card reveal token-container"
+          style="max-width: 800px; margin: 0 auto; text-align: left"
+        >
+          <h3 data-i18n="token.new_method_title" style="margin-bottom: 1rem">
+            Phương pháp mới (Khuyên dùng)
+          </h3>
+          <ul
+            class="token-list"
+            style="
+              margin-bottom: 1.5rem;
+              color: var(--text-secondary);
+              line-height: 1.8;
+            "
+          >
+            <li data-i18n="token.step1">
+              Mở Developer Tools bằng phím <code>F12</code> hoặc
+              <code>Ctrl + Shift + I</code>.
+            </li>
+            <li data-i18n="token.step2">
+              Bật chế độ giả lập thiết bị di động (Mobile Device Emulation) bằng
+              <code>Ctrl + Shift + M</code>.
+            </li>
+            <li data-i18n="token.step3">
+              Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:
+            </li>
           </ul>
-          
-          <div class="code-block" style="margin-bottom: 1.5rem; position: relative;">
-            <div class="code-block-header" style="display: flex; justify-content: space-between; align-items: center;">
+
+          <div
+            class="code-block"
+            style="margin-bottom: 1.5rem; position: relative"
+          >
+            <div
+              class="code-block-header"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
               <span>Console Script</span>
-              <button class="copy-btn" onclick="copyConsoleScript(this)" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">
+              <button
+                class="copy-btn"
+                onclick="copyConsoleScript(this)"
+                style="
+                  background: transparent;
+                  border: 1px solid var(--border);
+                  color: var(--text-secondary);
+                  padding: 4px 8px;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  font-size: 0.8rem;
+                  transition: all 0.2s;
+                "
+              >
                 Copy
               </button>
             </div>
@@ -1248,21 +1293,75 @@ console.log(
 );
 iframe.remove();</code></pre>
           </div>
-          
-          <p data-i18n="token.alternative" style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem;">
-            * Hoặc mở tab <strong>Application</strong> > <strong>Local Storage</strong> và tìm key <code>token</code> dưới tên miền <code>discord.com</code> (khi đang bật giả lập mobile).
+
+          <p
+            data-i18n="token.alternative"
+            style="
+              color: var(--text-secondary);
+              margin-bottom: 2rem;
+              font-size: 0.9rem;
+            "
+          >
+            * Hoặc mở tab <strong>Application</strong> >
+            <strong>Local Storage</strong> và tìm key <code>token</code> dưới
+            tên miền <code>discord.com</code> (khi đang bật giả lập mobile).
           </p>
 
-          <details class="token-details" style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--border-radius-sm); padding: 1rem;">
-            <summary data-i18n="token.old_method_title" style="cursor: pointer; font-weight: 600; color: var(--text-primary); outline: none;">Phương pháp cũ (Ấn để mở rộng)</summary>
-            <div class="token-details-inner" style="margin-top: 1rem; color: var(--text-secondary); line-height: 1.8;">
-              <ul class="token-list" style="margin-bottom: 1rem;">
-                <li data-i18n="token.old_step1">Nhấn <code>F12</code> hoặc <code>Ctrl + Shift + I</code> để mở Developer Tools.</li>
-                <li data-i18n="token.old_step2">Chuyển sang tab <strong>Network</strong> và lọc <strong>Fetch/XHR</strong>.</li>
-                <li data-i18n="token.old_step3">Bấm vào một channel bất kì để thấy Request mới xuất hiện.</li>
-                <li data-i18n="token.old_step4">Kiểm tra mục <strong>Request Headers</strong> > <strong>Authorization</strong> để copy token của bạn.</li>
+          <details
+            class="token-details"
+            style="
+              background: var(--bg-surface);
+              border: 1px solid var(--border);
+              border-radius: var(--border-radius-sm);
+              padding: 1rem;
+            "
+          >
+            <summary
+              data-i18n="token.old_method_title"
+              style="
+                cursor: pointer;
+                font-weight: 600;
+                color: var(--text-primary);
+                outline: none;
+              "
+            >
+              Phương pháp cũ (Ấn để mở rộng)
+            </summary>
+            <div
+              class="token-details-inner"
+              style="
+                margin-top: 1rem;
+                color: var(--text-secondary);
+                line-height: 1.8;
+              "
+            >
+              <ul class="token-list" style="margin-bottom: 1rem">
+                <li data-i18n="token.old_step1">
+                  Nhấn <code>F12</code> hoặc <code>Ctrl + Shift + I</code> để mở
+                  Developer Tools.
+                </li>
+                <li data-i18n="token.old_step2">
+                  Chuyển sang tab <strong>Network</strong> và lọc
+                  <strong>Fetch/XHR</strong>.
+                </li>
+                <li data-i18n="token.old_step3">
+                  Bấm vào một channel bất kì để thấy Request mới xuất hiện.
+                </li>
+                <li data-i18n="token.old_step4">
+                  Kiểm tra mục <strong>Request Headers</strong> >
+                  <strong>Authorization</strong> để copy token của bạn.
+                </li>
               </ul>
-              <img src="https://gist.github.com/assets/17340496/ca1be329-1ef8-4b6f-ab96-dd9324d511db" alt="Network Tab Token" style="border-radius: 8px; border: 1px solid var(--border); width: 100%; margin-top: 1rem;">
+              <img
+                src="https://gist.github.com/assets/17340496/ca1be329-1ef8-4b6f-ab96-dd9324d511db"
+                alt="Network Tab Token"
+                style="
+                  border-radius: 8px;
+                  border: 1px solid var(--border);
+                  width: 100%;
+                  margin-top: 1rem;
+                "
+              />
             </div>
           </details>
         </div>
@@ -1352,10 +1451,10 @@ iframe.remove();</code></pre>
               <svg class="icon" style="display: inline; vertical-align: middle">
                 <use href="#i-zap" />
               </svg>
-              Quest Bot
+              Auto Quests Bot
             </h3>
             <p data-i18n="footer.tagline">
-              Tự động hoá quest. Giữ token an toàn.
+              Tự động hoá Discord Quests. Giữ token của bạn luôn an toàn.
             </p>
             <div class="footer-social">
               <a

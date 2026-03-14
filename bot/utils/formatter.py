@@ -57,7 +57,7 @@ def info_embed(
         inline=True,
     )
     embed.add_field(name="🔧 Version", value=f"v{VERSION}", inline=True)
-    embed.set_footer(text="CTDOTEAM — Discord Quest Bot")
+    embed.set_footer(text="@htch9999🌷 — Auto Quests Bot")
     return embed
 
 

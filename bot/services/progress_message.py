@@ -189,7 +189,7 @@ class ProgressMessage:
                 inline=False,
             )
 
-        embed.set_footer(text="CTDOTEAM — Discord Quest Bot")
+        embed.set_footer(text="@htch9999🌷 — Auto Quests Bot")
         return embed
 
     def _build_final_embed(self, summary: Optional[dict] = None) -> discord.Embed:
@@ -237,5 +237,5 @@ class ProgressMessage:
                     inline=False,
                 )
 
-        embed.set_footer(text="CTDOTEAM — Discord Quest Bot")
+        embed.set_footer(text="@htch9999🌷 — Auto Quests Bot")
         return embed
