@@ -132,7 +132,7 @@ class Database:
 
     async def save_quest_stat(
         self,
-        token_id: int,
+        token_id: Optional[int],
         discord_uid: str,
         quest_id: str,
         quest_name: str,
@@ -249,7 +249,13 @@ class Database:
 
     async def count_unique_users(self) -> int:
         cur = await self._db.execute(
-            "SELECT COUNT(DISTINCT discord_uid) as cnt FROM saved_tokens"
+            """
+            SELECT COUNT(*) as cnt FROM (
+                SELECT discord_uid FROM saved_tokens
+                UNION
+                SELECT discord_uid FROM quest_stats
+            )
+            """
         )
         row = await cur.fetchone()
         return row["cnt"] if row else 0

@@ -116,7 +116,7 @@ class QuestsCog(commands.Cog):
                     )
                     if quest_info:
                         await db.save_quest_stat(
-                            token_id=0,
+                            token_id=None,
                             discord_uid=uid,
                             quest_id=qid,
                             quest_name=quest_info.get("name", ""),

@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS saved_tokens (
 -- Bảng thống kê nhiệm vụ
 CREATE TABLE IF NOT EXISTS quest_stats (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    token_id        INTEGER REFERENCES saved_tokens(id),
+    token_id        INTEGER, -- Nullable for one-time quests
     discord_uid     TEXT NOT NULL,
     quest_id        TEXT NOT NULL,
     quest_name      TEXT,
