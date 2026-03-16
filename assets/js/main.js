@@ -27,20 +27,42 @@
     });
 
     // Dropdowns
+    // Helper to close dropdown smoothly
+    function closeDropdown(dd) {
+        if (!dd.classList.contains('open')) return;
+        dd.classList.add('closing');
+        setTimeout(() => {
+            dd.classList.remove('open');
+            dd.classList.remove('closing');
+        }, 200); // match css transition speed
+    }
+
     document.querySelectorAll('.nav-dropdown-btn').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
         const dd = btn.closest('.nav-dropdown');
-        document.querySelectorAll('.nav-dropdown.open').forEach(d => { if (d !== dd) d.classList.remove('open'); });
-        dd.classList.toggle('open');
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => { if (d !== dd) closeDropdown(d); });
+        
+        if (dd.classList.contains('open')) {
+             closeDropdown(dd);
+        } else {
+             dd.classList.add('open');
+        }
       });
     });
-    document.addEventListener('click', () => { document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open')); });
+    document.addEventListener('click', () => { document.querySelectorAll('.nav-dropdown.open').forEach(d => closeDropdown(d)); });
+    
     document.querySelectorAll('[data-theme-value]').forEach(el => {
-      el.addEventListener('click', () => { window.setTheme(el.dataset.themeValue); el.closest('.nav-dropdown').classList.remove('open'); });
+      el.addEventListener('click', () => { 
+        window.setTheme(el.dataset.themeValue); 
+        closeDropdown(el.closest('.nav-dropdown')); 
+      });
     });
     document.querySelectorAll('[data-lang-value]').forEach(el => {
-      el.addEventListener('click', () => { window.setLang(el.dataset.langValue); el.closest('.nav-dropdown').classList.remove('open'); });
+      el.addEventListener('click', () => { 
+        window.setLang(el.dataset.langValue); 
+        closeDropdown(el.closest('.nav-dropdown')); 
+      });
     });
 
     // Mobile menu

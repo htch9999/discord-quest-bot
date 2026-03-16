@@ -17,10 +17,10 @@ CREATE TABLE IF NOT EXISTS saved_tokens (
     UNIQUE(discord_uid, label)
 );
 
--- Bảng thống kê nhiệm vụ
+-- Bảng thống kê nhiệm vụ (NO foreign key on token_id)
 CREATE TABLE IF NOT EXISTS quest_stats (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    token_id        INTEGER, -- Nullable for one-time quests
+    token_id        INTEGER,
     discord_uid     TEXT NOT NULL,
     quest_id        TEXT NOT NULL,
     quest_name      TEXT,
@@ -49,9 +49,40 @@ CREATE TABLE IF NOT EXISTS run_sessions (
     summary         TEXT
 );
 
+-- Bảng theo dõi tương tác người dùng (tất cả users đã dùng bot)
+CREATE TABLE IF NOT EXISTS user_interactions (
+    discord_uid     TEXT PRIMARY KEY,
+    first_seen_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_seen_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    interaction_count INTEGER DEFAULT 1
+);
+
 -- Chỉ mục tối ưu hiệu năng
 CREATE INDEX IF NOT EXISTS idx_tokens_uid ON saved_tokens(discord_uid);
 CREATE INDEX IF NOT EXISTS idx_stats_user ON quest_stats(discord_uid);
 CREATE INDEX IF NOT EXISTS idx_stats_type ON quest_stats(task_type);
 CREATE INDEX IF NOT EXISTS idx_stats_date ON quest_stats(completed_at);
 """
+
+# Migration to fix quest_stats FK constraint from older schema
+MIGRATION_FIX_FK = """
+-- Recreate quest_stats without FOREIGN KEY constraint
+CREATE TABLE IF NOT EXISTS quest_stats_new (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    token_id        INTEGER,
+    discord_uid     TEXT NOT NULL,
+    quest_id        TEXT NOT NULL,
+    quest_name      TEXT,
+    task_type       TEXT,
+    completed_at    DATETIME,
+    duration_secs   INTEGER,
+    run_mode        TEXT
+);
+INSERT OR IGNORE INTO quest_stats_new SELECT * FROM quest_stats;
+DROP TABLE quest_stats;
+ALTER TABLE quest_stats_new RENAME TO quest_stats;
+CREATE INDEX IF NOT EXISTS idx_stats_user ON quest_stats(discord_uid);
+CREATE INDEX IF NOT EXISTS idx_stats_type ON quest_stats(task_type);
+CREATE INDEX IF NOT EXISTS idx_stats_date ON quest_stats(completed_at);
+"""
+

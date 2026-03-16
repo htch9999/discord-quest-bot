@@ -204,3 +204,165 @@ class QuestScheduler:
 
         except Exception as e:
             logger.error("Scheduler check failed: %s", e)
+
+    async def run_all_active(self):
+        """Check and run quests for ALL active tokens (startup use).
+
+        Unlike _check_and_run which only processes due tokens,
+        this processes ALL active tokens regardless of schedule.
+        """
+        from bot.db.database import Database
+        from bot.services.crypto import decrypt_token
+        from bot.core.discord_api import DiscordAPI, fetch_latest_build_number
+        from bot.core.quest_engine import QuestEngine
+        from bot.core.task_manager import TaskManager
+
+        db: Database = self.bot.db
+        task_manager: TaskManager = self.bot.task_manager
+
+        try:
+            active_tokens = await db.get_all_active_tokens()
+
+            if not active_tokens:
+                logger.info("Startup: no active tokens found")
+                return
+
+            logger.info("Startup: found %d active token(s) to check", len(active_tokens))
+
+            for token_data in active_tokens:
+                uid = token_data["discord_uid"]
+                token_id = token_data["id"]
+                label = token_data.get("label", "default")
+                hint = token_data.get("token_hint", "????")
+
+                # Skip if already running
+                if task_manager.is_running(uid, token_id):
+                    logger.debug("Startup: token %s/%s already running, skip", uid, label)
+                    continue
+
+                try:
+                    # Decrypt token
+                    token_enc = token_data["token_enc"]
+                    if isinstance(token_enc, bytes):
+                        token_enc = token_enc.decode("utf-8")
+                    token = decrypt_token(token_enc, uid)
+
+                    # Create run task
+                    async def _startup_run(
+                        _uid=uid,
+                        _token=token,
+                        _token_id=token_id,
+                        _label=label,
+                        _hint=hint,
+                    ):
+                        api = None
+                        try:
+                            build_number = await fetch_latest_build_number()
+                            api = DiscordAPI(_token, build_number)
+
+                            if not await api.validate_token():
+                                await db.set_token_active(_token_id, False)
+                                logger.warning(
+                                    "Startup: token %s/%s invalid, deactivated",
+                                    _uid, _label,
+                                )
+                                try:
+                                    user = await self.bot.fetch_user(int(_uid))
+                                    await user.send(
+                                        f"⚠️ Token **{_label}** (`...{_hint}`) "
+                                        "không hợp lệ. Auto-schedule đã bị tắt."
+                                    )
+                                except Exception:
+                                    pass
+                                return
+
+                            engine = QuestEngine(api=api)
+
+                            # Register engine for active quest tracking
+                            task_manager.register_engine(_uid, _token_id, engine)
+
+                            summary = await engine.run_once()
+                            await engine.wait_all()
+
+                            # Update run times
+                            now = datetime.now(timezone.utc)
+                            next_run = now + timedelta(days=AUTO_RUN_INTERVAL_DAYS)
+                            await db.update_run_times(_token_id, now, next_run)
+
+                            # Save stats
+                            for qid in engine.completed_ids:
+                                quest_info = next(
+                                    (
+                                        q
+                                        for q in summary.get("quests", [])
+                                        if q["id"] == qid
+                                    ),
+                                    None,
+                                )
+                                if quest_info:
+                                    try:
+                                        await db.save_quest_stat(
+                                            token_id=_token_id,
+                                            discord_uid=_uid,
+                                            quest_id=qid,
+                                            quest_name=quest_info.get("name", ""),
+                                            task_type=quest_info.get("task_type", ""),
+                                            duration_secs=0,
+                                            run_mode="auto",
+                                        )
+                                    except Exception as e:
+                                        logger.error("Startup: failed to save quest stat: %s", e)
+                            try:
+                                await db.increment_global_stat(
+                                    "total_quests_done", len(engine.completed_ids)
+                                )
+                            except Exception as e:
+                                logger.error("Startup: failed to increment global stat: %s", e)
+
+                            # DM summary
+                            try:
+                                user = await self.bot.fetch_user(int(_uid))
+                                completed = len(engine.completed_ids)
+                                if completed > 0:
+                                    msg = (
+                                        f"✅ Startup auto-run **{_label}** hoàn thành: "
+                                        f"{completed} quest(s).\n"
+                                        f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
+                                    )
+                                    await user.send(msg)
+                            except Exception:
+                                pass
+
+                            logger.info(
+                                "Startup: completed %s/%s (%d quests)",
+                                _uid, _label, len(engine.completed_ids),
+                            )
+                        except Exception as e:
+                            logger.error(
+                                "Startup: error %s/%s: %s", _uid, _label, e
+                            )
+                        finally:
+                            if api:
+                                try:
+                                    await api.close()
+                                except Exception:
+                                    pass
+
+                    await task_manager.start_task(
+                        uid=uid,
+                        token_id=token_id,
+                        coro_factory=_startup_run,
+                        label=f"startup-{label}",
+                    )
+
+                    # Small delay between starts to avoid rate limiting
+                    await asyncio.sleep(2)
+
+                except Exception as e:
+                    logger.error(
+                        "Startup: error starting %s/%s: %s", uid, label, e
+                    )
+
+        except Exception as e:
+            logger.error("Startup quest check failed: %s", e)
+

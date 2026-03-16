@@ -35,11 +35,6 @@
     if (desc !== 'meta.description') { const m = document.querySelector('meta[name="description"]'); if (m) m.setAttribute('content', desc); }
     document.documentElement.lang = currentLang;
     document.querySelectorAll('[data-lang-value]').forEach(el => { el.classList.toggle('active', el.dataset.langValue === currentLang); });
-    const btns = document.querySelectorAll('#lang-btn, #lang-btn-mobile');
-    btns.forEach(btn => {
-      const names = { vi: 'VI', en: 'EN', ja: 'JA' };
-      btn.querySelector('.dd-label').textContent = names[currentLang] || currentLang.toUpperCase();
-    });
   }
 
   async function load(lang) {
@@ -52,12 +47,15 @@
     if (!SUPPORTED.includes(lang)) return;
     currentLang = lang;
     localStorage.setItem(KEY, lang);
-    document.body.classList.add('i18n-fading');
-    await new Promise(r => setTimeout(r, 150));
+    document.body.classList.add('setting-switching');
+    await new Promise(r => setTimeout(r, 600));
     await load(lang);
     if (lang !== FALLBACK) await load(FALLBACK);
     apply();
-    document.body.classList.remove('i18n-fading');
+    // Allow DOM to update before removing class so fade-in triggers
+    requestAnimationFrame(() => {
+        document.body.classList.remove('setting-switching');
+    });
   }
 
   async function init() {

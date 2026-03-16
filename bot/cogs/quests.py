@@ -11,6 +11,7 @@ from bot.core.discord_api import DiscordAPI, fetch_latest_build_number
 from bot.core.quest_engine import QuestEngine
 from bot.core.task_manager import TaskManager
 from bot.services.progress_message import ProgressMessage
+from bot.db.database import Database
 from bot.utils.token_mask import mask_token
 from bot.utils.logger import get_logger
 
@@ -40,6 +41,10 @@ class QuestsCog(commands.Cog):
             "Kết quả sẽ được gửi qua DM.",
             ephemeral=True,
         )
+
+        # Track user interaction
+        db: Database = self.bot.db
+        await db.track_user(uid)
 
         # Validate token format
         if not TOKEN_PATTERN.match(token):
@@ -100,6 +105,9 @@ class QuestsCog(commands.Cog):
                     ),
                 )
 
+                # Register engine for active quest tracking
+                task_manager.register_engine(uid, "once", engine)
+
                 # Run
                 summary = await engine.run_once()
                 await engine.wait_all()
@@ -115,18 +123,24 @@ class QuestsCog(commands.Cog):
                         None,
                     )
                     if quest_info:
-                        await db.save_quest_stat(
-                            token_id=None,
-                            discord_uid=uid,
-                            quest_id=qid,
-                            quest_name=quest_info.get("name", ""),
-                            task_type=quest_info.get("task_type", ""),
-                            duration_secs=0,
-                            run_mode="once",
-                        )
-                await db.increment_global_stat(
-                    "total_quests_done", len(engine.completed_ids)
-                )
+                        try:
+                            await db.save_quest_stat(
+                                token_id=None,
+                                discord_uid=uid,
+                                quest_id=qid,
+                                quest_name=quest_info.get("name", ""),
+                                task_type=quest_info.get("task_type", ""),
+                                duration_secs=0,
+                                run_mode="once",
+                            )
+                        except Exception as e:
+                            logger.error("Failed to save quest stat: %s", e)
+                try:
+                    await db.increment_global_stat(
+                        "total_quests_done", len(engine.completed_ids)
+                    )
+                except Exception as e:
+                    logger.error("Failed to increment global stat: %s", e)
 
             except Exception as e:
                 logger.error("Quest run failed for %s: %s", uid, e)

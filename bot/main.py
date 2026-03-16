@@ -116,6 +116,9 @@ class QuestBot(commands.Bot):
             )
         )
 
+        # Startup auto-run for active tokens
+        asyncio.create_task(self.scheduler.run_all_active())
+
     async def close(self):
         """Clean shutdown."""
         logger.info("Shutting down...")

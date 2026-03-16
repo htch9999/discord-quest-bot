@@ -25,6 +25,7 @@ class TaskManager:
         self.running_tasks: dict[str, asyncio.Task] = {}  # "uid:token_id" -> Task
         self.user_locks: dict[str, asyncio.Lock] = {}     # uid -> Lock
         self.global_semaphore = asyncio.Semaphore(MAX_CONCURRENT_TASKS)
+        self._engines: dict[str, object] = {}  # "uid:token_id" -> QuestEngine
 
     def _task_key(self, uid: str, token_id: int | str) -> str:
         return f"{uid}:{token_id}"
@@ -38,6 +39,26 @@ class TaskManager:
         key = self._task_key(uid, token_id)
         task = self.running_tasks.get(key)
         return task is not None and not task.done()
+
+    def register_engine(self, uid: str, token_id: int | str, engine):
+        """Register a QuestEngine for active quest tracking."""
+        key = self._task_key(uid, token_id)
+        self._engines[key] = engine
+
+    def unregister_engine(self, uid: str, token_id: int | str):
+        """Unregister a QuestEngine."""
+        key = self._task_key(uid, token_id)
+        self._engines.pop(key, None)
+
+    def get_active_quest_count(self) -> int:
+        """Get total number of individual quests being processed across all engines."""
+        total = 0
+        for engine in list(self._engines.values()):
+            try:
+                total += engine.active_quest_count
+            except Exception:
+                pass
+        return total
 
     async def start_task(
         self,
@@ -78,6 +99,7 @@ class TaskManager:
                         logger.error("Task error %s (%s): %s", key, label, e)
                     finally:
                         self.running_tasks.pop(key, None)
+                        self._engines.pop(key, None)
 
         task = asyncio.create_task(_wrapped())
         self.running_tasks[key] = task
@@ -113,13 +135,17 @@ class TaskManager:
                 *self.running_tasks.values(), return_exceptions=True
             )
         self.running_tasks.clear()
+        self._engines.clear()
         logger.info("TaskManager shut down")
 
     def get_status(self) -> dict:
         """Get a summary of running tasks."""
         active = sum(1 for t in self.running_tasks.values() if not t.done())
+        active_quests = self.get_active_quest_count()
         return {
             "total_tasks": len(self.running_tasks),
             "active_tasks": active,
+            "active_quests": active_quests,
             "max_concurrent": MAX_CONCURRENT_TASKS,
         }
+

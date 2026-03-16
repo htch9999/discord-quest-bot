@@ -1,0 +1,1556 @@
+<!doctype html>
+<html lang="vi" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Quest Bot — Tự động hoàn thành quest</title>
+    <meta
+      name="description"
+      content="Bot Discord tự động hoàn thành quest — bảo mật, song song, không lộ token."
+    />
+    <meta property="og:title" content="Discord Quest Bot" />
+    <meta
+      property="og:description"
+      content="Bot Discord tự động hoàn thành quest — bảo mật, song song, không lộ token."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" hreflang="vi" href="?lang=vi" />
+    <link rel="alternate" hreflang="en" href="?lang=en" />
+    <link rel="alternate" hreflang="ja" href="?lang=ja" />
+    <link rel="alternate" hreflang="x-default" href="" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <script src="assets/js/theme.js"></script>
+  </head>
+  <body>
+    <!-- ═══ SVG SPRITE (hidden) ═══ -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="i-zap" viewBox="0 0 24 24">
+        <polygon
+          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <rect
+          x="3"
+          y="11"
+          width="18"
+          height="11"
+          rx="2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M7 11V7a5 5 0 0 1 10 0v4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-cpu" viewBox="0 0 24 24">
+        <rect
+          x="4"
+          y="4"
+          width="16"
+          height="16"
+          rx="2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <rect
+          x="9"
+          y="9"
+          width="6"
+          height="6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="9"
+          y1="1"
+          x2="9"
+          y2="4"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="15"
+          y1="1"
+          x2="15"
+          y2="4"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="9"
+          y1="20"
+          x2="9"
+          y2="23"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="15"
+          y1="20"
+          x2="15"
+          y2="23"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="20"
+          y1="9"
+          x2="23"
+          y2="9"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="20"
+          y1="14"
+          x2="23"
+          y2="14"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="1"
+          y1="9"
+          x2="4"
+          y2="9"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="1"
+          y1="14"
+          x2="4"
+          y2="14"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-radio" viewBox="0 0 24 24">
+        <circle
+          cx="12"
+          cy="12"
+          r="2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M16.24 7.76a6 6 0 0 1 0 8.49"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M7.76 16.24a6 6 0 0 1 0-8.49"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M19.07 4.93a10 10 0 0 1 0 14.14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M4.93 19.07a10 10 0 0 1 0-14.14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24">
+        <path
+          d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="1"
+          y1="1"
+          x2="23"
+          y2="23"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-bar-chart" viewBox="0 0 24 24">
+        <line
+          x1="12"
+          y1="20"
+          x2="12"
+          y2="10"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="18"
+          y1="20"
+          x2="18"
+          y2="4"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="6"
+          y1="20"
+          x2="6"
+          y2="16"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24">
+        <polyline
+          points="23 4 23 10 17 10"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-save" viewBox="0 0 24 24">
+        <path
+          d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <polyline
+          points="17 21 17 13 7 13 7 21"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <polyline
+          points="7 3 7 8 15 8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24">
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="2"
+          y1="12"
+          x2="22"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24">
+        <path
+          d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <polyline
+          points="22 4 12 14.01 9 11.01"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24">
+        <line
+          x1="5"
+          y1="12"
+          x2="19"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <polyline
+          points="12 5 19 12 12 19"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24">
+        <path
+          d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24">
+        <circle
+          cx="12"
+          cy="12"
+          r="5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="12"
+          y1="1"
+          x2="12"
+          y2="3"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="12"
+          y1="21"
+          x2="12"
+          y2="23"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="4.22"
+          y1="4.22"
+          x2="5.64"
+          y2="5.64"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="18.36"
+          y1="18.36"
+          x2="19.78"
+          y2="19.78"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="1"
+          y1="12"
+          x2="3"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="21"
+          y1="12"
+          x2="23"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="4.22"
+          y1="19.78"
+          x2="5.64"
+          y2="18.36"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="18.36"
+          y1="5.64"
+          x2="19.78"
+          y2="4.22"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24">
+        <rect
+          x="2"
+          y="3"
+          width="20"
+          height="14"
+          rx="2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="8"
+          y1="21"
+          x2="16"
+          y2="21"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="12"
+          y1="17"
+          x2="12"
+          y2="21"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24">
+        <line
+          x1="3"
+          y1="12"
+          x2="21"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="3"
+          y1="6"
+          x2="21"
+          y2="6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="3"
+          y1="18"
+          x2="21"
+          y2="18"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24">
+        <line
+          x1="12"
+          y1="5"
+          x2="12"
+          y2="19"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="5"
+          y1="12"
+          x2="19"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 24 24">
+        <polyline
+          points="6 9 12 15 18 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path
+          d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-discord" viewBox="0 0 24 24">
+        <path
+          d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.873-1.295 1.226-1.994a.076.076 0 0 0-.042-.106 13.11 13.11 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-gamepad" viewBox="0 0 24 24">
+        <line
+          x1="6"
+          y1="12"
+          x2="10"
+          y2="12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="8"
+          y1="10"
+          x2="8"
+          y2="14"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="15"
+          y1="13"
+          x2="15.01"
+          y2="13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="18"
+          y1="11"
+          x2="18.01"
+          y2="11"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+      <symbol id="i-activity" viewBox="0 0 24 24">
+        <polyline
+          points="22 12 18 12 15 21 9 3 6 12 2 12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-external" viewBox="0 0 24 24">
+        <path
+          d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <polyline
+          points="15 3 21 3 21 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <line
+          x1="10"
+          y1="14"
+          x2="21"
+          y2="3"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+    </svg>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="#" class="nav-brand">
+          <svg class="icon"><use href="#i-zap" /></svg>
+          <span>Auto Quest Bot</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#features" data-i18n="nav.features">Tính năng</a></li>
+          <li><a href="#security" data-i18n="nav.security">Bảo mật</a></li>
+          <li><a href="#commands" data-i18n="nav.commands">Lệnh</a></li>
+          <li><a href="#live-stats" data-i18n="nav.stats">Thống kê</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          
+          <!-- MOBILE ACTIONS (Hidden on Desktop) -->
+          <li class="nav-actions-mobile">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <!-- Language -->
+              <div class="nav-dropdown">
+                <button class="nav-dropdown-btn" id="lang-btn-mobile" aria-label="Language">
+                  <svg class="icon icon-sm"><use href="#i-globe" /></svg>
+                  <span class="dd-label">VI</span>
+                  <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                  <div class="nav-dropdown-item active" data-lang-value="vi">Tiếng Việt</div>
+                  <div class="nav-dropdown-item" data-lang-value="en">English</div>
+                  <div class="nav-dropdown-item" data-lang-value="ja">日本語</div>
+                </div>
+              </div>
+              <!-- Theme -->
+              <div class="nav-dropdown">
+                <button class="nav-dropdown-btn" id="theme-btn-mobile" aria-label="Theme">
+                  <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+                  <span class="dd-label">Dark</span>
+                  <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+                </button>
+                <div class="nav-dropdown-menu">
+                  <div class="nav-dropdown-item active" data-theme-value="dark">
+                    <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+                    <span data-i18n="theme.dark">Tối</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-theme-value="light">
+                    <svg class="icon icon-sm"><use href="#i-sun" /></svg>
+                    <span data-i18n="theme.light">Sáng</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-theme-value="system">
+                    <svg class="icon icon-sm"><use href="#i-monitor" /></svg>
+                    <span data-i18n="theme.system">Hệ thống</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+               class="btn btn-primary"
+               style="padding: 0.5rem 1rem; font-size: 0.85rem; justify-content: center; width: 100%;"
+               data-i18n="hero.cta_add">Thêm vào Discord</a>
+          </li>
+        </ul>
+
+        <div class="nav-right">
+          <!-- Language -->
+          <div class="nav-dropdown">
+            <button
+              class="nav-dropdown-btn"
+              id="lang-btn"
+              aria-label="Language"
+            >
+              <svg class="icon icon-sm"><use href="#i-globe" /></svg>
+              <span class="dd-label">VI</span>
+              <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+            </button>
+            <div class="nav-dropdown-menu">
+              <div class="nav-dropdown-item active" data-lang-value="vi">
+                Tiếng Việt
+              </div>
+              <div class="nav-dropdown-item" data-lang-value="en">English</div>
+              <div class="nav-dropdown-item" data-lang-value="ja">日本語</div>
+            </div>
+          </div>
+          <!-- Theme -->
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-btn" id="theme-btn" aria-label="Theme">
+              <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+              <span class="dd-label">Dark</span>
+              <svg class="icon icon-sm"><use href="#i-chevron-down" /></svg>
+            </button>
+            <div class="nav-dropdown-menu">
+              <div class="nav-dropdown-item active" data-theme-value="dark">
+                <svg class="icon icon-sm"><use href="#i-moon" /></svg>
+                <span data-i18n="theme.dark">Tối</span>
+              </div>
+              <div class="nav-dropdown-item" data-theme-value="light">
+                <svg class="icon icon-sm"><use href="#i-sun" /></svg>
+                <span data-i18n="theme.light">Sáng</span>
+              </div>
+              <div class="nav-dropdown-item" data-theme-value="system">
+                <svg class="icon icon-sm"><use href="#i-monitor" /></svg>
+                <span data-i18n="theme.system">Hệ thống</span>
+              </div>
+            </div>
+          </div>
+          <a
+            href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+            class="btn btn-primary"
+            style="padding: 0.4rem 1rem; font-size: 0.85rem"
+            data-i18n="hero.cta_add"
+            >Thêm vào Discord</a
+          >
+          <button
+            class="nav-mobile-toggle"
+            id="mobile-toggle"
+            aria-label="Menu"
+          >
+            <svg class="icon"><use href="#i-menu" /></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="hero">
+      <canvas id="particles-canvas"></canvas>
+      <div class="hero-gradient"></div>
+      <div class="hero-content container">
+        <div class="hero-badge">
+          <svg class="icon icon-sm"><use href="#i-zap" /></svg>
+          <span data-i18n="hero.badge"
+            >v2.0 Public Beta · Production Ready</span
+          >
+        </div>
+        <h1>
+          <span data-i18n="hero.title">Hoàn thành Discord Quests</span><br />
+          <span class="accent" data-i18n="hero.title_accent"
+            >Tự động. Bảo mật. Nhanh chóng.</span
+          >
+        </h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">
+          Bot tự động xử lý mọi quest Discord cho bạn — song song, real-time, an
+          toàn.
+        </p>
+        <div class="hero-cta">
+          <a
+            href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+            class="btn btn-primary"
+            ><span data-i18n="hero.cta_add">Thêm vào Discord</span>
+            <svg class="icon icon-sm"><use href="#i-arrow-right" /></svg
+          ></a>
+          <a href="https://discord.gg/gTVPwvNeEH" class="btn btn-secondary"
+            ><svg class="icon icon-sm"><use href="#i-discord" /></svg>
+            <span data-i18n="hero.cta_server">Tham gia Server</span></a
+          >
+          <a
+            href="https://github.com/htch9999/discord-quest-bot"
+            class="btn btn-ghost"
+            ><svg class="icon icon-sm"><use href="#i-github" /></svg>
+            <span data-i18n="hero.cta_github">Xem GitHub</span></a
+          >
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="number" id="stat-users" data-count-to="0">0</div>
+            <div class="label" data-i18n="hero.stat_users">Người dùng</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number" id="stat-quests" data-count-to="0">0</div>
+            <div class="label" data-i18n="hero.stat_quests">Quest đã làm</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number" id="stat-servers" data-count-to="0">0</div>
+            <div class="label" data-i18n="hero.stat_servers">Server</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number" id="stat-uptime">—</div>
+            <div class="label" data-i18n="hero.stat_uptime">Uptime</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FEATURES ═══ -->
+    <section id="features">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="features.title">Tất cả những gì bạn cần</h2>
+          <p data-i18n="features.subtitle">
+            Xây dựng cho độ tin cậy, bảo mật và tốc độ.
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-zap" /></svg>
+            </div>
+            <h3 data-i18n="features.parallel_title">Chạy song song</h3>
+            <p data-i18n="features.parallel_desc">
+              Tối đa 6 PLAY_* quest cùng lúc.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-lock" /></svg>
+            </div>
+            <h3 data-i18n="features.security_title">
+              Bảo mật tuyệt đối <span class="feature-badge">HOT</span>
+            </h3>
+            <p data-i18n="features.security_desc">
+              AES-256-GCM với key dẫn xuất riêng từng user.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-cpu" /></svg>
+            </div>
+            <h3 data-i18n="features.auto_title">Tự động mỗi 2 ngày</h3>
+            <p data-i18n="features.auto_desc">
+              Scheduler thông minh kiểm tra quest mới.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-radio" /></svg>
+            </div>
+            <h3 data-i18n="features.live_title">Tiến độ Real-time</h3>
+            <p data-i18n="features.live_desc">
+              Một tin nhắn, cập nhật real-time.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-eye-off" /></svg>
+            </div>
+            <h3 data-i18n="features.hidden_title">Token luôn ẩn</h3>
+            <p data-i18n="features.hidden_desc">
+              Ephemeral + masked. Không ai nhìn thấy.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-bar-chart" /></svg>
+            </div>
+            <h3 data-i18n="features.stats_title">Thống kê chi tiết</h3>
+            <p data-i18n="features.stats_desc">
+              Dashboard đầy đủ cho từng token.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-refresh" /></svg>
+            </div>
+            <h3 data-i18n="features.multi_title">Mọi loại Quest</h3>
+            <p data-i18n="features.multi_desc">
+              WATCH_VIDEO · PLAY · STREAM · ACTIVITY.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-save" /></svg>
+            </div>
+            <h3 data-i18n="features.recovery_title">Khôi phục sau sự cố</h3>
+            <p data-i18n="features.recovery_desc">
+              Phiên bị gián đoạn tự động tiếp tục.
+            </p>
+          </div>
+          <div class="feature-card reveal-stagger">
+            <div class="feature-icon">
+              <svg class="icon icon-lg"><use href="#i-globe" /></svg>
+            </div>
+            <h3 data-i18n="features.oss_title">
+              Mã nguồn mở <span class="feature-badge">NEW</span>
+            </h3>
+            <p data-i18n="features.oss_desc">
+              100% public. Kiểm tra, fork, tự host.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ HOW IT WORKS ═══ -->
+    <section id="how-it-works" style="background: var(--bg-surface)">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="how_it_works.title">Cách hoạt động</h2>
+          <p data-i18n="how_it_works.subtitle">
+            Từ lệnh đến phần thưởng trong 5 bước.
+          </p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-step reveal-stagger">
+            <div class="timeline-number">1</div>
+            <div class="timeline-content">
+              <h3 data-i18n="how_it_works.step1_title">
+                Thêm Bot hoặc gửi lệnh
+              </h3>
+              <p data-i18n="how_it_works.step1_desc">
+                Mời bot vào server hoặc gửi /quests.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-step reveal-stagger">
+            <div class="timeline-number">2</div>
+            <div class="timeline-content">
+              <h3 data-i18n="how_it_works.step2_title">Lấy danh sách Quest</h3>
+              <p data-i18n="how_it_works.step2_desc">
+                Bot lấy tất cả quest từ Discord API.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-step reveal-stagger">
+            <div class="timeline-number">3</div>
+            <div class="timeline-content">
+              <h3 data-i18n="how_it_works.step3_title">
+                Tự động Enroll & Bắt đầu
+              </h3>
+              <p data-i18n="how_it_works.step3_desc">
+                Đăng ký và hoàn thành song song.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-step reveal-stagger">
+            <div class="timeline-number">4</div>
+            <div class="timeline-content">
+              <h3 data-i18n="how_it_works.step4_title">
+                Cập nhật tiến độ Real-time
+              </h3>
+              <p data-i18n="how_it_works.step4_desc">
+                Một tin nhắn cập nhật real-time.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-step reveal-stagger">
+            <div class="timeline-number">5</div>
+            <div class="timeline-content">
+              <h3 data-i18n="how_it_works.step5_title">Nhận phần thưởng</h3>
+              <p data-i18n="how_it_works.step5_desc">
+                Quest hoàn thành — phần thưởng tự động.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Discord embed mockup -->
+        <div class="embed-mockup reveal" style="margin-top: 3rem">
+          <div class="embed-title">
+            <svg class="icon icon-sm"><use href="#i-gamepad" /></svg> Quest
+            Progress
+          </div>
+          <div class="embed-quest-item">
+            <svg class="icon icon-sm quest-check" style="color: var(--green)">
+              <use href="#i-check-circle" />
+            </svg>
+            WATCH_VIDEO — Holiday Event
+          </div>
+          <div class="embed-quest-item">
+            <svg class="icon icon-sm quest-check" style="color: var(--green)">
+              <use href="#i-check-circle" />
+            </svg>
+            PLAY_ON_DESKTOP — Valorant
+          </div>
+          <div class="embed-quest-item">
+            <svg class="icon icon-sm quest-check" style="color: var(--green)">
+              <use href="#i-check-circle" />
+            </svg>
+            STREAM_ON_DESKTOP — Fortnite
+          </div>
+          <div class="embed-quest-item">
+            <svg class="icon icon-sm quest-check" style="color: var(--green)">
+              <use href="#i-check-circle" />
+            </svg>
+            PLAY_ACTIVITY — Poker Night
+          </div>
+          <div class="embed-progress">
+            <div class="embed-progress-fill"></div>
+          </div>
+          <div class="embed-footer">Edited just now · @htch9999 Quest Bot</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SECURITY ═══ -->
+    <section id="security">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="security.title">Bảo mật & Minh bạch</h2>
+          <p data-i18n="security.subtitle">Chúng tôi công khai mọi thứ.</p>
+        </div>
+        <div class="security-grid">
+          <ul class="security-commits reveal">
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit1"
+                >Token mã hoá bằng AES-256-GCM</span
+              >
+            </li>
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit2"
+                >Key dẫn xuất riêng biệt từng Discord user ID</span
+              >
+            </li>
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit3"
+                >Token không bao giờ xuất hiện trong log</span
+              >
+            </li>
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit4"
+                >Mã nguồn 100% public trên GitHub</span
+              >
+            </li>
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit5">Hướng dẫn tự host có sẵn</span>
+            </li>
+            <li>
+              <svg class="icon check-icon"><use href="#i-check-circle" /></svg>
+              <span data-i18n="security.commit6"
+                >Xoá token bất cứ lúc với /autoquests remove</span
+              >
+            </li>
+          </ul>
+          <div class="code-block reveal">
+            <div class="code-block-header">
+              <span data-i18n="security.code_label">Code mã hoá:</span>
+              <a href="#"
+                ><span data-i18n="security.code_link">Xem GitHub</span>
+                <svg
+                  class="icon icon-sm"
+                  style="display: inline; vertical-align: middle"
+                >
+                  <use href="#i-external" /></svg
+              ></a>
+            </div>
+            <pre><code>def encrypt_token(token: str, uid: str) -> bytes:
+    salt = os.urandom(16)
+    key = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt + uid.encode(),
+        iterations=260_000,
+    ).derive(MASTER_SECRET.encode())
+    nonce = os.urandom(12)
+    cipher = AESGCM(key)
+    ct = cipher.encrypt(nonce, token.encode(), None)
+    return base64.b64encode(salt + nonce + ct)</code></pre>
+          </div>
+        </div>
+        <div class="security-banner reveal">
+          <p data-i18n="security.selfhost">
+            Không tin tưởng? Tự host bot của bạn.
+          </p>
+          <a
+            href="https://github.com/htch9999/discord-quest-bot?tab=readme-ov-file#self-host"
+            class="btn btn-secondary"
+            ><svg class="icon icon-sm"><use href="#i-github" /></svg>
+            <span data-i18n="security.selfhost_cta"
+              >Hướng dẫn Self-host</span
+            ></a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ COMMANDS ═══ -->
+    <section id="commands" style="background: var(--bg-surface)">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="commands.title">Danh sách lệnh</h2>
+          <p data-i18n="commands.subtitle">Đơn giản, mạnh mẽ, riêng tư.</p>
+        </div>
+        <div class="command-tabs reveal">
+          <button
+            class="command-tab active"
+            data-panel="panel-once"
+            data-i18n="commands.tab_once"
+          >
+            /quests
+          </button>
+          <button
+            class="command-tab"
+            data-panel="panel-auto"
+            data-i18n="commands.tab_auto"
+          >
+            /autoquests
+          </button>
+          <button
+            class="command-tab"
+            data-panel="panel-manage"
+            data-i18n="commands.tab_manage"
+          >
+            Quản lý
+          </button>
+          <button
+            class="command-tab"
+            data-panel="panel-stats"
+            data-i18n="commands.tab_stats"
+          >
+            Thống kê
+          </button>
+        </div>
+        <div class="reveal">
+          <div class="command-panel active" id="panel-once">
+            <table class="command-table">
+              <thead>
+                <tr>
+                  <th data-i18n="commands.col_command">Lệnh</th>
+                  <th data-i18n="commands.col_desc">Mô tả</th>
+                  <th data-i18n="commands.col_example">Ví dụ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/quests {token}</td>
+                  <td>Chạy một lần, không lưu token</td>
+                  <td>/quests MTA...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="command-panel" id="panel-auto">
+            <table class="command-table">
+              <thead>
+                <tr>
+                  <th data-i18n="commands.col_command">Lệnh</th>
+                  <th data-i18n="commands.col_desc">Mô tả</th>
+                  <th data-i18n="commands.col_example">Ví dụ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/autoquests {token} [label]</td>
+                  <td>Lưu token + tự động mỗi 2 ngày</td>
+                  <td>/autoquests MTA... main</td>
+                </tr>
+                <tr>
+                  <td>/autoquests run [label]</td>
+                  <td>Chạy thủ công ngay</td>
+                  <td>/autoquests run main</td>
+                </tr>
+                <tr>
+                  <td>/autoquests pause [label]</td>
+                  <td>Tạm dừng auto</td>
+                  <td>/autoquests pause main</td>
+                </tr>
+                <tr>
+                  <td>/autoquests resume [label]</td>
+                  <td>Bật lại auto</td>
+                  <td>/autoquests resume main</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="command-panel" id="panel-manage">
+            <table class="command-table">
+              <thead>
+                <tr>
+                  <th data-i18n="commands.col_command">Lệnh</th>
+                  <th data-i18n="commands.col_desc">Mô tả</th>
+                  <th data-i18n="commands.col_example">Ví dụ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/autoquests list</td>
+                  <td>Danh sách token đã lưu</td>
+                  <td>/autoquests list</td>
+                </tr>
+                <tr>
+                  <td>/autoquests remove {label}</td>
+                  <td>Xoá token + thống kê</td>
+                  <td>/autoquests remove main</td>
+                </tr>
+                <tr>
+                  <td>/autoquests rename {old} {new}</td>
+                  <td>Đổi tên hiển thị</td>
+                  <td>/autoquests rename main alt</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="command-panel" id="panel-stats">
+            <table class="command-table">
+              <thead>
+                <tr>
+                  <th data-i18n="commands.col_command">Lệnh</th>
+                  <th data-i18n="commands.col_desc">Mô tả</th>
+                  <th data-i18n="commands.col_example">Ví dụ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/autoquests status [label]</td>
+                  <td>Xem trạng thái token</td>
+                  <td>/autoquests status main</td>
+                </tr>
+                <tr>
+                  <td>/autoquests-info</td>
+                  <td>Thống kê cá nhân</td>
+                  <td>/autoquests-info</td>
+                </tr>
+                <tr>
+                  <td>/info</td>
+                  <td>Thông tin server bot</td>
+                  <td>/info</td>
+                </tr>
+                <tr>
+                  <td>/help</td>
+                  <td>Hướng dẫn sử dụng</td>
+                  <td>/help</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ LIVE STATS ═══ -->
+    <section id="live-stats">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="live_stats.title">Thống kê hệ thống</h2>
+          <p data-i18n="live_stats.subtitle">
+            Số liệu thật, cập nhật mỗi 30 giây.
+          </p>
+        </div>
+        <div class="stats-dashboard reveal">
+          <div class="stats-header">
+            <h3>
+              <svg class="icon"><use href="#i-activity" /></svg>
+              <span data-i18n="live_stats.title">Thống kê hệ thống</span>
+            </h3>
+            <div class="live-badge">
+              <div class="live-dot"></div>
+              <span data-i18n="live_stats.live_badge">LIVE</span>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="value" id="dash-today">—</div>
+              <div class="label" data-i18n="live_stats.today">
+                Quest hôm nay
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="dash-week">—</div>
+              <div class="label" data-i18n="live_stats.week">Tuần này</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="dash-total">—</div>
+              <div class="label" data-i18n="live_stats.total">Tổng</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="dash-active">—</div>
+              <div class="label" data-i18n="live_stats.active">Đang chạy</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="dash-ping">—</div>
+              <div class="label" data-i18n="live_stats.ping">API ping</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="dash-uptime">—</div>
+              <div class="label" data-i18n="live_stats.uptime">Uptime</div>
+            </div>
+          </div>
+          <div class="stats-breakdown">
+            <h4 data-i18n="live_stats.breakdown">Phân loại quest</h4>
+            <div class="bar-chart" id="quest-bars"></div>
+          </div>
+          <div class="stats-footer">
+            <span data-i18n="live_stats.last_updated">Cập nhật lần cuối</span>:
+            <span id="stats-timestamp">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TOKEN GUIDE ═══ -->
+    <section id="token-guide" style="background: var(--bg-void)">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="token.title">Cách lấy Discord Token</h2>
+          <p data-i18n="token.subtitle">
+            Lấy token an toàn từ trình duyệt của bạn
+          </p>
+        </div>
+
+        <div
+          class="card reveal token-container"
+          style="max-width: 800px; margin: 0 auto; text-align: left"
+        >
+          <h3 data-i18n="token.new_method_title" style="margin-bottom: 1rem">
+            Phương pháp mới (Khuyên dùng)
+          </h3>
+          <ul
+            class="token-list"
+            style="
+              margin-bottom: 1.5rem;
+              color: var(--text-secondary);
+              line-height: 1.8;
+            "
+          >
+            <li data-i18n="token.step1">
+              Mở Developer Tools bằng phím <code>F12</code> hoặc
+              <code>Ctrl + Shift + I</code>.
+            </li>
+            <li data-i18n="token.step2">
+              Bật chế độ giả lập thiết bị di động (Mobile Device Emulation) bằng
+              <code>Ctrl + Shift + M</code>.
+            </li>
+            <li data-i18n="token.step3">
+              Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:
+            </li>
+          </ul>
+
+          <div
+            class="code-block"
+            style="margin-bottom: 1.5rem; position: relative"
+          >
+            <div
+              class="code-block-header"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <span>Console Script</span>
+              <button
+                class="copy-btn"
+                onclick="copyConsoleScript(this)"
+                style="
+                  background: transparent;
+                  border: 1px solid var(--border);
+                  color: var(--text-secondary);
+                  padding: 4px 8px;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  font-size: 0.8rem;
+                  transition: all 0.2s;
+                "
+              >
+                Copy
+              </button>
+            </div>
+            <pre><code>const iframe = document.createElement('iframe');
+console.log(
+  'Token: %c%s',
+  'font-size:16px;',
+  JSON.parse(document.body.appendChild(iframe).contentWindow.localStorage.token)
+);
+iframe.remove();</code></pre>
+          </div>
+
+          <p
+            data-i18n="token.alternative"
+            style="
+              color: var(--text-secondary);
+              margin-bottom: 2rem;
+              font-size: 0.9rem;
+            "
+          >
+            * Hoặc mở tab <strong>Application</strong> >
+            <strong>Local Storage</strong> và tìm key <code>token</code> dưới
+            tên miền <code>discord.com</code> (khi đang bật giả lập mobile).
+          </p>
+
+          <details
+            class="token-details"
+            style="
+              background: var(--bg-surface);
+              border: 1px solid var(--border);
+              border-radius: var(--border-radius-sm);
+              padding: 1rem;
+            "
+          >
+            <summary
+              data-i18n="token.old_method_title"
+              style="
+                cursor: pointer;
+                font-weight: 600;
+                color: var(--text-primary);
+                outline: none;
+              "
+            >
+              Phương pháp cũ (Ấn để mở rộng)
+            </summary>
+            <div
+              class="token-details-inner"
+              style="
+                margin-top: 1rem;
+                color: var(--text-secondary);
+                line-height: 1.8;
+              "
+            >
+              <ul class="token-list" style="margin-bottom: 1rem">
+                <li data-i18n="token.old_step1">
+                  Nhấn <code>F12</code> hoặc <code>Ctrl + Shift + I</code> để mở
+                  Developer Tools.
+                </li>
+                <li data-i18n="token.old_step2">
+                  Chuyển sang tab <strong>Network</strong> và lọc
+                  <strong>Fetch/XHR</strong>.
+                </li>
+                <li data-i18n="token.old_step3">
+                  Bấm vào một channel bất kì để thấy Request mới xuất hiện.
+                </li>
+                <li data-i18n="token.old_step4">
+                  Kiểm tra mục <strong>Request Headers</strong> >
+                  <strong>Authorization</strong> để copy token của bạn.
+                </li>
+              </ul>
+              <img
+                src="https://gist.github.com/assets/17340496/ca1be329-1ef8-4b6f-ab96-dd9324d511db"
+                alt="Network Tab Token"
+                style="
+                  border-radius: 8px;
+                  border: 1px solid var(--border);
+                  width: 100%;
+                  margin-top: 1rem;
+                "
+              />
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FAQ ═══ -->
+    <section id="faq" style="background: var(--bg-surface)">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 data-i18n="faq.title">Câu hỏi thường gặp</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q1">Bot có lưu token?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a1"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q2">Tài khoản có bị ban?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a2"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q3">Hỗ trợ loại quest nào?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a3"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q4">Có thể tự host?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a4"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q5">Dữ liệu xoá khi nào?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a5"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q6">Có miễn phí không?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a6"></div>
+            </div>
+          </div>
+          <div class="faq-item reveal-stagger">
+            <div class="faq-question">
+              <span data-i18n="faq.q7">Báo cáo lỗi?</span>
+              <svg class="icon faq-icon"><use href="#i-plus" /></svg>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-i18n="faq.a7"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h3>
+              <svg class="icon" style="display: inline; vertical-align: middle">
+                <use href="#i-zap" />
+              </svg>
+              Auto Quests Bot
+            </h3>
+            <p data-i18n="footer.tagline">
+              Tự động hoá Discord Quests. Giữ token của bạn luôn an toàn.
+            </p>
+            <div class="footer-social">
+              <a
+                href="https://github.com/htch9999/discord-quest-bot"
+                aria-label="GitHub"
+                ><svg class="icon icon-sm"><use href="#i-github" /></svg
+              ></a>
+              <a href="https://discord.gg/gTVPwvNeEH" aria-label="Discord"
+                ><svg class="icon icon-sm"><use href="#i-discord" /></svg
+              ></a>
+            </div>
+          </div>
+          <div class="footer-links">
+            <h4>Links</h4>
+            <ul>
+              <li>
+                <a href="#features" data-i18n="footer.features">Tính năng</a>
+              </li>
+              <li>
+                <a href="#security" data-i18n="footer.security">Bảo mật</a>
+              </li>
+              <li><a href="#commands" data-i18n="footer.commands">Lệnh</a></li>
+              <li><a href="#faq" data-i18n="footer.faq">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Legal</h4>
+            <ul>
+              <li>
+                <a href="#" data-i18n="footer.privacy">Chính sách bảo mật</a>
+              </li>
+              <li><a href="#" data-i18n="footer.terms">Điều khoản</a></li>
+              <li><a href="#" data-i18n="footer.status">Trạng thái</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span data-i18n="footer.made_by"
+            >Made by @htch9999🌷 · Open Source · MIT License</span
+          >
+          <span data-i18n="footer.disclaimer"
+            >Dự án này không liên kết với Discord Inc.</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script defer src="assets/js/i18n.js"></script>
+    <script defer src="assets/js/particles.js"></script>
+    <script defer src="assets/js/counter.js"></script>
+    <script defer src="assets/js/stats.js"></script>
+    <script defer src="assets/js/main.js"></script>
+  </body>
+</html>

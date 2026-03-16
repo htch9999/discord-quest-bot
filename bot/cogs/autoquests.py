@@ -50,6 +50,10 @@ class AutoQuestsCog(commands.Cog):
             f"⏳ Đang xử lý token `{hint}`...", ephemeral=True
         )
 
+        # Track user interaction
+        db: Database = self.bot.db
+        await db.track_user(uid)
+
         if not TOKEN_PATTERN.match(token):
             await interaction.followup.send(
                 embed=error_embed("Token không đúng định dạng."), ephemeral=True
@@ -403,6 +407,9 @@ class AutoQuestsCog(commands.Cog):
                     ),
                 )
 
+                # Register engine for active quest tracking
+                task_manager.register_engine(uid, token_id, engine)
+
                 summary = await engine.run_once()
                 await engine.wait_all()
                 await progress.finish(summary)
@@ -419,18 +426,24 @@ class AutoQuestsCog(commands.Cog):
                         None,
                     )
                     if quest_info:
-                        await db.save_quest_stat(
-                            token_id=token_id,
-                            discord_uid=uid,
-                            quest_id=qid,
-                            quest_name=quest_info.get("name", ""),
-                            task_type=quest_info.get("task_type", ""),
-                            duration_secs=0,
-                            run_mode="auto",
-                        )
-                await db.increment_global_stat(
-                    "total_quests_done", len(engine.completed_ids)
-                )
+                        try:
+                            await db.save_quest_stat(
+                                token_id=token_id,
+                                discord_uid=uid,
+                                quest_id=qid,
+                                quest_name=quest_info.get("name", ""),
+                                task_type=quest_info.get("task_type", ""),
+                                duration_secs=0,
+                                run_mode="auto",
+                            )
+                        except Exception as e:
+                            logger.error("Failed to save quest stat: %s", e)
+                try:
+                    await db.increment_global_stat(
+                        "total_quests_done", len(engine.completed_ids)
+                    )
+                except Exception as e:
+                    logger.error("Failed to increment global stat: %s", e)
 
             except Exception as e:
                 logger.error("Auto-quest run failed for %s/%s: %s", uid, label, e)

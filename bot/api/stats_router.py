@@ -7,11 +7,14 @@ All endpoints are public, CORS-enabled, and cached in-memory.
 
 import time
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 
 import aiohttp
 import psutil
+import logging
+
+logger = logging.getLogger("stats_api")
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -83,33 +86,32 @@ def create_api(bot) -> FastAPI:
                     rows = await cur.fetchall()
                     total = sum(r["cnt"] for r in rows) or 1
                     _stats_data["quest_type_breakdown"] = {r["task_type"]: round(r["cnt"] / total, 2) for r in rows}
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.error("Error computing quest_type_breakdown: %s", e)
 
                 # Quests today / this week
                 now = datetime.now(timezone.utc)
-                today_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
-                week_start = (now.replace(hour=0, minute=0, second=0, microsecond=0)
-                              .__class__(now.year, now.month, now.day - now.weekday())).isoformat()
+                today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+                week_start = today_start - timedelta(days=today_start.weekday())
 
                 try:
                     cur = await db._db.execute(
                         "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
-                        (today_start,)
+                        (today_start.isoformat(),)
                     )
                     row = await cur.fetchone()
                     _stats_data["quests_today"] = row["cnt"] if row else 0
 
                     cur = await db._db.execute(
                         "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
-                        (week_start,)
+                        (week_start.isoformat(),)
                     )
                     row = await cur.fetchone()
                     _stats_data["quests_this_week"] = row["cnt"] if row else 0
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.error("Error computing quests today/week: %s", e)
             except Exception as e:
-                pass
+                logger.error("Error in stats update loop: %s", e)
                 
             await asyncio.sleep(60)
 
@@ -142,7 +144,7 @@ def create_api(bot) -> FastAPI:
             "total_quests_completed": _stats_data["total_quests_completed"],
             "quests_today": _stats_data["quests_today"],
             "quests_this_week": _stats_data["quests_this_week"],
-            "active_sessions": tm_status["active_tasks"],
+            "active_sessions": tm_status["active_quests"],
             "uptime_seconds": uptime_secs,
             "bot_ping_ms": latency_ms,
             "guild_count": guild_count,

@@ -27,7 +27,7 @@ HEARTBEAT_INTERVAL: int = int(os.getenv("HEARTBEAT_INTERVAL", "20"))
 AUTO_ACCEPT: bool = os.getenv("AUTO_ACCEPT", "true").lower() in ("true", "1", "yes")
 
 # ── Concurrency ──────────────────────────────────────────────────────────────
-MAX_PARALLEL_PLAY: int = int(os.getenv("MAX_PARALLEL_PLAY", "6"))
+MAX_PARALLEL_PLAY: int = int(os.getenv("MAX_PARALLEL_PLAY", "10"))
 MAX_CONCURRENT_TASKS: int = int(os.getenv("MAX_CONCURRENT_TASKS", "10"))
 TASK_TIMEOUT_HOURS: int = int(os.getenv("TASK_TIMEOUT_HOURS", "6"))
 

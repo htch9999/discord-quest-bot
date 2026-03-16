@@ -160,6 +160,11 @@ class QuestEngine:
         self._semaphore = asyncio.Semaphore(MAX_PARALLEL_PLAY)
         self._cancelled = False
 
+    @property
+    def active_quest_count(self) -> int:
+        """Return the number of currently running quest tasks."""
+        return sum(1 for t in self._running_tasks.values() if not t.done())
+
     def cancel(self):
         """Signal all running tasks to stop."""
         self._cancelled = True
@@ -420,6 +425,9 @@ class QuestEngine:
                     logger.warning("  Rate limited – chờ %ds", retry_after + 1)
                     await asyncio.sleep(retry_after + 1)
                     continue
+                elif r.status == 401:
+                    logger.warning("  Token unauthorized for %s, stopping", name)
+                    return
                 else:
                     text = await r.text()
                     logger.warning(
@@ -488,6 +496,9 @@ class QuestEngine:
                     logger.warning("  Rate limited – chờ %ds", retry_after + 1)
                     await asyncio.sleep(retry_after + 1)
                     continue
+                elif r.status == 401:
+                    logger.warning("  Token unauthorized for %s, stopping", name)
+                    return
                 else:
                     text = await r.text()
                     logger.warning(
@@ -587,7 +598,7 @@ class QuestEngine:
             if is_enrolled(q)
             and not is_completed(q)
             and is_completable(q)
-            and q.get("id") not in self.completed_ids
+            and str(q.get("id")) not in self.completed_ids
         ]
 
         if not actionable:
@@ -598,9 +609,10 @@ class QuestEngine:
 
         # Start all quest processing tasks
         for q in actionable:
+            qid = str(q.get("id"))
             await self.process_quest(q)
             summary["quests"].append({
-                "id": q.get("id"),
+                "id": qid,
                 "name": get_quest_name(q),
                 "task_type": get_task_type(q),
             })

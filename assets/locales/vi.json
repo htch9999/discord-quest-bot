@@ -8,20 +8,33 @@
     "security": "Bảo mật",
     "commands": "Tài liệu Lệnh",
     "stats": "Live Trạng thái",
-    "faq": "Hỏi đáp"
+    "guide": "Hướng dẫn sử dụng",
+    "faq": "Hỏi đáp",
+    "settings": "Cài đặt",
+    "lang": "Ngôn ngữ",
+    "back_home": "Quay lại Trang chủ"
+  },
+  "profile": {
+    "name": "Auto Quest 2.0",
+    "about": "Giới thiệu",
+    "bio": "Tự động hoàn thành các thử thách Discord — xem video, chơi game, stream & hoạt động nhóm. Hỗ trợ chạy đa luồng song song và cập nhật tiến độ theo thời gian thực chỉ trong một tin nhắn duy nhất.",
+    "links": "Liên kết",
+    "playing": "Đang chơi",
+    "created_at": "Được tạo vào"
   },
   "hero": {
     "badge": "v2.0 Public Beta · Sẵn sàng sử dụng",
     "title": "Auto Quests Bot",
     "title_accent": "Giải pháp Tự động hoá Chuyên nghiệp.",
-    "subtitle": "Khám phá cách tối ưu nhất để hoàn thành mọi quest Discord. Hiệu suất đa luồng vượt trội, cập nhật real-time và bảo mật tuyệt đối.",
+    "subtitle": "Giải pháp tự động hóa giúp bạn hoàn thành nhanh chóng mọi Quest Discord, dễ dàng tích điểm Orbs. Hiệu suất đa luồng vượt trội, cập nhật real-time và bảo mật tuyệt đối.",
     "cta_add": "Thêm vào Discord",
     "cta_server": "Discord Cộng đồng",
     "cta_github": "Mã nguồn mở",
     "stat_users": "Người dùng",
-    "stat_quests": "Quest Hoàn thành",
-    "stat_servers": "Servers",
-    "stat_uptime": "Uptime"
+    "stat_quests": "Tổng Quests",
+    "stat_servers": "Máy chủ",
+    "stat_uptime": "Uptime",
+    "stat_active": "Hoạt động"
   },
   "features": {
     "title": "Hệ sinh thái tính năng toàn diện",
@@ -42,22 +55,25 @@
     "multi_desc": "Xem Video · Chơi Game Desktop · Stream cho Bạn bè · Hoạt động nhóm — tương thích 100%.",
     "recovery_title": "Cơ chế Phục hồi Sự cố",
     "recovery_desc": "Tự động tiếp tục các phiên bị gián đoạn. Đảm bảo luồng công việc không bao giờ đứt gãy.",
+    "orbs_title": "Tích Lũy Orbs Dễ Dàng",
+    "orbs_desc": "Nhanh chóng hoàn thành mọi Quests trên Discord để dễ dàng nhận về điểm thưởng Orbs giá trị.",
     "oss_title": "Minh bạch Nguồn mở",
     "oss_desc": "Toàn bộ mã gốc công khai. Dễ dàng kiểm định, đóng góp và có sẵn tài liệu tự triển khai."
   },
-  "how_it_works": {
-    "title": "Quy trình Hoạt động",
-    "subtitle": "Trải nghiệm tự động hoá mượt mà chỉ qua 5 bước đơn giản.",
-    "step1_title": "Tích hợp Hệ thống",
-    "step1_desc": "Mời bot vào máy chủ của bạn hoặc sử dụng lệnh qua tin nhắn trực tiếp.",
-    "step2_title": "Phân tích Quest",
-    "step2_desc": "Hệ thống quét và truy xuất toàn bộ quest khả dụng từ Discord API.",
-    "step3_title": "Tự động Kích hoạt",
-    "step3_desc": "Ghi danh và khởi chạy quá trình hoàn thành quest đa luồng một cách độc lập.",
-    "step4_title": "Báo cáo Trực tiếp",
-    "step4_desc": "Nhận thông báo tiến độ cập nhật từng giây ngay trên giao diện tin nhắn gọn gàng.",
-    "step5_title": "Nhận Phần thưởng",
-    "step5_desc": "Hoàn tất tiến trình và phần thưởng được tự động chuyên giao vào tài khoản của bạn."
+  "guide": {
+    "badge": "Hướng dẫn 3 Bước",
+    "title": "Bắt đầu Sử dụng AutoQuest",
+    "subtitle": "Chỉ mất 3 phút để thiết lập hệ thống tự động hóa hoàn toàn.",
+    "step1_title": "Mời Bot & Tham gia Support",
+    "step1_desc": "Thêm bot vào máy chủ của bạn. Đừng quên tham gia cộng đồng để nhận hỗ trợ nhanh nhất.",
+    "step2_title": "Lấy Authentication Token",
+    "step2_desc": "Sử dụng script an toàn của chúng tôi để trích xuất token trực tiếp từ trình duyệt.",
+    "step2_warning": "⚠️ Cảnh báo: Tuyệt đối không chia sẻ token này cho bất kỳ ai.",
+    "step3_title": "Kích hoạt Tự động hóa",
+    "step3_desc": "Sử dụng lệnh /autoquests add để lưu token và bắt đầu làm quest 24/7.",
+    "step3_note": "Sử dụng /autoquests run để bắt đầu ngay phiên chạy đầu tiên.",
+    "copy": "Sao chép",
+    "script_label": "Script Console"
   },
   "security": {
     "title": "Kiến trúc Bảo mật & Minh bạch",
@@ -77,16 +93,15 @@
     "title": "Cách lấy Discord Token",
     "subtitle": "Lấy token an toàn từ trình duyệt của bạn.",
     "new_method_title": "Phương pháp mới (Khuyên dùng)",
+    "step0": "Truy cập <a href=\"https://discord.com/channels/@me\">https://discord.com/channels/@me</a> và đăng nhập vào Discord trên trình duyệt.",
     "step1": "Mở Developer Tools bằng phím <code>F12</code> hoặc <code>Ctrl + Shift + I</code>.",
     "step2": "Bật chế độ giả lập thiết bị di động (Mobile Device Emulation) bằng <code>Ctrl + Shift + M</code>.",
     "step3": "Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:",
-    "alternative": "* Hoặc mở tab <strong>Application</strong> > <strong>Local Storage</strong> và tìm key <code>token</code> dưới tên miền <code>discord.com</code> (khi đang bật giả lập mobile).",
-    "old_method_title": "Phương pháp cũ (Ấn để mở rộng)",
-    "old_step1": "Nhấn <code>F12</code> hoặc <code>Ctrl + Shift + I</code> để mở Developer Tools.",
-    "old_step2": "Chuyển sang tab <strong>Network</strong> và lọc <strong>Fetch/XHR</strong>.",
-    "old_step3": "Bấm vào một channel bất kì để thấy Request mới xuất hiện.",
-    "old_step4": "Kiểm tra mục <strong>Request Headers</strong> > <strong>Authorization</strong> để copy token của bạn.",
-    "copied": "Đã sao chép!"
+    "copy": "Sao chép mã",
+    "copied": "Đã sao chép!",
+    "safe_tip": "Mẹo an toàn:",
+    "safe_desc": "Tuyệt đối không gửi token này cho bất kỳ ai. Chúng tôi mã hóa nó ngay khi bạn lưu vào hệ thống.",
+    "alternative": "* Hoặc mở tab <strong>Application</strong> > <strong>Local Storage</strong> và tìm key <code>token</code> dưới tên miền <code>discord.com</code> (khi đang bật giả lập mobile)."
   },
   "commands": {
     "title": "Danh mục Lệnh",
@@ -97,7 +112,17 @@
     "tab_stats": "Thống kê",
     "col_command": "Lệnh Hệ thống",
     "col_desc": "Mô tả Chức năng",
-    "col_example": "Cú pháp Mẫu"
+    "col_example": "Cú pháp Mẫu",
+    "q_desc": "Xử lý ngay lập tức toàn bộ quest có sẵn cho token này (Một lần).",
+    "a_add": "Lưu token mã hóa và tự động làm quest mỗi khi có sự kiện mới 24/7.",
+    "a_list": "Hiển thị danh sách các tài khoản đang trong trạng thái Tự động.",
+    "a_rem": "Gỡ bỏ token và xóa sạch lịch sử thống kê của bạn khỏi cơ sở dữ liệu.",
+    "a_run": "Kích hoạt phiên chạy ngay lập tức cho token đã lưu (không chờ lịch).",
+    "a_pause": "Tạm dừng tiến trình tự động chạy định kỳ cho token này.",
+    "a_resume": "Bật lại chế độ tự động chạy sau khi đã tạm dừng.",
+    "a_status": "Xem trạng thái chi tiết, thời gian chạy cuối và lịch chạy tiếp theo.",
+    "s_user": "Báo cáo chi tiết hiệu suất và khối lượng quest cá nhân.",
+    "s_info": "Thông tin tổng quan về hệ thống và cộng đồng AutoQuest."
   },
   "live_stats": {
     "title": "Trạng thái Hệ thống Live",
@@ -127,7 +152,27 @@
     "q6": "Mô hình kinh doanh của dự án là gì?",
     "a6": "Dự án vận hành trên cơ sở 100% phi lợi nhuận (Open-source free tier). Không phát sinh phí dịch vụ ngầm.",
     "q7": "Kênh hỗ trợ và báo cáo lỗi?",
-    "a7": "Bạn có thể phản ánh trực tiếp sự cố kỹ thuật thông qua mục Issue trên thư viện GitHub hoặc kênh hỗ trợ chuyên biệt tại Discord Server của dự án."
+    "a7": "Bạn có thể phản ánh trực tiếp sự cố kỹ thuật thông qua mục Issue trên thư viện GitHub hoặc kênh hỗ trợ chuyên biệt tại Discord Server của dự án.",
+    "q8": "Làm thế nào để biết bot đang hoạt động?",
+    "a8": "Mỗi khi hoàn thành quest, bot sẽ gửi tin nhắn Ephemeral (chỉ mình bạn thấy) hoặc thông báo qua DM nếu bạn sử dụng chế độ AutoQuest. Bạn cũng có thể dùng /stats user để kiểm tra.",
+    "q9": "Tại sao tôi cần bật chế độ Mobile khi lấy token?",
+    "a9": "Discord chặn việc truy cập hàm getToken() trên bản Web/Desktop thông thường như một biện pháp bảo vệ. Chế độ Mobile giả lập môi trường cho phép truy cập tài nguyên này.",
+    "q10": "Bot có cần máy tính của tôi phải bật không?",
+    "a10": "Không. Nếu bạn dùng lệnh /autoquests add, hệ thống Cloud của chúng tôi sẽ tự động vận hành 24/7 mà không cần máy tính của bạn hoạt động.",
+    "q11": "Tôi có thể sử dụng nhiều tài khoản cùng lúc không?",
+    "a11": "Có. Bạn có thể thêm không giới hạn tài khoản bằng cách sử dụng lại lệnh /autoquests add với các token khác nhau.",
+    "q12": "Thông tin về mã nguồn mở và đóng góp?",
+    "a12": "Toàn bộ mã nguồn được lưu trữ trên GitHub dưới giấy phép MIT. Chúng tôi hoan nghênh mọi đóng góp về code, bản dịch hoặc báo cáo lỗ hổng bảo mật."
+  },
+  "oss": {
+    "title": "Dự án Nguồn mở & Cộng đồng",
+    "subtitle": "Minh bạch là nền tảng của sự tin cậy.",
+    "architecture_title": "Kiến trúc Hệ thống",
+    "architecture_desc": "Xây dựng trên nền tảng Python & Disnake, sử dụng SQLite để quản lý dữ liệu hiệu năng cao và Docker để triển khai ổn định.",
+    "contribute_title": "Đóng góp",
+    "contribute_desc": "Chúng tôi sử dụng quy trình Pull Request chuẩn. Bạn có thể giúp cải thiện logic làm quest hoặc giao diện website.",
+    "selfhost_title": "Tự vận hành (Self-hosting)",
+    "selfhost_desc": "Nếu bạn muốn quyền kiểm soát 100%, hãy làm theo hướng dẫn trong README để dựng server riêng chỉ trong 5 phút."
   },
   "footer": {
     "tagline": "Quản trị Quest thông minh. Bảo mật tối đa Token.",
@@ -138,13 +183,27 @@
     "selfhost": "Triển khai Self-host",
     "privacy": "Chính sách Quyền Riêng Tư",
     "terms": "Điều khoản Dịch vụ",
+    "discord": "Máy chủ Discord",
+    "github": "Mã nguồn GitHub",
     "status": "Bảng Trạng Thái",
     "made_by": "Phát triển bởi @htch9999 · Open Source · MIT License",
-    "disclaimer": "Dự án nguồn mở không liên kết thương mại cùng Discord Inc."
+    "disclaimer": "Không liên kết với Discord Inc. AutoQuest không lưu trữ mật khẩu của bạn."
+  },
+  "privacy": {
+    "title": "Chính sách Quyền Riêng Tư",
+    "content": "<p>Chào mừng bạn đến với AutoQuest! Chúng tôi hiểu rằng tính bảo mật và sự riêng tư là yếu tố quan trọng nhất khi sử dụng các dịch vụ tự động hóa. Chính sách này trình bày một cách minh bạch về phương thức chúng tôi bảo vệ bạn.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>1. Thu thập thông tin cốt lõi</h3><p>AutoQuest chỉ yêu cầu một thông tin duy nhất: <strong>Discord Authentication Token</strong> của bạn. Đây là dữ liệu vô cùng nhạy cảm và hệ thống của chúng tôi được thiết kế với tiêu chuẩn <q>Zero-Knowledge</q> (Không Lưu Trữ Bản Rõ).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>2. Tiêu chuẩn mã hóa cấp cao</h3><p>Ngay khi bạn cung cấp Token thông qua lệnh Discord, Token sẽ lập tức được băm và mã hóa ở cấp độ cao nhất bằng thuật toán <strong>AES-256-GCM</strong>. Token gốc không bao giờ được lưu thẳng vào ổ đĩa, file log hay bất cứ báo cáo hệ thống nào dưới dạng văn bản thô (plain-text).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>3. Chính sách không chia sẻ (No-Log / No-Share)</h3><p>AutoQuest cam kết tuyệt đối <strong>không bán, cho thuê, trao đổi</strong> thông tin cá nhân hay Token của bạn dưới bất cứ hình thức nào cho các bên thứ ba (third-party), công ty quảng cáo hay dịch vụ phân tích.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>4. Quyền Rút lui Tuyệt đối (Absolute Opt-out)</h3><p>Là chủ sở hữu dữ liệu, bạn có quyền <strong>Xóa 100%</strong> dấu vết của mình chỉ bằng một thao tác duy nhất. Cú pháp <code>/autoquests remove</code> sẽ ép hệ thống xóa vĩnh viễn mọi bản ghi mã hóa, các lệnh tự động đang chạy (thread) cũng như mọi bảng thống kê cá nhân có liên quan khỏi máy chủ điện toán ngay lập tức.</p>"
+  },
+  "terms": {
+    "title": "Điều khoản Dịch vụ",
+    "content": "<p>Khi sử dụng nền tảng AutoQuest, bạn đồng ý tuân thủ toàn bộ các nguyên tắc sau đây. Vui lòng đọc kỹ trước khi bắt buộc hệ thống ghi nhận token.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>1. Giới hạn Trách nhiệm (Disclaimer of Liability)</h3><p>AutoQuest là một công cụ phần mềm (cung cấp <q>Nguyên Trạng</q> - <q>As Is</q>). Chúng tôi không chịu trách nhiệm trước bất kỳ hình phạt nào từ phía Discord Inc, bao gồm cả tình trạng khóa tài khoản (banned/disabled) do hành vi lạm dụng tự động hóa của cá nhân. Việc sử dụng công cụ là 100% rủi ro tự nguyện của người dùng cuối.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>2. Cam kết Tính hợp lệ</h3><p>Bạn phải là chủ thể sở hữu hợp pháp của Token Discord đó. Việc nạp Token của một người dùng khác vào hệ thống khi chưa có sự chấp nhận là một hành động phi pháp và AutoQuest từ chối mọi sự bảo trợ đối với rủi ro tranh chấp.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>3. Tần suất và Giới hạn Lưu lượng</h3><p>Để đảm bảo hoạt động công bằng cho toàn máy chủ điện toán, chúng tôi áp dụng Rate Limits (giới hạn tương tác). Mọi hành vi cố tình DDoS hệ thống xử lý, spam lệnh, hoặc gây cản trở kết nối API đối với hệ sinh thái Discord sẽ bị cấm (Blacklist) khỏi dịch vụ vô thời hạn.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>4. Quyền ngưng cấp Dịch vụ</h3><p>Chúng tôi là phần mềm nền tảng Nguồn Mở (Open Source phi lợi nhuận), do đó tác giả cốt lõi có toàn quyền chấm dứt hoặc tạm ngưng toàn bộ hệ thống định tuyến (router), dịch vụ database bất kỳ mọi thời điểm để bảo trì hệ thống mà không cần các báo cáo trước.</p>"
   },
   "theme": {
-    "dark": "Chế độ Tối",
-    "light": "Chế độ Sáng",
-    "system": "Theo Hệ thống"
+    "title": "Chế độ Hiển thị",
+    "color": "Màu Chủ đạo",
+    "dark": "Tối",
+    "light": "Sáng",
+    "system": "Hệ thống",
+    "emerald": "Xanh lá (Emerald)",
+    "amethyst": "Tím (Amethyst)"
   }
 }
