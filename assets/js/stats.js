@@ -108,7 +108,10 @@
                         titleFont: { size: 12 },
                         bodyFont: { size: 12 },
                         padding: 10,
-                        displayColors: false
+                        displayColors: false,
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.formattedValue} quests`
+                        }
                     }
                 },
                 cutout: '75%'

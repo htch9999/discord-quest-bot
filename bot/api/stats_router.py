@@ -84,8 +84,7 @@ def create_api(bot) -> FastAPI:
                         "SELECT task_type, COUNT(*) as cnt FROM quest_stats GROUP BY task_type"
                     )
                     rows = await cur.fetchall()
-                    total = sum(r["cnt"] for r in rows) or 1
-                    _stats_data["quest_type_breakdown"] = {r["task_type"]: round(r["cnt"] / total, 2) for r in rows}
+                    _stats_data["quest_type_breakdown"] = {r["task_type"]: r["cnt"] for r in rows}
                 except Exception as e:
                     logger.error("Error computing quest_type_breakdown: %s", e)
 

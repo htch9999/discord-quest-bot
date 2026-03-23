@@ -71,6 +71,10 @@
     "step3_title": "Activate Automation",
     "step3_desc": "Use the /autoquests add command in Discord to save your token and start questing 24/7.",
     "step3_note": "Use /autoquests run to start your first session immediately.",
+    "cmd_autoquests_add": "— Save token & enable 24/7 auto-quest",
+    "cmd_autoquests_run": "— Run your first quest session now",
+    "cmd_quests": "— Run quests once (token not saved)",
+    "cmd_help": "— How to use the bot",
     "copy": "Copy",
     "script_label": "Console Script"
   },
@@ -138,6 +142,7 @@
   },
   "faq": {
     "title": "Knowledge Base (FAQ)",
+    "subtitle": "Everything you need to know about AutoQuest's operation and security.",
     "q1": "Does the architecture store my secure Token?",
     "a1": "Only if instructed by /autoquests. Under this operation, the Token is hashed and secured via AES-256-GCM utilizing your unique user key. Single-run interactions (/quests) execute entirely in system memory and leave zero persistence footprint.",
     "q2": "Do I face account limitation risks using this?",
@@ -175,6 +180,7 @@
   },
   "footer": {
     "tagline": "Automate quests completely. Maintain absolute security.",
+    "donate": "Support the author ☕",
     "features": "Platform Capabilities",
     "security": "Security Protocols",
     "commands": "Command Index",
@@ -186,7 +192,7 @@
     "github": "Source Code",
     "status": "Uptime Dashboard",
     "made_by": "Developed by @htch9999 · Open Source · MIT License",
-    "disclaimer": "Not affiliated with Discord Inc. AutoQuest does not store passwords."
+    "disclaimer": "Not affiliated with Discord Inc. AutoQuest does not store your data."
   },
   "privacy": {
     "title": "Privacy Policy",

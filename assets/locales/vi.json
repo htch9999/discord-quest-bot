@@ -72,6 +72,10 @@
     "step3_title": "Kích hoạt Tự động hóa",
     "step3_desc": "Sử dụng lệnh /autoquests add để lưu token và bắt đầu làm quest 24/7.",
     "step3_note": "Sử dụng /autoquests run để bắt đầu ngay phiên chạy đầu tiên.",
+    "cmd_autoquests_add": "— Lưu token và bật auto-quest 24/7",
+    "cmd_autoquests_run": "— Chạy ngay phiên quest đầu tiên",
+    "cmd_quests": "— Chạy quest một lần (token không được lưu)",
+    "cmd_help": "— Hướng dẫn sử dụng bot",
     "copy": "Sao chép",
     "script_label": "Script Console"
   },
@@ -139,6 +143,7 @@
   },
   "faq": {
     "title": "Hỏi & Đáp (FAQ)",
+    "subtitle": "Mọi điều bạn cần biết về cơ chế hoạt động và bảo mật của AutoQuest.",
     "q1": "Hệ thống có lưu trữ Token của tôi không?",
     "a1": "Hệ thống chỉ lưu trữ khi bạn ấn định lệnh tự động hoá (/autoquests). Trước khi lưu, Token được băm và mã hoá AES-256-GCM qua khoá riêng biệt của bạn. Trải nghiệm chạy một lần không để lại bất cứ dữ liệu nào trên bộ nhớ điện toán.",
     "q2": "Sử dụng dịch vụ này có vi phạm chính sách và bị cấm không?",
@@ -176,6 +181,7 @@
   },
   "footer": {
     "tagline": "Quản trị Quest thông minh. Bảo mật tối đa Token.",
+    "donate": "Ủng hộ tác giả ☕",
     "features": "Tính năng",
     "security": "Bảo mật",
     "commands": "Tài liệu Lệnh",
@@ -187,7 +193,7 @@
     "github": "Mã nguồn GitHub",
     "status": "Bảng Trạng Thái",
     "made_by": "Phát triển bởi @htch9999 · Open Source · MIT License",
-    "disclaimer": "Không liên kết với Discord Inc. AutoQuest không lưu trữ mật khẩu của bạn."
+    "disclaimer": "Không liên kết với Discord Inc. AutoQuest không lưu trữ dữ liệu của bạn."
   },
   "privacy": {
     "title": "Chính sách Quyền Riêng Tư",

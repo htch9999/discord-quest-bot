@@ -1,28 +1,22 @@
 <!doctype html>
 <html lang="vi" data-theme="dark">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Auto Quest Bot — Professional Discord Automation</title>
 
     <!-- SEO Meta Tags -->
-    <meta
-      name="description"
-      content="The most advanced Discord Quest automation solution. Secure, fast, and 100% open source. Complete all quests with a single command."
-    />
+    <meta name="description"
+        content="The most advanced Discord Quest automation solution. Secure, fast, and 100% open source. Complete all quests with a single command." />
     <meta property="og:title" content="Auto Quest Bot — Next Gen Automation" />
-    <meta
-      property="og:description"
-      content="Securely automate your Discord quests with military-grade encryption and parallel execution."
-    />
+    <meta property="og:description"
+        content="Securely automate your Discord quests with military-grade encryption and parallel execution." />
     <meta property="og:type" content="website" />
 
     <!-- Favicon & Fonts -->
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>"
-    />
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>" />
     <link rel="stylesheet" href="assets/css/main.css" />
 
     <!-- Scripts -->
@@ -30,1506 +24,1232 @@
     <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/theme.js" defer></script>
     <script src="assets/js/stats.js" defer></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <!-- ══ NAVIGATION ══ -->
     <nav class="navbar" id="navbar">
-      <div class="container">
-        <a href="#" class="nav-brand">
-          <img
-            src="assets/img/icons/bot.jpg"
-            alt="Logo"
-            class="brand-logo"
-            onerror="
-              this.src =
-                'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%2310b981%22><path d=%22M13 2L3 14h9l-1 8 10-12h-9l1-8z%22/></svg>'
-            "
-          />
-          <span>AutoQuest</span>
-        </a>
+        <div class="container">
+            <a href="#" class="nav-brand">
+                <img src="assets/img/icons/bot.jpg" alt="Logo" class="brand-logo"
+                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%2310b981%22><path d=%22M13 2L3 14h9l-1 8 10-12h-9l1-8z%22/></svg>'" />
+                <span>AutoQuest</span>
+            </a>
 
-        <!-- Mobile-only invite button (visible < 1024px) -->
-        <a
-          href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
-          class="btn btn-primary btn-sm mobile-invite-btn"
-          style="display: none"
-          data-i18n="hero.cta_add"
-          ><svg class="icon icon-sm" style="margin-right: 4px">
-            <use href="#i-plus" /></svg
-          >Invite Bot</a
-        >
+            <!-- Mobile-only invite button (visible < 1024px) -->
+            <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+                class="btn btn-primary btn-sm mobile-invite-btn" style="display: none" data-i18n="hero.cta_add">
+                <svg class="icon icon-sm" style="margin-right: 4px">
+                    <use href="#i-plus" />
+                </svg>Invite Bot</a>
 
-        <ul class="nav-links">
-          <li>
-            <button
-              class="nav-link"
-              data-scroll-to="features"
-              data-i18n="nav.features"
-            >
-              Tính năng
-            </button>
-          </li>
-          <li>
-            <button
-              class="nav-link"
-              data-scroll-to="stats"
-              data-i18n="nav.stats"
-            >
-              Trạng thái
-            </button>
-          </li>
-          <li>
-            <button
-              class="nav-link"
-              data-scroll-to="guide"
-              data-i18n="nav.guide"
-            >
-              Hướng dẫn
-            </button>
-          </li>
-          <li>
-            <button
-              class="nav-link"
-              data-scroll-to="commands"
-              data-i18n="nav.commands"
-            >
-              Lệnh
-            </button>
-          </li>
-          <li>
-            <button class="nav-link" data-scroll-to="faq" data-i18n="nav.faq">
-              FAQ
-            </button>
-          </li>
-        </ul>
+            <ul class="nav-links">
+                <li>
+                    <button class="nav-link" data-scroll-to="features" data-i18n="nav.features">
+                        Tính năng
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" data-scroll-to="stats" data-i18n="nav.stats">
+                        Trạng thái
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" data-scroll-to="guide" data-i18n="nav.guide">
+                        Hướng dẫn
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" data-scroll-to="commands" data-i18n="nav.commands">
+                        Lệnh
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" data-scroll-to="faq" data-i18n="nav.faq">
+                        FAQ
+                    </button>
+                </li>
+            </ul>
 
-        <div class="nav-actions">
-          <!-- Unified Settings Dropdown -->
-          <div class="nav-dropdown" id="settings-dropdown">
-            <button class="nav-dropdown-btn" id="settings-btn">
-              <svg class="icon icon-sm"><use href="#i-cpu" /></svg>
-              <span class="dd-label" data-i18n="nav.settings">Settings</span>
-              <svg class="icon icon-xs"><use href="#i-chevron-down" /></svg>
-            </button>
-            <div class="nav-dropdown-content" style="min-width: 220px">
-              <div class="dropdown-group-label" data-i18n="theme.title">
-                Display Mode
-              </div>
-              <div style="display: flex; gap: 4px; padding: 4px">
-                <div
-                  class="dropdown-item-mini"
-                  onclick="setTheme('dark')"
-                  data-theme-value="dark"
-                  title="Dark"
-                >
-                  <svg class="icon icon-sm"><use href="#i-moon" /></svg>
-                </div>
-                <div
-                  class="dropdown-item-mini"
-                  onclick="setTheme('light')"
-                  data-theme-value="light"
-                  title="Light"
-                >
-                  <svg class="icon icon-sm"><use href="#i-sun" /></svg>
-                </div>
-                <div
-                  class="dropdown-item-mini"
-                  onclick="setTheme('system')"
-                  data-theme-value="system"
-                  title="System"
-                >
-                  <svg class="icon icon-sm"><use href="#i-cpu" /></svg>
-                </div>
-              </div>
+            <div class="nav-actions">
+                <!-- Unified Settings Dropdown -->
+                <div class="nav-dropdown" id="settings-dropdown">
+                    <button class="nav-dropdown-btn" id="settings-btn">
+                        <svg class="icon icon-sm">
+                            <use href="#i-cpu" />
+                        </svg>
+                        <span class="dd-label" data-i18n="nav.settings">Settings</span>
+                        <svg class="icon icon-xs">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown-content" style="min-width: 220px">
+                        <div class="dropdown-group-label" data-i18n="theme.title">
+                            Display Mode
+                        </div>
+                        <div style="display: flex; gap: 4px; padding: 4px">
+                            <div class="dropdown-item-mini" onclick="setTheme('dark')" data-theme-value="dark"
+                                title="Dark">
+                                <svg class="icon icon-sm">
+                                    <use href="#i-moon" />
+                                </svg>
+                            </div>
+                            <div class="dropdown-item-mini" onclick="setTheme('light')" data-theme-value="light"
+                                title="Light">
+                                <svg class="icon icon-sm">
+                                    <use href="#i-sun" />
+                                </svg>
+                            </div>
+                            <div class="dropdown-item-mini" onclick="setTheme('system')" data-theme-value="system"
+                                title="System">
+                                <svg class="icon icon-sm">
+                                    <use href="#i-cpu" />
+                                </svg>
+                            </div>
+                        </div>
 
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-group-label" data-i18n="theme.color">
-                Accent Color
-              </div>
-              <div style="display: flex; gap: 4px; padding: 4px">
-                <div
-                  class="dropdown-item-mini"
-                  onclick="setColor('emerald')"
-                  data-color-value="emerald"
-                  title="Emerald"
-                >
-                  <div class="color-preview" style="background: #10b981"></div>
-                </div>
-                <div
-                  class="dropdown-item-mini"
-                  onclick="setColor('amethyst')"
-                  data-color-value="amethyst"
-                  title="Amethyst"
-                >
-                  <div class="color-preview" style="background: #a855f7"></div>
-                </div>
-              </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-group-label" data-i18n="theme.color">
+                            Accent Color
+                        </div>
+                        <div style="display: flex; gap: 4px; padding: 4px">
+                            <div class="dropdown-item-mini" onclick="setColor('emerald')" data-color-value="emerald"
+                                title="Emerald">
+                                <div class="color-preview" style="background: #10b981"></div>
+                            </div>
+                            <div class="dropdown-item-mini" onclick="setColor('amethyst')" data-color-value="amethyst"
+                                title="Amethyst">
+                                <div class="color-preview" style="background: #a855f7"></div>
+                            </div>
+                        </div>
 
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-group-label" data-i18n="nav.lang">
-                Language
-              </div>
-              <div
-                class="dropdown-item"
-                onclick="setLang('vi')"
-                data-lang-value="vi"
-              >
-                🇻🇳 Tiếng Việt
-              </div>
-              <div
-                class="dropdown-item"
-                onclick="setLang('en')"
-                data-lang-value="en"
-              >
-                🇺🇸 English
-              </div>
-              <div
-                class="dropdown-item"
-                onclick="setLang('ja')"
-                data-lang-value="ja"
-              >
-                🇯🇵 日本語
-              </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-group-label" data-i18n="nav.lang">
+                            Language
+                        </div>
+                        <div class="dropdown-item" onclick="setLang('vi')" data-lang-value="vi">
+                            🇻🇳 Tiếng Việt
+                        </div>
+                        <div class="dropdown-item" onclick="setLang('en')" data-lang-value="en">
+                            🇺🇸 English
+                        </div>
+                        <div class="dropdown-item" onclick="setLang('ja')" data-lang-value="ja">
+                            🇯🇵 日本語
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+                    class="btn btn-primary btn-sm" data-i18n="hero.cta_add">Invite Bot</a>
             </div>
-          </div>
-
-          <a
-            href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
-            class="btn btn-primary btn-sm"
-            data-i18n="hero.cta_add"
-            >Invite Bot</a
-          >
         </div>
-      </div>
     </nav>
 
     <!-- ══ HERO ══ -->
     <section class="hero">
-      <div class="hero-background"></div>
+        <div class="hero-background"></div>
 
-      <!-- Starry Sky & Shooting Stars -->
-      <div class="stars"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
+        <!-- Starry Sky & Shooting Stars -->
+        <div class="stars"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
 
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-orb hero-orb-3"></div>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
 
-      <div
-        class="container"
-        style="
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: center;
-        "
-      >
-        <div
-          class="hero-content"
-          data-reveal
-          style="text-align: left; max-width: none"
-        >
-          <span class="section-tag" data-i18n="hero.badge"
-            >v2.0 Production Ready</span
-          >
-          <h1 class="hero-title">
-            <span data-i18n="hero.title">Hoàn thành Discord Quests</span><br />
-            <span class="text-gradient" data-i18n="hero.title_accent"
-              >Tự động. Bảo mật. Tuyệt đối.</span
-            >
-          </h1>
-          <p
-            class="hero-description"
-            data-i18n="hero.subtitle"
-            style="margin-left: 0"
-          >
-            Giải pháp hàng đầu giúp bạn tự động hóa quy trình làm quest trên
-            Discord. Mã hóa đầu cuối, hiệu suất đa luồng và minh bạch hoàn toàn.
-          </p>
-          <div class="hero-buttons" style="justify-content: flex-start">
-            <a
-              href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
-              class="btn btn-primary"
-            >
-              <span data-i18n="hero.cta_add">Thêm vào Discord</span>
-              <svg class="icon icon-sm"><use href="#i-arrow-right" /></svg>
-            </a>
-            <a href="#stats" class="btn btn-secondary" data-i18n="nav.stats"
-              >Xem Thống kê</a
-            >
-            <a
-              href="https://github.com/htch9999/discord-quest-bot"
-              target="_blank"
-              class="btn btn-secondary"
-            >
-              <svg class="icon icon-sm"><use href="#i-github" /></svg>
-              <span data-i18n="footer.github">GitHub</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Discord Bot Profile Card -->
-        <div data-reveal style="display: flex; justify-content: center">
-          <div class="discord-popout">
-            <div class="popout-banner" style="background-color: #e2dcac">
-              <div class="popout-banner-actions">
-                <div class="popout-banner-btn">
-                  <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M7 12.001C7 10.8964 6.10457 10.001 5 10.001C3.89543 10.001 3 10.8964 3 12.001C3 13.1055 3.89543 14.001 5 14.001C6.10457 14.001 7 13.1055 7 12.001ZM14 12.001C14 10.8964 13.1046 10.001 12 10.001C10.8954 10.001 10 10.8964 10 12.001C10 13.1055 10.8954 14.001 12 14.001C13.1046 14.001 14 13.1055 14 12.001ZM19 10.001C20.1046 10.001 21 10.8964 21 12.001C21 13.1055 20.1046 14.001 19 14.001C17.8954 14.001 17 13.1055 17 12.001C17 10.8964 17.8954 10.001 19 10.001Z"
-                    ></path>
-                  </svg>
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div class="hero-content" data-reveal style="text-align: left; max-width: none">
+                <span class="section-tag" data-i18n="hero.badge">v2.0 Production Ready</span>
+                <h1 class="hero-title">
+                    <span data-i18n="hero.title">Hoàn thành Discord Quests</span><br />
+                    <span class="text-gradient" data-i18n="hero.title_accent">Tự động. Bảo mật. Tuyệt đối.</span>
+                </h1>
+                <p class="hero-description" data-i18n="hero.subtitle" style="margin-left: 0">
+                    Giải pháp hàng đầu giúp bạn tự động hóa quy trình làm quest trên
+                    Discord. Mã hóa đầu cuối, hiệu suất đa luồng và minh bạch hoàn toàn.
+                </p>
+                <div class="hero-buttons" style="justify-content: flex-start">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+                        class="btn btn-primary">
+                        <span data-i18n="hero.cta_add">Thêm vào Discord</span>
+                        <svg class="icon icon-sm">
+                            <use href="#i-arrow-right" />
+                        </svg>
+                    </a>
+                    <a href="#stats" class="btn btn-secondary" data-i18n="nav.stats">Xem Thống kê</a>
+                    <a href="https://github.com/htch9999/discord-quest-bot" target="_blank" class="btn btn-secondary">
+                        <svg class="icon icon-sm">
+                            <use href="#i-github" />
+                        </svg>
+                        <span data-i18n="footer.github">GitHub</span>
+                    </a>
                 </div>
-              </div>
-            </div>
-            <div class="popout-header">
-              <div class="popout-avatar-wrapper">
-                <img
-                  src="assets/img/icons/bot.jpg"
-                  alt="Bot Avatar"
-                  class="popout-avatar"
-                  onerror="
-                    this.src =
-                      'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%2310b981%22/><text x=%2250%%22 y=%2250%%22 font-family=%22sans-serif%22 font-size=%2240%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.35em%22>AQ</text></svg>'
-                  "
-                />
-                <div class="popout-status online"></div>
-              </div>
             </div>
 
-            <div class="popout-body">
-              <div class="popout-name-tag">
-                <div class="popout-name-row">
-                  <span class="popout-name" data-i18n="profile.name"
-                    >Auto Quest 2.0</span
-                  >
-                  <span class="popout-app-badge">✔ APP</span>
-                </div>
-                <div class="popout-discriminator-row">
-                  <span class="popout-discriminator">Auto Quest 2.0#6179</span>
-                  <span class="popout-command-badge" title="Supports Commands">
-                    <img
-                      src="https://discordresources.com/img/supportscommands.svg"
-                      alt="Supports Commands"
-                      style="
-                        width: 18px;
-                        height: 18px;
-                        display: inline-block;
-                        vertical-align: middle;
-                      "
-                    />
-                  </span>
-                </div>
-              </div>
-
-              <div class="popout-inner">
-                <!-- Activity Section -->
-                <div class="popout-section">
-                  <h3 class="popout-title" data-i18n="profile.playing">Đang chơi</h3>
-                  <div class="popout-activity">
-                    <div
-                      class="popout-text popout-activity-name"
-                    >
-                      Discord Quests
+            <!-- Discord Bot Profile Card -->
+            <div data-reveal style="display: flex; justify-content: center">
+                <div class="discord-popout">
+                    <div class="popout-banner" style="background-color: #e2dcac">
+                        <div class="popout-banner-actions">
+                            <div class="popout-banner-btn">
+                                <svg width="20" height="20" viewbox="0 0 24 24">
+                                    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M7 12.001C7 10.8964 6.10457 10.001 5 10.001C3.89543 10.001 3 10.8964 3 12.001C3 13.1055 3.89543 14.001 5 14.001C6.10457 14.001 7 13.1055 7 12.001ZM14 12.001C14 10.8964 13.1046 10.001 12 10.001C10.8954 10.001 10 10.8964 10 12.001C10 13.1055 10.8954 14.001 12 14.001C13.1046 14.001 14 13.1055 14 12.001ZM19 10.001C20.1046 10.001 21 10.8964 21 12.001C21 13.1055 20.1046 14.001 19 14.001C17.8954 14.001 17 13.1055 17 12.001C17 10.8964 17.8954 10.001 19 10.001Z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
+                    <div class="popout-header">
+                        <div class="popout-avatar-wrapper">
+                            <img src="assets/img/icons/bot.jpg" alt="Bot Avatar" class="popout-avatar"
+                                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%2310b981%22/><text x=%2250%%22 y=%2250%%22 font-family=%22sans-serif%22 font-size=%2240%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.35em%22>AQ</text></svg>'" />
+                            <div class="popout-status online"></div>
+                        </div>
+                    </div>
 
-                <!-- About Me Section -->
-                <div class="popout-section">
-                  <h3 class="popout-title" data-i18n="profile.about">
-                    Tiểu sử
-                  </h3>
-                  <div class="popout-text" data-i18n="profile.bio">
-                    Automatically complete Discord quests — watch, play, stream
-                    & activity. Runs multiple quests in parallel and updates
-                    progress in real-time through a single message.<br /><br />
-                    🚧 Currently in beta — bugs may occur.<br />
-                    🌐 Website:
-                    <a
-                      href="https://discord-autoquests.vercel.app/"
-                      style="color: #00a8fc; text-decoration: none"
-                      >https://discord-...</a
-                    >
-                  </div>
-                </div>
+                    <div class="popout-body">
+                        <div class="popout-name-tag">
+                            <div class="popout-name-row">
+                                <span class="popout-name" data-i18n="profile.name">Auto Quest 2.0</span>
+                                <span class="popout-app-badge">✔ APP</span>
+                            </div>
+                            <div class="popout-discriminator-row">
+                                <span class="popout-discriminator">Auto Quest 2.0#6179</span>
+                                <span class="popout-command-badge" title="Supports Commands">
+                                    <img src="https://discordresources.com/img/supportscommands.svg"
+                                        alt="Supports Commands"
+                                        style="width: 18px; height: 18px; display: inline-block; vertical-align: middle;" />
+                                </span>
+                            </div>
+                        </div>
 
-                <div class="popout-section" style="margin-top: 12px">
-                  <h3 class="popout-title" data-i18n="profile.created_at">Được tạo vào</h3>
-                  <div class="popout-text">15 thg 3, 2026</div>
-                </div>
-              </div>
+                        <div class="popout-inner">
+                            <!-- Activity Section -->
+                            <div class="popout-section">
+                                <h3 class="popout-title" data-i18n="profile.playing">
+                                    Đang chơi
+                                </h3>
+                                <div class="popout-activity">
+                                    <div class="popout-text popout-activity-name">
+                                        Discord Quests
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="popout-roles-wrapper">
-                <div class="popout-roles">
-                  <span class="popout-role">
-                    <span class="role-icon">🌷</span> In Love
-                  </span>
-                  <span class="popout-role">
-                    <span
-                      class="role-dot"
-                      style="background: var(--accent-primary)"
-                    ></span>
-                    Automation
-                  </span>
-                  <span class="popout-role">
-                    <span class="role-dot" style="background: #34d399"></span>
-                    Verified
-                  </span>
+                            <!-- About Me Section -->
+                            <div class="popout-section">
+                                <h3 class="popout-title" data-i18n="profile.about">
+                                    Tiểu sử
+                                </h3>
+                                <div class="popout-text" data-i18n="profile.bio">
+                                    Automatically complete Discord quests — watch, play, stream
+                                    & activity. Runs multiple quests in parallel and updates
+                                    progress in real-time through a single message.<br /><br />
+                                    🚧 Currently in beta — bugs may occur.<br />
+                                    🌐 Website:
+                                    <a href="https://discord-autoquests.vercel.app/"
+                                        style="color: #00a8fc; text-decoration: none">https://discord-autoquests.vercel.app/</a>
+                                    💬 Support: @htch9999 |
+                                    <a href="https://discord.gg/gTVPwvNeEH"
+                                        style="color: #00a8fc; text-decoration: none">https://discord.gg/gTVPwvNeEH</a>
+                                </div>
+                            </div>
+
+                            <div class="popout-section" style="margin-top: 12px">
+                                <h3 class="popout-title" data-i18n="profile.created_at">
+                                    Được tạo vào
+                                </h3>
+                                <div class="popout-text">15 thg 3, 2026</div>
+                            </div>
+                        </div>
+
+                        <div class="popout-roles-wrapper">
+                            <div class="popout-roles">
+                                <span class="popout-role">
+                                    <span class="role-icon">🌷</span>
+                                    In Love
+                                </span>
+                                <span class="popout-role">
+                                    <span class="role-dot" style="background: var(--accent-primary)"></span>
+                                    Automation
+                                </span>
+                                <span class="popout-role">
+                                    <span class="role-dot" style="background: #34d399"></span>
+                                    Verified
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- ══ DASHBOARD STATS ══ -->
     <section id="stats" data-reveal>
-      <div class="container">
-        <div class="dashboard">
-          <div class="stats-layout">
-            <div>
-              <div
-                class="dashboard-grid"
-                style="grid-template-columns: 1fr 1fr"
-              >
-                <div class="dash-stat">
-                  <div class="dash-value" id="stat-quests">0</div>
-                  <div class="dash-label" data-i18n="hero.stat_quests">
-                    Global Quests
-                  </div>
+        <div class="container">
+            <div class="dashboard">
+                <div class="stats-layout">
+                    <div>
+                        <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr">
+                            <div class="dash-stat">
+                                <div class="dash-value" id="stat-quests">0</div>
+                                <div class="dash-label" data-i18n="hero.stat_quests">
+                                    Global Quests
+                                </div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-value" id="stat-users">0</div>
+                                <div class="dash-label" data-i18n="hero.stat_users">
+                                    Global Users
+                                </div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-value" id="dash-today">0</div>
+                                <div class="dash-label" data-i18n="live_stats.today">
+                                    Today
+                                </div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-value" id="stat-active">0</div>
+                                <div class="dash-label" data-i18n="live_stats.active">
+                                    Active Now
+                                </div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-value" id="stat-servers">0</div>
+                                <div class="dash-label" data-i18n="hero.stat_servers">
+                                    Servers
+                                </div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="dash-value" id="stat-ping">—</div>
+                                <div class="dash-label" data-i18n="live_stats.ping">
+                                    Bot Ping
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 2rem;">
+                            <div style="text-align: center">
+                                <div class="dash-value" style="font-size: 1.25rem; color: var(--accent-primary)"
+                                    id="stat-uptime">
+                                    —
+                                </div>
+                                <div class="dash-label" style="font-size: 0.7rem">Uptime</div>
+                            </div>
+                            <div style="text-align: center">
+                                <div class="dash-value" style="font-size: 1.25rem; color: var(--accent-primary)"
+                                    id="last-sync">
+                                    —
+                                </div>
+                                <div class="dash-label" style="font-size: 0.7rem">
+                                    Last Sync
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container-wrapper">
+                        <div class="section-tag" data-i18n="live_stats.breakdown">
+                            Phân bổ Quest
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="questBreakdownChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div class="dash-stat">
-                  <div class="dash-value" id="stat-users">0</div>
-                  <div class="dash-label" data-i18n="hero.stat_users">
-                    Global Users
-                  </div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-value" id="dash-today">0</div>
-                  <div class="dash-label" data-i18n="live_stats.today">
-                    Today
-                  </div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-value" id="stat-active">0</div>
-                  <div class="dash-label" data-i18n="live_stats.active">
-                    Active Now
-                  </div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-value" id="stat-servers">0</div>
-                  <div class="dash-label" data-i18n="hero.stat_servers">
-                    Servers
-                  </div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-value" id="stat-ping">—</div>
-                  <div class="dash-label" data-i18n="live_stats.ping">
-                    Bot Ping
-                  </div>
-                </div>
-              </div>
-              <div
-                style="
-                  margin-top: 2.5rem;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  gap: 2rem;
-                "
-              >
-                <div style="text-align: center">
-                  <div
-                    class="dash-value"
-                    style="font-size: 1.25rem; color: var(--accent-primary)"
-                    id="stat-uptime"
-                  >
-                    —
-                  </div>
-                  <div class="dash-label" style="font-size: 0.7rem">Uptime</div>
-                </div>
-                <div style="text-align: center">
-                  <div
-                    class="dash-value"
-                    style="font-size: 1.25rem; color: var(--accent-primary)"
-                    id="last-sync"
-                  >
-                    —
-                  </div>
-                  <div class="dash-label" style="font-size: 0.7rem">
-                    Last Sync
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="chart-container-wrapper">
-              <div class="section-tag" data-i18n="live_stats.breakdown">
-                Phân bổ Quest
-              </div>
-              <div class="chart-container">
-                <canvas id="questBreakdownChart"></canvas>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- ══ FEATURES ══ -->
     <section id="features">
-      <div class="container">
-        <div class="section-header" data-reveal>
-          <span class="section-tag">Core Features</span>
-          <h2 data-i18n="features.title">Tại sao chọn AutoQuest?</h2>
-          <p data-i18n="features.subtitle">
-            Kiến trúc hiện đại tập trung vào sự an toàn và trải nghiệm người
-            dùng.
-          </p>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <span class="section-tag">Core Features</span>
+                <h2 data-i18n="features.title">Tại sao chọn AutoQuest?</h2>
+                <p data-i18n="features.subtitle">
+                    Kiến trúc hiện đại tập trung vào sự an toàn và trải nghiệm người
+                    dùng.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper">
+                        <svg class="icon icon-lg">
+                            <use href="#i-shield" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="features.security_title">Bảo mật Zero-Knowledge</h3>
+                    <p data-i18n="features.security_desc">
+                        Token được mã hóa AES-256-GCM với khóa riêng biệt cho từng người
+                        dùng.
+                    </p>
+                </div>
+
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper">
+                        <svg class="icon icon-lg">
+                            <use href="#i-zap" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="features.parallel_title">Xử lý Đa luồng</h3>
+                    <p data-i18n="features.parallel_desc">
+                        Tự động chạy tối đa 6 quest song song, rút ngắn 90% thời gian chờ
+                        đợi.
+                    </p>
+                </div>
+
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper">
+                        <svg class="icon icon-lg">
+                            <use href="#i-cpu" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="features.auto_title">Lập lịch Thông minh</h3>
+                    <p data-i18n="features.auto_desc">
+                        Tự động quét và hoàn thành quest mới mỗi 48h mà không cần can
+                        thiệp thủ công.
+                    </p>
+                </div>
+
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper" style="border: none; background: transparent">
+                        <img src="https://cdn3.emoji.gg/emojis/41827-orbs.png" width="48px" height="48px" alt="orbs" />
+                    </div>
+                    <h3 data-i18n="features.orbs_title">Tích Lũy Orbs Dễ Dàng</h3>
+                    <p data-i18n="features.orbs_desc">
+                        Nhanh chóng hoàn thành mọi Quests trên Discord để dễ dàng nhận về
+                        điểm thưởng Orbs giá trị.
+                    </p>
+                </div>
+            </div>
         </div>
-
-        <div class="features-grid">
-          <div class="glass-card feature-card" data-reveal>
-            <div class="icon-wrapper">
-              <svg class="icon icon-lg"><use href="#i-shield" /></svg>
-            </div>
-            <h3 data-i18n="features.security_title">Bảo mật Zero-Knowledge</h3>
-            <p data-i18n="features.security_desc">
-              Token được mã hóa AES-256-GCM với khóa riêng biệt cho từng người
-              dùng.
-            </p>
-          </div>
-
-          <div class="glass-card feature-card" data-reveal>
-            <div class="icon-wrapper">
-              <svg class="icon icon-lg"><use href="#i-zap" /></svg>
-            </div>
-            <h3 data-i18n="features.parallel_title">Xử lý Đa luồng</h3>
-            <p data-i18n="features.parallel_desc">
-              Tự động chạy tối đa 6 quest song song, rút ngắn 90% thời gian chờ
-              đợi.
-            </p>
-          </div>
-
-          <div class="glass-card feature-card" data-reveal>
-            <div class="icon-wrapper">
-              <svg class="icon icon-lg"><use href="#i-cpu" /></svg>
-            </div>
-            <h3 data-i18n="features.auto_title">Lập lịch Thông minh</h3>
-            <p data-i18n="features.auto_desc">
-              Tự động quét và hoàn thành quest mới mỗi 48h mà không cần can
-              thiệp thủ công.
-            </p>
-          </div>
-
-          <div class="glass-card feature-card" data-reveal>
-            <div class="icon-wrapper" style="border: none; background: transparent;">
-              <img src="https://cdn3.emoji.gg/emojis/41827-orbs.png" width="48px" height="48px" alt="orbs">
-            </div>
-            <h3 data-i18n="features.orbs_title">Tích Lũy Orbs Dễ Dàng</h3>
-            <p data-i18n="features.orbs_desc">
-              Nhanh chóng hoàn thành mọi Quests trên Discord để dễ dàng nhận về điểm thưởng Orbs giá trị.
-            </p>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ══ GUIDE (STEP-BY-STEP) ══ -->
     <section id="guide" data-reveal>
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag" data-i18n="guide.badge">Đầy đủ 3 bước</span>
-          <h2 data-i18n="guide.title">Bắt đầu Sử dụng Bot</h2>
-          <p data-i18n="guide.subtitle">
-            Hướng dẫn chi tiết giúp bạn tự động hóa Discord Quest chỉ trong 3
-            phút.
-          </p>
-        </div>
-
-        <div class="guide-steps">
-          <!-- Step 1 -->
-          <div class="glass-card guide-step-card" data-reveal>
-            <div class="step-num">01</div>
-            <div class="step-content">
-              <h3 data-i18n="guide.step1_title">Mời Bot & Tham gia Support</h3>
-              <p data-i18n="guide.step1_desc">
-                Thêm bot vào server của bạn. Chúng tôi khuyến khích tham gia
-                server support để cập nhật tính năng mới nhất.
-              </p>
-              <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
-                <a
-                  href="https://discord.com/oauth2/authorize?client_id=1282428478916657152"
-                  class="btn btn-primary"
-                  style="flex: 1; justify-content: center"
-                  >Invite Bot</a
-                >
-                <a
-                  href="https://discord.gg/gTVPwvNe"
-                  class="btn btn-secondary"
-                  style="flex: 1; justify-content: center"
-                  >Support</a
-                >
-              </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="guide.badge">Đầy đủ 3 bước</span>
+                <h2 data-i18n="guide.title">Bắt đầu Sử dụng Bot</h2>
+                <p data-i18n="guide.subtitle">
+                    Hướng dẫn chi tiết giúp bạn tự động hóa Discord Quest chỉ trong 3
+                    phút.
+                </p>
             </div>
-          </div>
 
-          <!-- Step 2 -->
-          <div class="glass-card guide-step-card" data-reveal>
-            <div class="step-num">02</div>
-            <div class="step-content">
-              <h3 data-i18n="guide.step2_title">
-                Lấy Discord Authentication Token
-              </h3>
-              <p data-i18n="guide.step2_desc">
-                Bot cần token này để thực hiện nhiệm vụ xem stream/chơi game.
-                Tuyệt đối không chia sẻ cho người khác.
-              </p>
-
-              <div
-                class="token-instructions"
-                style="
-                  margin-top: 1.5rem;
-                  font-size: 0.85rem;
-                  color: var(--text-secondary);
-                "
-              >
-                <ol style="padding-left: 1.25rem">
-                  <li data-i18n="token.step0">
-                    Đăng nhập Discord trên trình duyệt.
-                  </li>
-                  <li data-i18n="token.step1">Nhấn F12 > Tab Console.</li>
-                  <li data-i18n="token.step2">
-                    Bật chế độ Mobile (Ctrl+Shift+M).
-                  </li>
-                </ol>
-              </div>
-
-              <div class="code-container" style="margin-top: 1rem">
-                <div class="code-header">
-                  <span data-i18n="token.step3">Dán code bên dưới:</span>
-                  <button class="btn-copy" data-copy-target="token-code-real">
-                    Copy
-                  </button>
+            <div class="guide-steps">
+                <!-- Step 1 -->
+                <div class="glass-card guide-step-card" data-reveal>
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h3 data-i18n="guide.step1_title">Mời Bot & Tham gia Support</h3>
+                        <p data-i18n="guide.step1_desc">
+                            Thêm bot vào server của bạn. Chúng tôi khuyến khích tham gia
+                            server support để cập nhật tính năng mới nhất.
+                        </p>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
+                            <a href="https://discord.com/oauth2/authorize?client_id=1282428478916657152"
+                                class="btn btn-primary" style="flex: 1; justify-content: center">Invite Bot</a>
+                            <a href="https://discord.gg/gTVPwvNe" class="btn btn-secondary"
+                                style="flex: 1; justify-content: center">Support</a>
+                        </div>
+                    </div>
                 </div>
-                <code
-                  class="code-block"
-                  id="token-code-real"
-                  style="font-size: 0.75rem"
-                  >const iframe = document.createElement('iframe'); console.log(
-                  'Token: %c%s', 'font-size:16px;',
-                  JSON.parse(document.body.appendChild(iframe).contentWindow.localStorage.token)
-                  ); iframe.remove();</code
-                >
-              </div>
-            </div>
-          </div>
 
-          <!-- Step 3 -->
-          <div class="glass-card guide-step-card" data-reveal>
-            <div class="step-num">03</div>
-            <div class="step-content">
-              <h3 data-i18n="guide.step3_title">Kích hoạt Tự động hóa</h3>
-              <p data-i18n="guide.step3_desc">
-                Sử dụng lệnh trực tiếp trong Discord để lưu cấu hình. Mọi dữ
-                liệu đều được mã hóa an toàn.
-              </p>
+                <!-- Step 2 -->
+                <div class="glass-card guide-step-card" data-reveal>
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h3 data-i18n="guide.step2_title">
+                            Lấy Discord Authentication Token
+                        </h3>
+                        <p data-i18n="guide.step2_desc">
+                            Bot cần token này để thực hiện nhiệm vụ xem stream/chơi game.
+                            Tuyệt đối không chia sẻ cho người khác.
+                        </p>
 
-              <div
-                class="command-box"
-                style="
-                  margin-top: 1.5rem;
-                  padding: 1rem;
-                  background: var(--bg-void);
-                  border-radius: 12px;
-                  border: 1px solid var(--border);
-                "
-              >
-                <div
-                  style="
-                    font-size: 0.75rem;
-                    color: var(--accent-primary);
-                    font-weight: 700;
-                    margin-bottom: 0.5rem;
-                  "
-                >
-                  DISCORD COMMAND
+                        <div class="token-instructions"
+                            style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <ol style="padding-left: 1.25rem">
+                                <li data-i18n="token.step0">
+                                    Đăng nhập Discord trên trình duyệt.
+                                </li>
+                                <li data-i18n="token.step1">Nhấn F12 > Tab Console.</li>
+                                <li data-i18n="token.step2">
+                                    Bật chế độ Mobile (Ctrl+Shift+M).
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="code-container" style="margin-top: 1rem">
+                            <div class="code-header">
+                                <span data-i18n="token.step3">Dán code bên dưới:</span>
+                                <button class="btn-copy" data-copy-target="token-code-real" title="Copy">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <code class="code-block" id="token-code-real"
+                                style="font-size: 0.75rem; white-space: pre-wrap; word-break: break-all;">const iframe = document.createElement('iframe');
+console.log(
+  'Token: %c%s',
+  'font-size:16px;',
+  JSON.parse(document.body.appendChild(iframe).contentWindow.localStorage.token)
+);
+iframe.remove();</code>
+                        </div>
+                    </div>
                 </div>
-                <code
-                  style="
-                    font-family: var(--font-mono);
-                    color: var(--text-primary);
-                  "
-                  >/autoquests add
-                  <span style="color: var(--text-muted)">[token]</span></code
-                >
-              </div>
-              <p
-                style="
-                  margin-top: 1rem;
-                  font-size: 0.85rem;
-                  color: var(--text-muted);
-                "
-                data-i18n="guide.step3_note"
-              >
-                Sau đó dùng <code>/autoquests run</code> để bắt đầu ngay lập
-                tức.
-              </p>
+
+                <!-- Step 3 -->
+                <div class="glass-card guide-step-card" data-reveal>
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h3 data-i18n="guide.step3_title">Kích hoạt Tự động hóa</h3>
+                        <p data-i18n="guide.step3_desc">
+                            Sử dụng lệnh trực tiếp trong Discord để lưu cấu hình. Mọi dữ
+                            liệu đều được mã hóa an toàn.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                            <div class="command-box"
+                                style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                                <code
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests add</code>
+                                <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
+                                    data-i18n="guide.cmd_autoquests_add">— Lưu token và bật auto-quest 24/7</span>
+                            </div>
+                            <div class="command-box"
+                                style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                                <code
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests run</code>
+                                <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
+                                    data-i18n="guide.cmd_autoquests_run">— Chạy ngay phiên quest đầu tiên</span>
+                            </div>
+                            <div class="command-box"
+                                style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                                <code
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/quests</code>
+                                <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
+                                    data-i18n="guide.cmd_quests">— Chạy quest một lần (token không được lưu)</span>
+                            </div>
+                            <div class="command-box"
+                                style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                                <code
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/help</code>
+                                <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
+                                    data-i18n="guide.cmd_help">— Hướng dẫn sử dụng bot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- ══ COMMANDS ══ -->
     <section id="commands" class="bg-surface">
-      <div class="container">
-        <div class="section-header" data-reveal>
-          <span class="section-tag">Documentation</span>
-          <h2 data-i18n="commands.title">Danh mục Lệnh đầy đủ</h2>
-          <p data-i18n="commands.subtitle">
-            Mọi công cụ bạn cần để tương tác với AutoQuest v2.0.
-          </p>
-        </div>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <span class="section-tag">Documentation</span>
+                <h2 data-i18n="commands.title">Danh mục Lệnh đầy đủ</h2>
+                <p data-i18n="commands.subtitle">
+                    Mọi công cụ bạn cần để tương tác với AutoQuest v2.0.
+                </p>
+            </div>
 
-        <div
-          class="glass-card"
-          style="padding: 0; overflow: hidden"
-          data-reveal
-        >
-          <div class="responsive-table-wrapper">
-            <table class="responsive-table">
-              <thead style="background: var(--bg-void)">
-                <tr>
-                  <th
-                    style="
-                      padding: 1.5rem 2rem;
-                      color: var(--text-muted);
-                      font-size: 0.8rem;
-                      text-transform: uppercase;
-                    "
-                    data-i18n="commands.col_command"
-                  >
-                    Lệnh
-                  </th>
-                  <th
-                    style="
-                      padding: 1.5rem 2rem;
-                      color: var(--text-muted);
-                      font-size: 0.8rem;
-                      text-transform: uppercase;
-                    "
-                    data-i18n="commands.col_desc"
-                  >
-                    Mô tả
-                  </th>
-                  <th
-                    style="
-                      padding: 1.5rem 2rem;
-                      color: var(--text-muted);
-                      font-size: 0.8rem;
-                      text-transform: uppercase;
-                    "
-                    data-i18n="commands.col_example"
-                  >
-                    Cú pháp Ví dụ
-                  </th>
-                </tr>
-              </thead>
-              <tbody style="font-size: 0.95rem">
-                <tr style="border-top: 1px solid var(--border)">
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /quests &lt;token&gt;
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.q_desc">
-                    Xử lý ngay lập tức toàn bộ quest có sẵn cho token này (Một
-                    lần).
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /quests MTQ4O...
-                  </td>
-                </tr>
-                <tr
-                  style="
-                    border-top: 1px solid var(--border);
-                    background: rgba(255, 255, 255, 0.01);
-                  "
-                >
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests add &lt;token&gt;
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.a_add">
-                    Lưu token mã hóa và tự động làm quest mỗi khi có sự kiện mới
-                    24/7.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests add
-                  </td>
-                </tr>
-                <tr style="border-top: 1px solid var(--border)">
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests list
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.a_list">
-                    Hiển thị danh sách các tài khoản đang trong trạng thái Tự
-                    động.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests list
-                  </td>
-                </tr>
-                <tr
-                  style="
-                    border-top: 1px solid var(--border);
-                    background: rgba(255, 255, 255, 0.01);
-                  "
-                >
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests remove
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.a_rem">
-                    Gỡ bỏ token và xóa sạch lịch sử thống kê của bạn khỏi cơ sở
-                    dữ liệu.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests remove [label]
-                  </td>
-                </tr>
-                <tr style="border-top: 1px solid var(--border)">
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests run
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.a_run">
-                    Kích hoạt phiên chạy ngay lập tức cho token đã lưu.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests run [label]
-                  </td>
-                </tr>
-                <tr
-                  style="
-                    border-top: 1px solid var(--border);
-                    background: rgba(255, 255, 255, 0.01);
-                  "
-                >
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests status
-                  </td>
-                  <td
-                    style="padding: 1.5rem 2rem"
-                    data-i18n="commands.a_status"
-                  >
-                    Xem trạng thái chi tiết và lịch chạy tiếp theo.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests status
-                  </td>
-                </tr>
-                <tr style="border-top: 1px solid var(--border)">
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /autoquests-info
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
-                    Báo cáo chi tiết hiệu suất và khối lượng quest cá nhân.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /autoquests-info
-                  </td>
-                </tr>
-                <tr style="border-top: 1px solid var(--border)">
-                  <td
-                    style="
-                      padding: 1.5rem 2rem;
-                      font-family: var(--font-mono);
-                      color: var(--accent-primary);
-                      font-weight: 600;
-                    "
-                  >
-                    /stats user
-                  </td>
-                  <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
-                    Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn
-                    thành.
-                  </td>
-                  <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                    /stats user
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <div class="glass-card" style="padding: 0; overflow: hidden" data-reveal>
+                <div class="responsive-table-wrapper">
+                    <table class="responsive-table">
+                        <thead style="background: var(--bg-void)">
+                            <tr>
+                                <th
+                                    style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                                    data-i18n="commands.col_command">
+                                    Lệnh
+                                </th>
+                                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;"
+                                    data-i18n="commands.col_desc">
+                                    Mô tả
+                                </th>
+                                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;"
+                                    data-i18n="commands.col_example">
+                                    Cú pháp Ví dụ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 0.95rem">
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /quests &lt;token&gt;
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.q_desc">
+                                    Xử lý ngay lập tức toàn bộ quest có sẵn cho token này (Một
+                                    lần).
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /quests MTQ4O...
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests add &lt;token&gt;
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_add">
+                                    Lưu token mã hóa và tự động làm quest mỗi khi có sự kiện mới
+                                    24/7.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests add
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests list
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_list">
+                                    Hiển thị danh sách các tài khoản đang trong trạng thái Tự
+                                    động.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests list
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests remove
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_rem">
+                                    Gỡ bỏ token và xóa sạch lịch sử thống kê của bạn khỏi cơ sở
+                                    dữ liệu.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests remove [label]
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests run
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_run">
+                                    Kích hoạt phiên chạy ngay lập tức cho token đã lưu.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests run [label]
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests status
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_status">
+                                    Xem trạng thái chi tiết và lịch chạy tiếp theo.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests status
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests-info
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
+                                    Báo cáo chi tiết hiệu suất và khối lượng quest cá nhân.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests-info
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /stats user
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
+                                    Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn
+                                    thành.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /stats user
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- ══ FAQ ══ -->
     <section id="faq">
-      <div class="container">
-        <div class="section-header" data-reveal>
-          <span class="section-tag">Security & Policy</span>
-          <h2 data-i18n="faq.title">Câu hỏi & Giải đáp chuyên sâu</h2>
-          <p data-i18n="faq.subtitle">
-            Mọi điều bạn cần biết về cơ chế hoạt động và bảo mật của AutoQuest.
-          </p>
-        </div>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <span class="section-tag">Security & Policy</span>
+                <h2 data-i18n="faq.title">Câu hỏi & Giải đáp chuyên sâu</h2>
+                <p data-i18n="faq.subtitle">
+                    Mọi điều bạn cần biết về cơ chế hoạt động và bảo mật của AutoQuest.
+                </p>
+            </div>
 
-        <div class="faq-container" id="faq-list">
-          <!-- FAQ entries will be dynamically generated or mapped via i18n loop if possible, 
-                     but for now we define 10 slots for i18n to fill -->
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q1"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a1"></div>
+            <div class="faq-container" id="faq-list">
+                <!-- FAQ entries will be dynamically generated or mapped via i18n loop if possible, 
+                                                                                 but for now we define 10 slots for i18n to fill -->
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q1"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a1"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q2"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a2"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q3"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a3"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q4"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a4"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q5"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a5"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q6"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a6"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q7"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a7"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q8"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a8"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q9"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a9"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q10"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a10"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q11"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a11"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q12"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a12"></div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q2"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a2"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q3"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a3"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q4"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a4"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q5"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a5"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q6"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a6"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q7"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a7"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q8"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a8"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q9"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a9"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q10"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a10"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q11"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a11"></div>
-            </div>
-          </div>
-          <div class="faq-item" data-reveal>
-            <button class="faq-question">
-              <span data-i18n="faq.q12"></span
-              ><svg class="icon icon-sm faq-icon">
-                <use href="#i-chevron-down" />
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-inner" data-i18n="faq.a12"></div>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- ══ FOOTER ══ -->
     <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a href="#" class="nav-brand">
-              <img
-                src="assets/img/icons/bot.jpg"
-                alt="Logo"
-                class="brand-logo"
-                onerror="
-                  this.src =
-                    'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%2310b981%22><path d=%22M13 2L3 14h9l-1 8 10-12h-9l1-8z%22/></svg>'
-                "
-              />
-              <span>AutoQuest</span>
-            </a>
-            <p data-i18n="footer.tagline">
-              Giải pháp tự động hóa quest chuyên nghiệp, mã nguồn mở và an toàn.
-            </p>
-          </div>
-          <div>
-            <h4 class="footer-title">Navigation</h4>
-            <ul class="footer-links">
-              <li>
-                <a href="#features" data-i18n="nav.features">Tính năng</a>
-              </li>
-              <li><a href="#stats" data-i18n="nav.stats">Trạng thái</a></li>
-              <li><a href="#guide" data-i18n="nav.guide">Hướng dẫn</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="footer-title">Legal</h4>
-            <ul class="footer-links">
-              <li>
-                <a href="legal.html#privacy" data-i18n="footer.privacy"
-                  >Privacy Policy</a
-                >
-              </li>
-              <li>
-                <a href="legal.html#terms" data-i18n="footer.terms"
-                  >Terms of Service</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="footer-title">Community</h4>
-            <ul class="footer-links">
-              <li>
-                <a href="https://discord.gg/gTVPwvNe" target="_blank"
-                  ><svg
-                    class="icon icon-sm"
-                    style="vertical-align: middle; margin-right: 6px"
-                  >
-                    <use href="#i-discord" /></svg
-                  ><span data-i18n="footer.discord">Discord Server</span></a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/htch9999/discord-quest-bot"
-                  target="_blank"
-                  ><svg
-                    class="icon icon-sm"
-                    style="vertical-align: middle; margin-right: 6px"
-                  >
-                    <use href="#i-github" /></svg
-                  ><span data-i18n="footer.github">GitHub</span></a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
-                  target="_blank"
-                  ><svg
-                    class="icon icon-sm"
-                    style="vertical-align: middle; margin-right: 6px"
-                  >
-                    <use href="#i-plus" /></svg
-                  ><span data-i18n="hero.cta_add">Invite Bot</span></a
-                >
-              </li>
-            </ul>
-          </div>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="nav-brand">
+                        <img src="assets/img/icons/bot.jpg" alt="Logo" class="brand-logo"
+                            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%2310b981%22><path d=%22M13 2L3 14h9l-1 8 10-12h-9l1-8z%22/></svg>'">
+                        <span>AutoQuest</span>
+                    </a>
+                    <p data-i18n="footer.tagline">
+                        Giải pháp tự động hóa quest chuyên nghiệp, mã nguồn mở và an toàn.
+                    </p>
+                    <div class="footer-donate">
+                        <p class="footer-donate-label" data-i18n="footer.donate">Ủng hộ tác giả ☕</p>
+                        <div class="footer-donate-btns">
+                            <a href="https://buymeacoffee.com/htch9999" target="_blank" rel="noopener noreferrer"
+                                class="donate-btn donate-btn-coffee">
+                                <img src="assets/img/bmc-logo.svg" alt="Buy Me A Coffee"
+                                    style="width:16px;height:22px;">
+                                Buy Me a Coffee
+                            </a>
+                            <a href="https://me.momo.vn/htch9999" target="_blank" rel="noopener noreferrer"
+                                class="donate-btn donate-btn-momo">
+                                <img src="https://developers.momo.vn/v3/assets/images/MOMO-Logo-App-6262c3743a290ef02396a24ea2b66c35.png"
+                                    alt="Momo" style="width:20px;height:20px;border-radius:4px;">
+                                Momo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Navigation</h4>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="#features" data-i18n="nav.features">Tính năng</a>
+                        </li>
+                        <li>
+                            <a href="#stats" data-i18n="nav.stats">Trạng thái</a>
+                        </li>
+                        <li>
+                            <a href="#guide" data-i18n="nav.guide">Hướng dẫn</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="legal.html#privacy" data-i18n="footer.privacy">Privacy Policy</a>
+                        </li>
+                        <li>
+                            <a href="legal.html#terms" data-i18n="footer.terms">Terms of Service</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Community</h4>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="https://discord.gg/gTVPwvNe" target="_blank">
+                                <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
+                                    <use href="#i-discord" />
+                                </svg>
+                                <span data-i18n="footer.discord">Discord Server</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/htch9999/discord-quest-bot" target="_blank">
+                                <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
+                                    <use href="#i-github" />
+                                </svg>
+                                <span data-i18n="footer.github">GitHub</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
+                                target="_blank">
+                                <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
+                                    <use href="#i-plus" />
+                                </svg>
+                                <span data-i18n="hero.cta_add">Invite Bot</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+                <p data-i18n="footer.made_by">
+                    Made by @htch9999🌷. Licensed under MIT.
+                </p>
+                <p style="margin-top: 0.5rem; font-size: 0.75rem" data-i18n="footer.disclaimer">
+                    Not affiliated with Discord Inc. AutoQuest does not store your
+                    personal data.
+                </p>
+            </div>
         </div>
-        <div
-          style="
-            border-top: 1px solid var(--border);
-            padding-top: 2rem;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-          "
-        >
-          <p data-i18n="footer.made_by">
-            Made by @htch9999🌷. Licensed under MIT.
-          </p>
-          <p
-            style="margin-top: 0.5rem; font-size: 0.75rem"
-            data-i18n="footer.disclaimer"
-          >
-            Not affiliated with Discord Inc. AutoQuest does not store passwords
-            or personal data.
-          </p>
-        </div>
-      </div>
     </footer>
 
     <!-- Mobile Bottom Navigation Bar -->
     <nav class="mobile-bottom-nav">
-      <button class="mobile-nav-item active" data-scroll-to="features">
-        <svg class="icon"><use href="#i-zap" /></svg>
-        <span data-i18n="nav.features">Features</span>
-      </button>
-      <button class="mobile-nav-item" data-scroll-to="stats">
-        <svg class="icon"><use href="#i-activity" /></svg>
-        <span data-i18n="nav.stats">Stats</span>
-      </button>
-      <button class="mobile-nav-item" data-scroll-to="commands">
-        <svg class="icon"><use href="#i-terminal" /></svg>
-        <span data-i18n="nav.commands">Commands</span>
-      </button>
-      <button class="mobile-nav-item" onclick="openMobileSettings()">
-        <svg class="icon"><use href="#i-cpu" /></svg>
-        <span data-i18n="nav.settings">Settings</span>
-      </button>
+        <button class="mobile-nav-item active" data-scroll-to="features">
+            <svg class="icon">
+                <use href="#i-zap" />
+            </svg>
+            <span data-i18n="nav.features">Features</span>
+        </button>
+        <button class="mobile-nav-item" data-scroll-to="stats">
+            <svg class="icon">
+                <use href="#i-activity" />
+            </svg>
+            <span data-i18n="nav.stats">Stats</span>
+        </button>
+        <button class="mobile-nav-item" data-scroll-to="commands">
+            <svg class="icon">
+                <use href="#i-terminal" />
+            </svg>
+            <span data-i18n="nav.commands">Commands</span>
+        </button>
+        <button class="mobile-nav-item" onclick="openMobileSettings()">
+            <svg class="icon">
+                <use href="#i-cpu" />
+            </svg>
+            <span data-i18n="nav.settings">Settings</span>
+        </button>
     </nav>
 
     <!-- Mobile Settings Modal -->
     <div class="mobile-settings-modal" id="mobile-settings-modal">
-      <div class="mobile-settings-content">
-        <div class="mobile-settings-header">
-          <h3 data-i18n="nav.settings">Settings</h3>
-          <button class="mobile-settings-close" onclick="closeMobileSettings()">
-            <svg class="icon"><use href="#i-x" /></svg>
-          </button>
-        </div>
+        <div class="mobile-settings-content">
+            <div class="mobile-settings-header">
+                <h3 data-i18n="nav.settings">Settings</h3>
+                <button class="mobile-settings-close" onclick="closeMobileSettings()">
+                    <svg class="icon">
+                        <use href="#i-x" />
+                    </svg>
+                </button>
+            </div>
 
-        <div class="dropdown-group-label" data-i18n="theme.title">
-          Display Mode
-        </div>
-        <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
-          <div
-            class="dropdown-item-mini"
-            onclick="
-              setTheme('dark');
-              closeMobileSettings();
-            "
-            data-theme-value="dark"
-          >
-            <svg class="icon"><use href="#i-moon" /></svg>
-          </div>
-          <div
-            class="dropdown-item-mini"
-            onclick="
-              setTheme('light');
-              closeMobileSettings();
-            "
-            data-theme-value="light"
-          >
-            <svg class="icon"><use href="#i-sun" /></svg>
-          </div>
-          <div
-            class="dropdown-item-mini"
-            onclick="
-              setTheme('system');
-              closeMobileSettings();
-            "
-            data-theme-value="system"
-          >
-            <svg class="icon"><use href="#i-cpu" /></svg>
-          </div>
-        </div>
+            <div class="dropdown-group-label" data-i18n="theme.title">
+                Display Mode
+            </div>
+            <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
+                <div class="dropdown-item-mini" onclick="setTheme('dark'); closeMobileSettings();"
+                    data-theme-value="dark">
+                    <svg class="icon">
+                        <use href="#i-moon" />
+                    </svg>
+                </div>
+                <div class="dropdown-item-mini" onclick="setTheme('light'); closeMobileSettings();"
+                    data-theme-value="light">
+                    <svg class="icon">
+                        <use href="#i-sun" />
+                    </svg>
+                </div>
+                <div class="dropdown-item-mini" onclick="setTheme('system'); closeMobileSettings();"
+                    data-theme-value="system">
+                    <svg class="icon">
+                        <use href="#i-cpu" />
+                    </svg>
+                </div>
+            </div>
 
-        <div class="dropdown-group-label" data-i18n="theme.color">
-          Accent Color
-        </div>
-        <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
-          <div
-            class="dropdown-item-mini"
-            onclick="
-              setColor('emerald');
-              closeMobileSettings();
-            "
-            data-color-value="emerald"
-          >
-            <div class="color-preview" style="background: #10b981"></div>
-          </div>
-          <div
-            class="dropdown-item-mini"
-            onclick="
-              setColor('amethyst');
-              closeMobileSettings();
-            "
-            data-color-value="amethyst"
-          >
-            <div class="color-preview" style="background: #a855f7"></div>
-          </div>
-        </div>
+            <div class="dropdown-group-label" data-i18n="theme.color">
+                Accent Color
+            </div>
+            <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
+                <div class="dropdown-item-mini" onclick="setColor('emerald'); closeMobileSettings();"
+                    data-color-value="emerald">
+                    <div class="color-preview" style="background: #10b981"></div>
+                </div>
+                <div class="dropdown-item-mini" onclick="setColor('amethyst'); closeMobileSettings();"
+                    data-color-value="amethyst">
+                    <div class="color-preview" style="background: #a855f7"></div>
+                </div>
+            </div>
 
-        <div class="dropdown-group-label" data-i18n="nav.lang">Language</div>
-        <div
-          class="dropdown-item"
-          onclick="
-            setLang('vi');
-            closeMobileSettings();
-          "
-          data-lang-value="vi"
-        >
-          🇻🇳 Tiếng Việt
+            <div class="dropdown-group-label" data-i18n="nav.lang">Language</div>
+            <div class="dropdown-item" onclick="setLang('vi'); closeMobileSettings();" data-lang-value="vi">
+                🇻🇳 Tiếng Việt
+            </div>
+            <div class="dropdown-item" onclick="setLang('en'); closeMobileSettings();" data-lang-value="en">
+                🇺🇸 English
+            </div>
+            <div class="dropdown-item" onclick="setLang('ja'); closeMobileSettings();" data-lang-value="ja">
+                🇯🇵 日本語
+            </div>
         </div>
-        <div
-          class="dropdown-item"
-          onclick="
-            setLang('en');
-            closeMobileSettings();
-          "
-          data-lang-value="en"
-        >
-          🇺🇸 English
-        </div>
-        <div
-          class="dropdown-item"
-          onclick="
-            setLang('ja');
-            closeMobileSettings();
-          "
-          data-lang-value="ja"
-        >
-          🇯🇵 日本語
-        </div>
-      </div>
     </div>
 
     <!-- SVG Sprites -->
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-      <symbol id="i-zap" viewBox="0 0 24 24">
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-      </symbol>
-      <symbol id="i-shield" viewBox="0 0 24 24">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </symbol>
-      <symbol id="i-activity" viewBox="0 0 24 24">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-      </symbol>
-      <symbol id="i-terminal" viewBox="0 0 24 24">
-        <polyline points="4 17 10 11 4 5" />
-        <line x1="12" y1="19" x2="20" y2="19" />
-      </symbol>
-      <symbol id="i-x" viewBox="0 0 24 24">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </symbol>
-      <symbol id="i-globe" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="2" y1="12" x2="22" y2="12" />
-        <path
-          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-        />
-      </symbol>
-      <symbol id="i-arrow-right" viewBox="0 0 24 24">
-        <line x1="5" y1="12" x2="19" y2="12" />
-        <polyline points="12 5 19 12 12 19" />
-      </symbol>
-      <symbol id="i-cpu" viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="2" />
-        <rect x="9" y="9" width="6" height="6" />
-        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
-      </symbol>
-      <symbol id="i-chevron-down" viewBox="0 0 24 24">
-        <polyline points="6 9 12 15 18 9" />
-      </symbol>
-      <symbol id="i-sun" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="5" />
-        <line x1="12" y1="1" x2="12" y2="3" />
-        <line x1="12" y1="21" x2="12" y2="23" />
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-        <line x1="1" y1="12" x2="3" y2="12" />
-        <line x1="21" y1="12" x2="23" y2="12" />
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-      </symbol>
-      <symbol id="i-moon" viewBox="0 0 24 24">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-      </symbol>
-      <symbol id="i-menu" viewBox="0 0 24 24">
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </symbol>
-      <symbol id="i-close" viewBox="0 0 24 24">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </symbol>
-      <symbol id="i-check" viewBox="0 0 24 24">
-        <polyline points="20 6 9 17 4 12" />
-      </symbol>
-      <symbol id="i-discord" viewBox="0 0 24 24">
-        <path
-          d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
-        />
-      </symbol>
-      <symbol id="i-github" viewBox="0 0 24 24">
-        <path
-          d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-        />
-      </symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24">
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-      </symbol>
+        <symbol id="i-zap" viewbox="0 0 24 24">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </symbol>
+        <symbol id="i-shield" viewbox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </symbol>
+        <symbol id="i-activity" viewbox="0 0 24 24">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </symbol>
+        <symbol id="i-terminal" viewbox="0 0 24 24">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+        </symbol>
+        <symbol id="i-x" viewbox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+        </symbol>
+        <symbol id="i-globe" viewbox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </symbol>
+        <symbol id="i-arrow-right" viewbox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+        </symbol>
+        <symbol id="i-cpu" viewbox="0 0 24 24">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+        </symbol>
+        <symbol id="i-chevron-down" viewbox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9" />
+        </symbol>
+        <symbol id="i-sun" viewbox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </symbol>
+        <symbol id="i-moon" viewbox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </symbol>
+        <symbol id="i-menu" viewbox="0 0 24 24">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </symbol>
+        <symbol id="i-close" viewbox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+        </symbol>
+        <symbol id="i-check" viewbox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12" />
+        </symbol>
+        <symbol id="i-discord" viewbox="0 0 24 24">
+            <path
+                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+        </symbol>
+        <symbol id="i-github" viewbox="0 0 24 24">
+            <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+        </symbol>
+        <symbol id="i-plus" viewbox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+        </symbol>
     </svg>
 
     <script>
-      // Production API Configuration (Public Only)
-      window.API_BASE = "https://htchserver.tail21b05e.ts.net";
+        // Production API Configuration (Public Only)
+        window.API_BASE = "https://htchserver.tail21b05e.ts.net";
 
-      // Initialize logic once scripts are loaded
-      window.addEventListener("DOMContentLoaded", () => {
-        // Scroll to top on reload
-        window.scrollTo(0, 0);
-        if (history.scrollRestoration) {
-          history.scrollRestoration = "manual";
-        }
-
-        if (window.i18nInit) window.i18nInit();
-        if (window.poll) window.poll();
-      });
-
-      // Dropdown Logic
-      document.querySelectorAll(".nav-dropdown-btn").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const parent = btn.parentElement;
-          document.querySelectorAll(".nav-dropdown").forEach((d) => {
-            if (d !== parent) d.classList.remove("active");
-          });
-          parent.classList.toggle("active");
-        });
-      });
-
-      // Prevent closing when clicking inside dropdown content
-      document.querySelectorAll(".nav-dropdown-content").forEach((content) => {
-        content.addEventListener("click", (e) => {
-          // If it's a mini-item (theme/color), keep dropdown open
-          if (e.target.closest(".dropdown-item-mini")) {
-            e.stopPropagation();
-          }
-        });
-      });
-
-      window.addEventListener("click", () => {
-        document
-          .querySelectorAll(".nav-dropdown")
-          .forEach((d) => d.classList.remove("active"));
-      });
-
-      // Mobile Settings Modal Logic
-      const mobileSettingsModal = document.getElementById(
-        "mobile-settings-modal",
-      );
-      function openMobileSettings() {
-        if (mobileSettingsModal) {
-          mobileSettingsModal.classList.add("active");
-          document.body.classList.add("modal-open");
-        }
-      }
-      function closeMobileSettings() {
-        if (mobileSettingsModal) {
-          mobileSettingsModal.classList.remove("active");
-          document.body.classList.remove("modal-open");
-        }
-      }
-      // Close modal when clicking outside content
-      if (mobileSettingsModal) {
-        mobileSettingsModal.addEventListener("click", (e) => {
-          if (e.target === mobileSettingsModal) {
-            closeMobileSettings();
-          }
-        });
-      }
-
-      // Hash-free Smooth Scroll
-      document.querySelectorAll("[data-scroll-to]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const targetId = btn.dataset.scrollTo;
-          const targetEl = document.getElementById(targetId);
-          if (targetEl) {
-            // Update active state in bottom-nav
-            document
-              .querySelectorAll(".mobile-nav-item[data-scroll-to]")
-              .forEach((n) => n.classList.remove("active"));
-            if (btn.classList.contains("mobile-nav-item")) {
-              btn.classList.add("active");
-            } else {
-              // If clicked from desktop nav, try to highlight the correct mobile nav item
-              const mobileBtn = document.querySelector(
-                `.mobile-nav-item[data-scroll-to="${targetId}"]`,
-              );
-              if (mobileBtn) mobileBtn.classList.add("active");
+        // Initialize logic once scripts are loaded
+        window.addEventListener("DOMContentLoaded", () => { // Scroll to top on reload
+            window.scrollTo(0, 0);
+            if (history.scrollRestoration) {
+                history.scrollRestoration = "manual";
             }
-
-            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
+            if (window.i18nInit)
+                window.i18nInit();
+            if (window.poll)
+                window.poll();
         });
-      });
 
-      // Inline script for basic UI logic (Faq toggle, Reveal on scroll)
-      window.addEventListener("scroll", () => {
-        const nav = document.getElementById("navbar");
-        if (window.scrollY > 50) nav.classList.add("scrolled");
-        else nav.classList.remove("scrolled");
-      });
+        // Dropdown Logic
+        document.querySelectorAll(".nav-dropdown-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const parent = btn.parentElement;
+                document.querySelectorAll(".nav-dropdown").forEach((d) => {
+                    if (d !== parent)
+                        d.classList.remove("active");
+                });
+                parent.classList.toggle("active");
+            });
+        });
 
-      // Simple Intersection Observer for reveal animations
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("revealed");
+        // Prevent closing when clicking inside dropdown content
+        document.querySelectorAll(".nav-dropdown-content").forEach((content) => {
+            content.addEventListener("click", (e) => { // If it's a mini-item (theme/color), keep dropdown open
+                if (e.target.closest(".dropdown-item-mini")) {
+                    e.stopPropagation();
+                }
+            });
+        });
+
+        window.addEventListener("click", () => {
+            document.querySelectorAll(".nav-dropdown").forEach((d) => d.classList.remove("active"));
+        });
+
+        // Mobile Settings Modal Logic
+        const mobileSettingsModal = document.getElementById("mobile-settings-modal",);
+        function openMobileSettings() {
+            if (mobileSettingsModal) {
+                mobileSettingsModal.classList.add("active");
+                document.body.classList.add("modal-open");
             }
-          });
-        },
-        { threshold: 0.1 },
-      );
+        }
+        function closeMobileSettings() {
+            if (mobileSettingsModal) {
+                mobileSettingsModal.classList.remove("active");
+                document.body.classList.remove("modal-open");
+            }
+        }
+        // Close modal when clicking outside content
+        if (mobileSettingsModal) {
+            mobileSettingsModal.addEventListener("click", (e) => {
+                if (e.target === mobileSettingsModal) {
+                    closeMobileSettings();
+                }
+            });
+        }
 
-      document
-        .querySelectorAll("[data-reveal]")
-        .forEach((el) => observer.observe(el));
-
-      // FAQ Toggle
-      document.querySelectorAll(".faq-question").forEach((q) => {
-        q.addEventListener("click", () => {
-          const item = q.parentElement;
-          item.classList.toggle("active");
+        // Hash-free Smooth Scroll
+        document.querySelectorAll("[data-scroll-to]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const targetId = btn.dataset.scrollTo;
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) { // Update active state in bottom-nav
+                    document.querySelectorAll(".mobile-nav-item[data-scroll-to]").forEach((n) => n.classList.remove("active"));
+                    if (btn.classList.contains("mobile-nav-item")) {
+                        btn.classList.add("active");
+                    } else { // If clicked from desktop nav, try to highlight the correct mobile nav item
+                        const mobileBtn = document.querySelector(`.mobile-nav-item[data-scroll-to="${targetId}"]`,);
+                        if (mobileBtn)
+                            mobileBtn.classList.add("active");
+                    } targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
         });
-      });
 
-      // Copy Code Logic
-      document.querySelectorAll(".btn-copy").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const targetId = btn.dataset.copyTarget;
-          const text = document.getElementById(targetId).textContent;
-          navigator.clipboard.writeText(text).then(() => {
-            const originalText = btn.innerHTML;
-            btn.classList.add("success");
-            btn.innerHTML = window.t ? window.t("token.copied") : "Copied!";
-            setTimeout(() => {
-              btn.classList.remove("success");
-              btn.innerHTML = originalText;
-            }, 2000);
-          });
+        // Inline script for basic UI logic (Faq toggle, Reveal on scroll)
+        window.addEventListener("scroll", () => {
+            const nav = document.getElementById("navbar");
+            if (window.scrollY > 50)
+                nav.classList.add("scrolled");
+            else
+                nav.classList.remove("scrolled");
         });
-      });
+
+        // Simple Intersection Observer for reveal animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("revealed");
+                }
+            });
+        }, {
+            threshold: 0.1
+        },);
+
+        document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+
+        // FAQ Toggle
+        document.querySelectorAll(".faq-question").forEach((q) => {
+            q.addEventListener("click", () => {
+                const item = q.parentElement;
+                item.classList.toggle("active");
+            });
+        });
+
+        // Copy Code Logic
+        document.querySelectorAll(".btn-copy").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const targetId = btn.dataset.copyTarget;
+                const text = document.getElementById(targetId).textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = btn.innerHTML;
+                    btn.classList.add("success");
+                    btn.innerHTML = window.t ? window.t("token.copied") : "Copied!";
+                    setTimeout(() => {
+                        btn.classList.remove("success");
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
     </script>
-  </body>
+</body>
+
 </html>

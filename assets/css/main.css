@@ -822,6 +822,19 @@ section { padding: var(--section-padding); }
 .footer-brand .logo { margin-bottom: 1.5rem; }
 .footer-brand p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; }
 
+.footer-donate { margin-top: 1rem; }
+.footer-donate-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem !important; }
+.footer-donate-btns { display: flex; flex-direction: column; gap: 0.5rem; }
+.donate-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+  text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+  width: fit-content;
+}
+.donate-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+.donate-btn-coffee { background: #FFDD00; color: #000; }
+.donate-btn-momo { background: #ae2070; color: #fff; }
+
 .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; }
 .footer-links { list-style: none; }
 .footer-links li { margin-bottom: 1rem; }

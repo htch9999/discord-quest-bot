@@ -138,6 +138,7 @@ class QuestScheduler:
                             await db.update_run_times(_token_id, now, next_run)
 
                             # Save stats
+                            completed_names = []
                             for qid in engine.completed_ids:
                                 quest_info = next(
                                     (
@@ -148,11 +149,16 @@ class QuestScheduler:
                                     None,
                                 )
                                 if quest_info:
+                                    quest_name = quest_info.get("name", "")
+                                    task_type = quest_info.get("task_type", "")
+                                    if quest_name:
+                                        name_str = f"{quest_name} [{task_type}]" if task_type else quest_name
+                                        completed_names.append(name_str)
                                     await db.save_quest_stat(
                                         token_id=_token_id,
                                         discord_uid=_uid,
                                         quest_id=qid,
-                                        quest_name=quest_info.get("name", ""),
+                                        quest_name=quest_name,
                                         task_type=quest_info.get("task_type", ""),
                                         duration_secs=0,
                                         run_mode="auto",
@@ -166,9 +172,14 @@ class QuestScheduler:
                                 user = await self.bot.fetch_user(int(_uid))
                                 completed = len(engine.completed_ids)
                                 if completed > 0:
+                                    names_text = ""
+                                    if completed_names:
+                                        names_text = "\n".join(f"- {name}" for name in completed_names)
+                                        names_text = f"\n**Chi tiết:**\n{names_text}\n"
+                                        
                                     msg = (
                                         f"✅ Auto-run **{_label}** hoàn thành: "
-                                        f"{completed} quest(s).\n"
+                                        f"{completed} quest(s).\n{names_text}"
                                         f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
                                     )
                                     await user.send(msg)
@@ -290,6 +301,7 @@ class QuestScheduler:
                             await db.update_run_times(_token_id, now, next_run)
 
                             # Save stats
+                            completed_names = []
                             for qid in engine.completed_ids:
                                 quest_info = next(
                                     (
@@ -300,12 +312,17 @@ class QuestScheduler:
                                     None,
                                 )
                                 if quest_info:
+                                    quest_name = quest_info.get("name", "")
+                                    task_type = quest_info.get("task_type", "")
+                                    if quest_name:
+                                        name_str = f"{quest_name} [{task_type}]" if task_type else quest_name
+                                        completed_names.append(name_str)
                                     try:
                                         await db.save_quest_stat(
                                             token_id=_token_id,
                                             discord_uid=_uid,
                                             quest_id=qid,
-                                            quest_name=quest_info.get("name", ""),
+                                            quest_name=quest_name,
                                             task_type=quest_info.get("task_type", ""),
                                             duration_secs=0,
                                             run_mode="auto",
@@ -324,9 +341,14 @@ class QuestScheduler:
                                 user = await self.bot.fetch_user(int(_uid))
                                 completed = len(engine.completed_ids)
                                 if completed > 0:
+                                    names_text = ""
+                                    if completed_names:
+                                        names_text = "\n".join(f"- {name}" for name in completed_names)
+                                        names_text = f"\n**Chi tiết:**\n{names_text}\n"
+                                        
                                     msg = (
                                         f"✅ Startup auto-run **{_label}** hoàn thành: "
-                                        f"{completed} quest(s).\n"
+                                        f"{completed} quest(s).\n{names_text}"
                                         f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
                                     )
                                     await user.send(msg)

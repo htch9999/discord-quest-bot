@@ -71,6 +71,10 @@
     "step3_title": "自動化のアクティブ化",
     "step3_desc": "Discordで /autoquests add コマンドを使用してトークンを保存し、24時間365日の稼働を開始します。",
     "step3_note": "/autoquests run を使用すると、最初のセッションを即座に開始できます。",
+    "cmd_autoquests_add": "— トークンを保存して24時間自動クエスト",
+    "cmd_autoquests_run": "— 最初のクエストセッションを今すぐ開始",
+    "cmd_quests": "— 一回限りのクエスト実行（トークン非保存）",
+    "cmd_help": "— Botの使い方ガイド",
     "copy": "コピー",
     "script_label": "コンソールスクリプト"
   },
@@ -133,6 +137,7 @@
   },
   "faq": {
     "title": "よくある質問 (FAQ)",
+    "subtitle": "AutoQuestの仕組みとセキュリティについて知っておくべきすべてのこと。",
     "q1": "Botはトークンを安全に保存しますか？",
     "a1": "/autoquestsを使用した場合のみ保存されます。保存時、独自のキーとAES-256-GCM暗号化が施されます。1回限りの/questsはシステムメモリ内でのみ実行され、跡を残しません。",
     "q2": "アカウントが制限されるリスクはありますか？",
@@ -170,6 +175,7 @@
   },
   "footer": {
     "tagline": "クエストの完全な自動化と絶対的なセキュリティ。",
+    "donate": "作者を応援する ☕",
     "features": "プラットフォーム機能",
     "security": "セキュリティプロトコル",
     "commands": "コマンド連携",
@@ -181,7 +187,7 @@
     "github": "ソースコード",
     "status": "システム稼働状況",
     "made_by": "Developed by @htch9999 · Open Source · MIT License",
-    "disclaimer": "Discord Inc.とは提携していません。AutoQuestはパスワードを保存しません。"
+    "disclaimer": "Discord Inc.とは提携していません。AutoQuestはデータを保存しません。"
   },
   "privacy": {
     "title": "プライバシーポリシー",
