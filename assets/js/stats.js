@@ -6,6 +6,8 @@
     const POLLING_INTERVAL = 30000;
     const API_BASE = window.API_BASE || '';
     let questChart = null;
+    let chartKeys = [];            // task types currently rendered (stable order)
+    let lastChartSignature = null; // last rendered breakdown, to detect changes
 
     // --- UTILITIES ---
     const formatNumber = (n) => {
@@ -66,11 +68,57 @@
         });
     };
 
-    const initChart = (ctx, data) => {
+    // --- CHART ---
+    const CHART_COLORS = [
+        '#5865F2', // Discord Blue
+        '#3BA55D', // Discord Green
+        '#FAA61A', // Discord Yellow
+        '#EB459E', // Activity Pink
+        '#ED4245', // Discord Red
+        '#00A8FC', // Link Blue
+        '#9B59B6'  // Purple
+    ];
+    const chartColorMap = new Map(); // task type -> stable color
+    const chartColor = (key) => {
+        if (!chartColorMap.has(key)) {
+            chartColorMap.set(key, CHART_COLORS[chartColorMap.size % CHART_COLORS.length]);
+        }
+        return chartColorMap.get(key);
+    };
+
+    const formatChartLabel = (key) => key.replace(/_/g, ' ').toUpperCase();
+
+    const breakdownSignature = (breakdown) =>
+        JSON.stringify(Object.keys(breakdown).sort().map(k => [k, breakdown[k]]));
+
+    // Merge incoming task types into the rendered key list, preserving order so
+    // arcs never get shuffled between refreshes (colors stay bound to a type).
+    const chartSeries = (breakdown) => {
+        Object.keys(breakdown).forEach(k => {
+            if (!chartKeys.includes(k)) chartKeys.push(k);
+        });
+        return {
+            labels: chartKeys.map(formatChartLabel),
+            values: chartKeys.map(k => breakdown[k] || 0),
+            colors: chartKeys.map(chartColor)
+        };
+    };
+
+    // Animate the existing chart into the new values instead of rebuilding it,
+    // so refreshes morph smoothly and the entrance animation never replays.
+    const applyChartData = (breakdown) => {
+        const { labels, values, colors } = chartSeries(breakdown);
+        questChart.data.labels = labels;
+        questChart.data.datasets[0].data = values;
+        questChart.data.datasets[0].backgroundColor = colors;
+        questChart.options.animation = { duration: 900, easing: 'easeOutQuart' };
+        questChart.update();
+    };
+
+    const initChart = (ctx, breakdown) => {
         if (questChart) questChart.destroy();
-        
-        const labels = Object.keys(data).map(k => k.replace(/_/g, ' ').toUpperCase());
-        const values = Object.values(data);
+
+        const { labels, values, colors } = chartSeries(breakdown);
 
         questChart = new Chart(ctx, {
             type: 'doughnut',
@@ -78,13 +126,7 @@
                 labels: labels,
                 datasets: [{
                     data: values,
-                    backgroundColor: [
-                        '#5865F2', // Discord Blue
-                        '#3BA55D', // Discord Green
-                        '#FAA61A', // Discord Yellow
-                        '#EB459E', // Activity Pink
-                        '#ED4245'  // Discord Red
-                    ],
+                    backgroundColor: colors,
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
@@ -92,6 +134,7 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: false, // first paint is static; later refreshes morph
                 plugins: {
                     legend: {
                         position: 'bottom',
@@ -150,11 +193,26 @@
 
         // Chart Rendering
         const chartCtx = document.getElementById('questBreakdownChart');
-        if (chartCtx && data.quest_type_breakdown && Object.keys(data.quest_type_breakdown).length > 0) {
-            initChart(chartCtx, data.quest_type_breakdown);
+        const breakdown = data.quest_type_breakdown || {};
+        if (chartCtx && Object.keys(breakdown).length > 0) {
+            const signature = breakdownSignature(breakdown);
+            if (!questChart) {
+                // First paint on page load: render statically (no animation)
+                initChart(chartCtx, breakdown);
+                lastChartSignature = signature;
+            } else if (signature !== lastChartSignature) {
+                // Data changed on a refresh: morph smoothly into the new values
+                applyChartData(breakdown);
+                lastChartSignature = signature;
+            }
         } else if (chartCtx) {
             // Handle empty state - maybe clear chart or show message
-            if (questChart) questChart.destroy();
+            if (questChart) {
+                questChart.destroy();
+                questChart = null;
+            }
+            chartKeys = [];
+            lastChartSignature = null;
             const ctx = chartCtx.getContext('2d');
             ctx.clearRect(0,0, chartCtx.width, chartCtx.height);
             ctx.fillStyle = '#b9bbbe';
