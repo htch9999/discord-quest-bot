@@ -19,7 +19,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from bot.config import VERSION
+from bot.config import VERSION, STATS_TZ_OFFSET_HOURS
+from bot.db.models import FIRST_QUEST_RECORD_IDS
 
 
 def create_api(bot) -> FastAPI:
@@ -65,6 +66,8 @@ def create_api(bot) -> FastAPI:
     _bg_task = None
     _stats_data = {
         "total_users": 0,
+        "active_users": 0,
+        "active_tokens": 0,
         "total_quests_completed": 0,
         "quests_today": 0,
         "quests_this_week": 0,
@@ -72,16 +75,20 @@ def create_api(bot) -> FastAPI:
     }
 
     async def _update_stats_loop():
+        first_pass = True
         while True:
             try:
                 db = bot.db
                 _stats_data["total_users"] = await db.count_unique_users()
+                _stats_data["active_users"] = await db.count_active_users()
+                _stats_data["active_tokens"] = await db.count_active_tokens()
                 _stats_data["total_quests_completed"] = await db.count_total_quests_done()
                 
                 # Breakdown
                 try:
                     cur = await db._db.execute(
-                        "SELECT task_type, COUNT(*) as cnt FROM quest_stats GROUP BY task_type"
+                        "SELECT task_type, COUNT(*) as cnt FROM quest_stats "
+                        f"WHERE id IN ({FIRST_QUEST_RECORD_IDS}) GROUP BY task_type"
                     )
                     rows = await cur.fetchall()
                     _stats_data["quest_type_breakdown"] = {r["task_type"]: r["cnt"] for r in rows}
@@ -89,20 +96,25 @@ def create_api(bot) -> FastAPI:
                     logger.error("Error computing quest_type_breakdown: %s", e)
 
                 # Quests today / this week
-                now = datetime.now(timezone.utc)
-                today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-                week_start = today_start - timedelta(days=today_start.weekday())
+                tz = timezone(timedelta(hours=STATS_TZ_OFFSET_HOURS))
+                now_local = datetime.now(tz)
+                today_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+                week_local = today_local - timedelta(days=today_local.weekday())
+                today_start = today_local.astimezone(timezone.utc)
+                week_start = week_local.astimezone(timezone.utc)
 
                 try:
                     cur = await db._db.execute(
-                        "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                        "SELECT COUNT(*) as cnt FROM quest_stats "
+                        f"WHERE completed_at >= ? AND id IN ({FIRST_QUEST_RECORD_IDS})",
                         (today_start.isoformat(),)
                     )
                     row = await cur.fetchone()
                     _stats_data["quests_today"] = row["cnt"] if row else 0
 
                     cur = await db._db.execute(
-                        "SELECT COUNT(*) as cnt FROM quest_stats WHERE completed_at >= ?",
+                        "SELECT COUNT(*) as cnt FROM quest_stats "
+                        f"WHERE completed_at >= ? AND id IN ({FIRST_QUEST_RECORD_IDS})",
                         (week_start.isoformat(),)
                     )
                     row = await cur.fetchone()
@@ -112,7 +124,10 @@ def create_api(bot) -> FastAPI:
             except Exception as e:
                 logger.error("Error in stats update loop: %s", e)
                 
-            await asyncio.sleep(60)
+            # Run the first pass back-to-back so a freshly (re)started API
+            # serves real numbers immediately instead of waiting 60 seconds
+            await asyncio.sleep(0 if first_pass else 60)
+            first_pass = False
 
     @api.on_event("startup")
     async def startup_event():
@@ -140,6 +155,8 @@ def create_api(bot) -> FastAPI:
 
         data = {
             "total_users": _stats_data["total_users"],
+            "active_users": _stats_data["active_users"],
+            "active_tokens": _stats_data["active_tokens"],
             "total_quests_completed": _stats_data["total_quests_completed"],
             "quests_today": _stats_data["quests_today"],
             "quests_this_week": _stats_data["quests_this_week"],

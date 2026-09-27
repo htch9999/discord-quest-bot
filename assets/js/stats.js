@@ -124,9 +124,13 @@
         toggleSkeletons(false);
 
         // Core Statistics
-        animateValue('stat-users', data.total_users || 0);
+        // "Users" = real users with at least one healthy active token
+        // (fall back to the historical unique-user count for older API responses)
+        const realUsers = data.active_users !== undefined ? data.active_users : data.total_users;
+        animateValue('stat-users', realUsers || 0);
         animateValue('stat-quests', data.total_quests_completed || 0);
         animateValue('stat-servers', data.guild_count || 0);
+        animateValue('stat-active', data.active_sessions || 0);
         
         // Static strings
         const uptimeEl = document.getElementById('stat-uptime');

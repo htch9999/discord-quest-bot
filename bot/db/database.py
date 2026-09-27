@@ -9,7 +9,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Optional
 
-from bot.db.models import SCHEMA_SQL, MIGRATION_FIX_FK
+from bot.db.models import SCHEMA_SQL, MIGRATION_FIX_FK, FIRST_QUEST_RECORD_IDS
 
 
 class Database:
@@ -222,7 +222,8 @@ class Database:
         if not conn: return {"total": 0, "total_time": 0}
         cur = await conn.execute(
             "SELECT COUNT(*) as total, SUM(duration_secs) as total_time "
-            "FROM quest_stats WHERE discord_uid = ?",
+            "FROM quest_stats WHERE discord_uid = ? "
+            f"AND id IN ({FIRST_QUEST_RECORD_IDS})",
             (discord_uid,),
         )
         row = await cur.fetchone()
@@ -354,8 +355,45 @@ class Database:
         row = await cur.fetchone()
         return row["cnt"] if row else 0
 
+    async def count_active_users(self) -> int:
+        """Count unique users with at least one active (healthy) token."""
+        conn = self._db
+        if not conn: return 0
+        cur = await conn.execute(
+            "SELECT COUNT(DISTINCT discord_uid) as cnt "
+            "FROM saved_tokens WHERE is_active = 1"
+        )
+        row = await cur.fetchone()
+        return row["cnt"] if row else 0
+
+    async def count_active_tokens(self) -> int:
+        """Count saved tokens currently active (validated, not paused)."""
+        conn = self._db
+        if not conn: return 0
+        cur = await conn.execute(
+            "SELECT COUNT(*) as cnt FROM saved_tokens WHERE is_active = 1"
+        )
+        row = await cur.fetchone()
+        return row["cnt"] if row else 0
+
     async def count_total_quests_done(self) -> int:
-        """Autoritative source: use global_stats table."""
+        """Count quests actually completed (deduplicated source of truth).
+
+        A (discord_uid, quest_id) pair can only be completed once per user, so
+        duplicate rows (re-processing of the same quest) are collapsed to their
+        earliest record before counting. Falls back to the legacy global
+        counter for fresh/legacy databases without detail rows.
+        """
+        conn = self._db
+        if conn:
+            cur = await conn.execute(
+                "SELECT COUNT(*) as cnt FROM quest_stats "
+                f"WHERE id IN ({FIRST_QUEST_RECORD_IDS})"
+            )
+            row = await cur.fetchone()
+            if row and row["cnt"]:
+                return row["cnt"]
+
         val = await self.get_global_stat("total_quests_done")
         if val is not None:
             try:

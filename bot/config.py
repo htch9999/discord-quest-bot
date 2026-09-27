@@ -48,6 +48,11 @@ LOG_PROGRESS: bool = os.getenv("LOG_PROGRESS", "true").lower() in ("true", "1", 
 # ── Progress embed ───────────────────────────────────────────────────────────
 EMBED_UPDATE_INTERVAL: int = int(os.getenv("EMBED_UPDATE_INTERVAL", "5"))
 
+# ── Public stats ─────────────────────────────────────────────────────────────
+# Local timezone offset (hours) used for the "quests today / this week"
+# boundaries of the public stats API. Default +7 (Vietnam, UTC+7).
+STATS_TZ_OFFSET_HOURS: int = int(os.getenv("STATS_TZ_OFFSET_HOURS", "7"))
+
 # ── Supported task types ─────────────────────────────────────────────────────
 SUPPORTED_TASKS: list[str] = [
     "WATCH_VIDEO",

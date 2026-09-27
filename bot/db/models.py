@@ -86,3 +86,11 @@ CREATE INDEX IF NOT EXISTS idx_stats_type ON quest_stats(task_type);
 CREATE INDEX IF NOT EXISTS idx_stats_date ON quest_stats(completed_at);
 """
 
+# SQL subquery returning the id of the earliest record for each
+# (discord_uid, quest_id) pair. A Discord quest can only be completed once per
+# user, so duplicate rows are re-records of the same completion — analytics
+# must collapse them instead of counting the same quest twice.
+FIRST_QUEST_RECORD_IDS = (
+    "SELECT MIN(id) FROM quest_stats GROUP BY discord_uid, quest_id"
+)
+
