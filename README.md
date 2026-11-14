@@ -8,7 +8,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Discord.py](https://img.shields.io/badge/discord.py-2.3+-blue.svg)](https://discordpy.readthedocs.io)
 
-[Add to Discord](https://discord.com/oauth2/authorize?client_id=1482428478916657244) · [Join Server](https://discord.gg/gTVPwvNeEH) · [Website](https://discord-autoquests.vercel.app) · [Self-host Guide](#self-host)
+[Add to Discord](https://discord.com/oauth2/authorize?client_id=1482428478916657244&scope=bot%20applications.commands) · [Join Server](https://discord.gg/gTVPwvNeEH) · [Website](https://discord-autoquests.vercel.app) · [Self-host Guide](#self-host)
 
 </div>
 
@@ -31,7 +31,7 @@
 
 ### Use the public bot
 
-1. [Invite the bot](https://discord.com/oauth2/authorize?client_id=1482428478916657244) to your server
+1. [Invite the bot](https://discord.com/oauth2/authorize?client_id=1482428478916657244&scope=bot%20applications.commands) to your server
 2. Run `/quests <your_discord_token>` for a secure, one-time execution footprint
 3. Or `/autoquests save <token> [label]` for intelligent scheduling and automated background runs
 4. Use `/autoquests mode single` or `/autoquests mode multi` to choose how future runs process quests
