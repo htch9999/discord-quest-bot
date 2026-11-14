@@ -33,6 +33,7 @@
   .token-list { padding-left: 1.25rem; font-size: 0.9rem; }
   .code-block pre { padding: 1rem; font-size: 0.75rem; }
   .features-grid { grid-template-columns: 1fr; }
+  .mode-command-card { grid-template-columns: 1fr; gap: 1.25rem; }
   .command-table th:nth-child(3), .command-table td:nth-child(3) { display: none; }
   .stats-grid { grid-template-columns: 1fr; }
   .bar-label { min-width: 120px; font-size: 0.7rem; }

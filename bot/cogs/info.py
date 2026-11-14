@@ -11,6 +11,7 @@ from discord.ext import commands
 from bot.db.database import Database
 from bot.utils.formatter import info_embed
 from bot.utils.logger import get_logger
+from bot.utils.i18n import tr, mode_text
 
 logger = get_logger("cog.info")
 
@@ -21,9 +22,10 @@ class InfoCog(commands.Cog):
 
     @app_commands.command(
         name="info",
-        description="Thông tin server bot",
+        description="View bot status and system information",
     )
     async def info(self, interaction: discord.Interaction):
+        language = await self.bot.db.get_user_language(str(interaction.user.id))
         db: Database = self.bot.db
 
         total_users = await db.count_unique_users()
@@ -38,38 +40,47 @@ class InfoCog(commands.Cog):
             guild_count=guild_count,
             latency_ms=latency_ms,
             uptime_seconds=uptime_secs,
+            language=language,
         )
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(
         name="autoquests-info",
-        description="Thống kê auto-quest cá nhân",
+        description="View your auto-quest statistics",
     )
     async def autoquests_info(self, interaction: discord.Interaction):
         uid = str(interaction.user.id)
+        language = await self.bot.db.get_user_language(uid)
         db: Database = self.bot.db
 
         tokens = await db.get_tokens(uid)
         stats = await db.get_user_stats(uid)
+        quest_mode = await db.get_user_quest_mode(uid)
+        mode_name = mode_text(language, quest_mode, include_hint=True)
 
         active_count = sum(1 for t in tokens if t.get("is_active"))
         total_time = stats.get("total_time", 0) or 0
         hours = total_time // 3600
         mins = (total_time % 3600) // 60
 
-        embed = discord.Embed(title="📊 Auto-Quest Stats", color=0x5865F2)
+        embed = discord.Embed(title=tr(language, "info_title"), color=0x5865F2)
         embed.add_field(
-            name="🔑 Token đã lưu",
-            value=f"{len(tokens)} (active: {active_count})",
+            name=tr(language, "token_count"),
+            value=f"{len(tokens)} ({tr(language, 'active').lower()}: {active_count})",
             inline=True,
         )
         embed.add_field(
-            name="✅ Tổng quest hoàn thành",
+            name=tr(language, "quests_done"),
             value=str(stats.get("total", 0)),
             inline=True,
         )
         embed.add_field(
-            name="⏱️ Tổng thời gian",
+            name=tr(language, "mode_label"),
+            value=mode_name,
+            inline=True,
+        )
+        embed.add_field(
+            name=tr(language, "total_time"),
             value=f"{hours}h {mins}m",
             inline=True,
         )
@@ -88,12 +99,12 @@ class InfoCog(commands.Cog):
             except Exception:
                 timestamp = str(next_runs[0])
             embed.add_field(
-                name="⏰ Lần chạy tự động tiếp theo",
+                name=tr(language, "auto_next"),
                 value=timestamp,
                 inline=False,
             )
 
-        embed.set_footer(text="@htch9999🌷 — Discord Quest Bot")
+        embed.set_footer(text="Discord Quest Bot")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 

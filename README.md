@@ -18,7 +18,7 @@
 
 | Feature                    | Description                                            |
 | -------------------------- | ------------------------------------------------------ |
-| **Parallel Execution**     | Up to 6 quests simultaneously with isolated threads    |
+| **Execution Modes**        | Choose parallel multi mode or sequential single mode  |
 | **Zero-Knowledge Security**| AES-256-GCM encryption with per-user derived keys      |
 | **Intelligent Scheduling** | Smart scheduler autonomously checks for new quests     |
 | **Real-Time Telemetry**    | Live metrics provided via dynamic real-time messages   |
@@ -33,7 +33,8 @@
 
 1. [Invite the bot](https://discord.com/oauth2/authorize?client_id=1482428478916657244) to your server
 2. Run `/quests <your_discord_token>` for a secure, one-time execution footprint
-3. Or `/autoquests <token> [label]` for intelligent scheduling and automated background runs
+3. Or `/autoquests save <token> [label]` for intelligent scheduling and automated background runs
+4. Use `/autoquests mode single` or `/autoquests mode multi` to choose how future runs process quests
 
 ### Self-host
 
@@ -63,31 +64,39 @@ python -m bot.main
 | ----------------- | ------------------------------------ |
 | `/quests <token>` | Run quests once, token is NOT stored |
 | `/help`           | Detailed usage guide                 |
+| `/language`       | Choose English or Vietnamese          |
 
 ### Automated Modes (saved token)
 
 | Command                       | Description                        |
 | ----------------------------- | ---------------------------------- |
-| `/autoquests <token> [label]` | Save token + auto-run every 2 days |
-| `/autoquests run [label]`     | Manual run immediately             |
-| `/autoquests pause [label]`   | Pause auto-schedule                |
-| `/autoquests resume [label]`  | Resume auto-schedule               |
+| `/autoquests save <token> [label]` | Save token + auto-run every 2 days |
+| `/autoquests mode <single\|multi>` | Choose sequential or parallel quest execution |
+| `/autoquests-run [label]`     | Manual run immediately             |
+| `/autoquests-pause [label]`   | Pause auto-schedule                |
+| `/autoquests-resume [label]`  | Resume auto-schedule               |
 
 ### Lifecycle Mgmt
 
 | Command                          | Description                        |
 | -------------------------------- | ---------------------------------- |
-| `/autoquests list`               | List saved tokens                  |
-| `/autoquests remove <label>`     | Delete token + all associated data |
-| `/autoquests rename <old> <new>` | Rename a token label               |
+| `/autoquests-list`               | List saved tokens                  |
+| `/autoquests-remove <label>`     | Delete a saved token               |
+| `/autoquests-rename <old> <new>` | Rename a token label               |
 
 ### Analytics
 
 | Command                      | Description          |
 | ---------------------------- | -------------------- |
-| `/autoquests status [label]` | Token status details |
+| `/autoquests-status [label]` | Token status details |
 | `/autoquests-info`           | Personal statistics  |
 | `/info`                      | Bot system info      |
+
+## Language and token cleanup
+
+Bot messages use English by default. Run `/language` and choose `English` or `Tiếng Việt` to save a personal language preference. It applies to command replies, progress embeds, and automatic run notifications.
+
+Saved tokens that repeatedly fail Discord authentication are removed after `TOKEN_MAX_FAILURES` consecutive failures (default: 3). Paused tokens with no activity for `TOKEN_INACTIVE_CLEANUP_DAYS` are also removed (default: 30 days). Cleanup runs at startup and every `SCHEDULER_CLEANUP_HOURS` (default: 24 hours); users are notified by DM when possible.
 
 ## Architecture
 

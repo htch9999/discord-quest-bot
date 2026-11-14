@@ -9,7 +9,14 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Optional
 
-from bot.db.models import SCHEMA_SQL, MIGRATION_FIX_FK, FIRST_QUEST_RECORD_IDS
+from bot.db.models import (
+    SCHEMA_SQL,
+    MIGRATION_FIX_FK,
+    MIGRATION_ADD_FAIL_COUNT,
+    MIGRATION_ADD_USER_LANGUAGE,
+    MIGRATION_ADD_QUEST_MODE,
+    FIRST_QUEST_RECORD_IDS,
+)
 
 
 class Database:
@@ -57,6 +64,34 @@ class Database:
                         await conn.execute(stmt)
                 await conn.commit()
                 await conn.execute("PRAGMA foreign_keys=ON")
+        except Exception:
+            pass
+
+        try:
+            cur = await conn.execute("PRAGMA table_info(user_interactions)")
+            columns = [r[1] for r in await cur.fetchall()]
+            if "language" not in columns:
+                await conn.execute(MIGRATION_ADD_USER_LANGUAGE)
+                await conn.commit()
+        except Exception:
+            pass
+
+        try:
+            cur = await conn.execute("PRAGMA table_info(user_interactions)")
+            columns = [r[1] for r in await cur.fetchall()]
+            if "quest_mode" not in columns:
+                await conn.execute(MIGRATION_ADD_QUEST_MODE)
+                await conn.commit()
+        except Exception:
+            pass
+
+        # Ensure saved_tokens.fail_count exists (dead-token cleanup tracking)
+        try:
+            cur = await conn.execute("PRAGMA table_info(saved_tokens)")
+            columns = [r[1] for r in await cur.fetchall()]
+            if "fail_count" not in columns:
+                await conn.execute(MIGRATION_ADD_FAIL_COUNT)
+                await conn.commit()
         except Exception:
             pass
 
@@ -162,6 +197,70 @@ class Database:
         )
         await conn.commit()
 
+    # ── Token hygiene (dead-token cleanup) ───────────────────────────────────
+
+    async def record_token_failure(self, token_id: int) -> int:
+        """Register a failed validation. Returns the new consecutive-failure count."""
+        conn = self._db
+        if not conn: return 0
+        await conn.execute(
+            "UPDATE saved_tokens SET fail_count = COALESCE(fail_count, 0) + 1 "
+            "WHERE id = ?",
+            (token_id,),
+        )
+        await conn.commit()
+        cur = await conn.execute(
+            "SELECT fail_count FROM saved_tokens WHERE id = ?", (token_id,)
+        )
+        row = await cur.fetchone()
+        return int(row["fail_count"] or 0) if row else 0
+
+    async def reset_token_failures(self, token_id: int):
+        """Clear the consecutive-failure counter after a successful validation."""
+        conn = self._db
+        if not conn: return
+        await conn.execute(
+            "UPDATE saved_tokens SET fail_count = 0 WHERE id = ?", (token_id,)
+        )
+        await conn.commit()
+
+    async def get_dead_tokens(self, max_failures: int, stale_days: int) -> list[dict]:
+        """Tokens that are provably dead or dormant for too long.
+
+        A token qualifies when either:
+        - validation failed ``max_failures`` times in a row, or
+        - it is inactive (is_active = 0) and had no run/creation activity for
+          ``stale_days`` days.
+        """
+        conn = self._db
+        if not conn: return []
+        stale_before = (
+            datetime.now(timezone.utc) - timedelta(days=stale_days)
+        ).date().isoformat()
+        cur = await conn.execute(
+            """
+            SELECT * FROM saved_tokens
+            WHERE COALESCE(fail_count, 0) >= ?
+               OR (
+                    is_active = 0
+                    AND substr(COALESCE(last_run_at, created_at), 1, 10) < ?
+               )
+            """,
+            (max_failures, stale_before),
+        )
+        rows = await cur.fetchall()
+        return [dict(r) for r in rows]
+
+    async def delete_token_by_id(self, token_id: int) -> bool:
+        """Hard-delete a saved token by id (token hygiene cleanup)."""
+        conn = self._db
+        if not conn: return False
+        cur = await conn.execute(
+            "DELETE FROM saved_tokens WHERE id = ?", (token_id,)
+        )
+        await conn.commit()
+        return cur.rowcount > 0
+
     async def get_due_tokens(self) -> list[dict]:
         """Get tokens that are due for auto-run."""
         conn = self._db
@@ -198,11 +297,15 @@ class Database:
     ):
         conn = self._db
         if not conn: return
-        await conn.execute(
+        cur = await conn.execute(
             """
             INSERT INTO quest_stats (token_id, discord_uid, quest_id, quest_name,
                                      task_type, completed_at, duration_secs, run_mode)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            SELECT ?, ?, ?, ?, ?, ?, ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM quest_stats
+                WHERE discord_uid = ? AND quest_id = ?
+            )
             """,
             (
                 token_id,
@@ -213,9 +316,12 @@ class Database:
                 datetime.now(timezone.utc).isoformat(),
                 duration_secs,
                 run_mode,
+                discord_uid,
+                quest_id,
             ),
         )
         await conn.commit()
+        return cur.rowcount > 0
 
     async def get_user_stats(self, discord_uid: str) -> dict:
         conn = self._db
@@ -270,6 +376,70 @@ class Database:
                 interaction_count = interaction_count + 1
             """,
             (discord_uid, now, now, now),
+        )
+        await conn.commit()
+
+    async def get_user_language(self, discord_uid: str) -> str:
+        conn = self._db
+        if not conn:
+            return "en"
+        cur = await conn.execute(
+            "SELECT language FROM user_interactions WHERE discord_uid = ?",
+            (discord_uid,),
+        )
+        row = await cur.fetchone()
+        return row["language"] if row and row["language"] in {"en", "vi"} else "en"
+
+    async def set_user_language(self, discord_uid: str, language: str):
+        if language not in {"en", "vi"}:
+            raise ValueError("Unsupported language")
+        conn = self._db
+        if not conn:
+            return
+        await conn.execute(
+            """
+            INSERT INTO user_interactions (discord_uid, language)
+            VALUES (?, ?)
+            ON CONFLICT(discord_uid) DO UPDATE SET
+                language = excluded.language,
+                last_seen_at = CURRENT_TIMESTAMP
+            """,
+            (discord_uid, language),
+        )
+        await conn.commit()
+
+    async def get_user_quest_mode(self, discord_uid: str) -> str:
+        """Return the saved execution mode, defaulting safely to ``multi``."""
+        conn = self._db
+        if not conn:
+            return "multi"
+        try:
+            cur = await conn.execute(
+                "SELECT quest_mode FROM user_interactions WHERE discord_uid = ?",
+                (discord_uid,),
+            )
+            row = await cur.fetchone()
+        except Exception:
+            return "multi"
+        mode = row["quest_mode"] if row else "multi"
+        return mode if mode in {"single", "multi"} else "multi"
+
+    async def set_user_quest_mode(self, discord_uid: str, mode: str):
+        """Persist a user's quest execution mode."""
+        if mode not in {"single", "multi"}:
+            raise ValueError("Unsupported quest mode")
+        conn = self._db
+        if not conn:
+            return
+        await conn.execute(
+            """
+            INSERT INTO user_interactions (discord_uid, quest_mode)
+            VALUES (?, ?)
+            ON CONFLICT(discord_uid) DO UPDATE SET
+                quest_mode = excluded.quest_mode,
+                last_seen_at = CURRENT_TIMESTAMP
+            """,
+            (discord_uid, mode),
         )
         await conn.commit()
 
@@ -386,24 +556,21 @@ class Database:
         """
         conn = self._db
         if conn:
-            cur = await conn.execute(
-                "SELECT COUNT(*) as cnt FROM quest_stats "
-                f"WHERE id IN ({FIRST_QUEST_RECORD_IDS})"
-            )
-            row = await cur.fetchone()
-            if row and row["cnt"]:
-                return row["cnt"]
-
-        val = await self.get_global_stat("total_quests_done")
-        if val is not None:
             try:
-                return int(val)
-            except ValueError:
+                cur = await conn.execute(
+                    "SELECT COUNT(*) as cnt FROM quest_stats "
+                    f"WHERE id IN ({FIRST_QUEST_RECORD_IDS})"
+                )
+                row = await cur.fetchone()
+                # A real zero is valid. Do not replace it with the legacy
+                # counter, which may include duplicate or failed-run counts.
+                return int(row["cnt"] or 0) if row else 0
+            except Exception:
                 pass
-        
-        # Fallback to counting rows if global_stat is missing/corrupt
-        conn = self._db
-        if not conn: return 0
-        cur = await conn.execute("SELECT COUNT(*) as cnt FROM quest_stats")
-        row = await cur.fetchone()
-        return row["cnt"] if row else 0
+
+        # Only use the legacy counter when the detail table is unavailable.
+        val = await self.get_global_stat("total_quests_done")
+        try:
+            return int(val or 0)
+        except (TypeError, ValueError):
+            return 0

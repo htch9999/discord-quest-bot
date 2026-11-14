@@ -158,18 +158,27 @@ class DiscordAPI:
         logger.debug("  -> %s", r.status)
         return r
 
-    async def validate_token(self) -> bool:
-        """Validate the user token by calling /users/@me."""
+    async def validate_token_status(self) -> tuple[bool, Optional[int]]:
+        """Validate the user token by calling /users/@me.
+
+        Returns ``(ok, http_status)``. ``http_status`` is ``None`` when Discord
+        could not be reached (network error) — callers must treat that as
+        transient and NOT as a dead token.
+        """
         try:
             r = await self.get("/users/@me")
             if r.status == 200:
                 user = await r.json()
                 name = user.get("username", "?")
                 logger.info("Đăng nhập: %s (ID: %s)", name, user["id"])
-                return True
-            else:
-                logger.error("Token không hợp lệ (status %s)", r.status)
-                return False
+                return True, 200
+            logger.error("Token không hợp lệ (status %s)", r.status)
+            return False, r.status
         except Exception as e:
             logger.error("Không thể kết nối tới Discord: %s", e)
-            return False
+            return False, None
+
+    async def validate_token(self) -> bool:
+        """Validate the user token by calling /users/@me."""
+        ok, _ = await self.validate_token_status()
+        return ok

@@ -19,7 +19,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from bot.config import VERSION, STATS_TZ_OFFSET_HOURS
+from bot.config import VERSION, STATS_TZ_OFFSET_HOURS, STATS_REFRESH_SECONDS
 from bot.db.models import FIRST_QUEST_RECORD_IDS
 
 
@@ -62,7 +62,7 @@ def create_api(bot) -> FastAPI:
         _cache[key] = (time.time(), data)
 
     # ── Background Stats Updater ─────────────────────────────────────────
-    # Updates the heavy DB aggregations every 60 seconds independently of API requests
+    # Updates the heavy DB aggregations independently of API requests.
     _bg_task = None
     _stats_data = {
         "total_users": 0,
@@ -124,9 +124,9 @@ def create_api(bot) -> FastAPI:
             except Exception as e:
                 logger.error("Error in stats update loop: %s", e)
                 
-            # Run the first pass back-to-back so a freshly (re)started API
-            # serves real numbers immediately instead of waiting 60 seconds
-            await asyncio.sleep(0 if first_pass else 60)
+            # Run the first pass immediately so a freshly (re)started API
+            # serves real numbers without waiting for the refresh interval.
+            await asyncio.sleep(0 if first_pass else max(1, STATS_REFRESH_SECONDS))
             first_pass = False
 
     @api.on_event("startup")
@@ -142,7 +142,9 @@ def create_api(bot) -> FastAPI:
     # ── GET /v1/stats/public ─────────────────────────────────────────────
     @api.get("/v1/stats/public")
     async def stats_public():
-        cached = _get_cached("stats_public", ttl=10) # Reduced ttl for faster live updates for active stats
+        cached = _get_cached(
+            "stats_public", ttl=max(1, STATS_REFRESH_SECONDS)
+        )
         if cached:
             return cached
 

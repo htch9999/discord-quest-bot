@@ -4,12 +4,13 @@
     "description": "Auto Quests Bot — Tự động hoàn thành quest Discord với bảo mật cấp ngân hàng và xử lý đa luồng."
   },
   "nav": {
-    "features": "Tính năng nổi bật",
+    "features": "Tính năng",
+    "modes": "Chế độ chạy",
     "security": "Bảo mật",
-    "commands": "Tài liệu Lệnh",
-    "stats": "Live Trạng thái",
-    "guide": "Hướng dẫn sử dụng",
-    "faq": "Hỏi đáp",
+    "commands": "Lệnh",
+    "stats": "Trạng thái",
+    "guide": "Hướng dẫn",
+    "faq": "FAQ",
     "settings": "Cài đặt",
     "lang": "Ngôn ngữ",
     "back_home": "Quay lại Trang chủ"
@@ -40,7 +41,7 @@
     "title": "Hệ sinh thái tính năng toàn diện",
     "subtitle": "Được thiết kế tỉ mỉ cho độ tin cậy, tốc độ và bảo mật cấp doanh nghiệp.",
     "parallel_title": "Xử lý Đa luồng (Parallel Execution)",
-    "parallel_desc": "Vận hành song song đến 6 quest cùng lúc thông qua các thread hoàn toàn độc lập.",
+    "parallel_desc": "Vận hành song song đến 10 quest cùng lúc thông qua các thread hoàn toàn độc lập.",
     "security_title": "Bảo mật Zero-Knowledge",
     "security_desc": "Mã hoá tiêu chuẩn quân đội AES-256-GCM. Token của bạn không bao giờ lưu trữ dạng rõ.",
     "auto_title": "Lập lịch Thông minh",
@@ -60,6 +61,17 @@
     "oss_title": "Minh bạch Nguồn mở",
     "oss_desc": "Toàn bộ mã gốc công khai. Dễ dàng kiểm định, đóng góp và có sẵn tài liệu tự triển khai."
   },
+  "modes": {
+    "badge": "Execution Modes",
+    "title": "Chọn cách bot chạy quest",
+    "subtitle": "Chọn giữa tốc độ của Multi Mode và nhịp chạy tuần tự, thận trọng hơn của Single Mode.",
+    "multi_title": "Multi Mode · Chạy song song",
+    "multi_desc": "Giữ nguyên cơ chế hiện tại: nhiều quest được xử lý cùng lúc để hoàn thành nhanh hơn.",
+    "single_title": "Single Mode · Chạy tuần tự",
+    "single_desc": "Chỉ một quest được chạy tại mỗi thời điểm. Sau khi quest kết thúc, bot chờ 10 giây rồi chuyển sang quest tiếp theo.",
+    "command_title": "Cấu hình theo tài khoản",
+    "command_desc": "Chế độ được lưu cho tài khoản và dùng cho các lần chạy quest về sau."
+  },
   "guide": {
     "badge": "Hướng dẫn 3 Bước",
     "title": "Bắt đầu Sử dụng AutoQuest",
@@ -70,8 +82,8 @@
     "step2_desc": "Sử dụng script an toàn của chúng tôi để trích xuất token trực tiếp từ trình duyệt.",
     "step2_warning": "⚠️ Cảnh báo: Tuyệt đối không chia sẻ token này cho bất kỳ ai.",
     "step3_title": "Kích hoạt Tự động hóa",
-    "step3_desc": "Sử dụng lệnh /autoquests add để lưu token và bắt đầu làm quest 24/7.",
-    "step3_note": "Sử dụng /autoquests run để bắt đầu ngay phiên chạy đầu tiên.",
+    "step3_desc": "Sử dụng lệnh /autoquests save để lưu token và bắt đầu làm quest 24/7.",
+    "step3_note": "Sử dụng /autoquests-run để bắt đầu ngay phiên chạy đầu tiên.",
     "cmd_autoquests_add": "— Lưu token và bật auto-quest 24/7",
     "cmd_autoquests_run": "— Chạy ngay phiên quest đầu tiên",
     "cmd_quests": "— Chạy quest một lần (token không được lưu)",
@@ -125,7 +137,8 @@
     "a_pause": "Tạm dừng tiến trình tự động chạy định kỳ cho token này.",
     "a_resume": "Bật lại chế độ tự động chạy sau khi đã tạm dừng.",
     "a_status": "Xem trạng thái chi tiết, thời gian chạy cuối và lịch chạy tiếp theo.",
-    "s_user": "Báo cáo chi tiết hiệu suất và khối lượng quest cá nhân.",
+    "a_mode": "Chọn chạy tuần tự từng quest hoặc chạy nhiều quest song song cho các lần chạy sau.",
+    "s_user": "Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn thành.",
     "s_info": "Thông tin tổng quan về hệ thống và cộng đồng AutoQuest."
   },
   "live_stats": {
@@ -145,7 +158,7 @@
     "title": "Hỏi & Đáp (FAQ)",
     "subtitle": "Mọi điều bạn cần biết về cơ chế hoạt động và bảo mật của AutoQuest.",
     "q1": "Hệ thống có lưu trữ Token của tôi không?",
-    "a1": "Hệ thống chỉ lưu trữ khi bạn ấn định lệnh tự động hoá (/autoquests). Trước khi lưu, Token được băm và mã hoá AES-256-GCM qua khoá riêng biệt của bạn. Trải nghiệm chạy một lần không để lại bất cứ dữ liệu nào trên bộ nhớ điện toán.",
+    "a1": "Hệ thống chỉ lưu trữ khi bạn ấn định lệnh tự động hoá (/autoquests save). Trước khi lưu, Token được băm và mã hoá AES-256-GCM qua khoá riêng biệt của bạn. Trải nghiệm chạy một lần không để lại bất cứ dữ liệu nào trên bộ nhớ điện toán.",
     "q2": "Sử dụng dịch vụ này có vi phạm chính sách và bị cấm không?",
     "a2": "Bot của chúng tôi mô phỏng gần như trọn vẹn lưu lượng truy cập client hợp lệ qua API. Dẫu vậy, mọi hình thức tự động hoá trên nền tảng uỷ thác bên thứ 3 luôn đi kèm mức rủi ro tiềm tàng nhất định. Khuyến cáo người dùng cân nhắc.",
     "q3": "Các danh mục Quest hỗ trợ hiện tại?",
@@ -153,7 +166,7 @@
     "q4": "Tôi có thể tự thiết lập cấu hình chạy tại nhà (Self-host)?",
     "a4": "Hoàn toàn khả thi. Dự án là mã nguồn mở kèm tài liệu triển khai theo chuẩn Docker tiên tiến.",
     "q5": "Quy trình xoá dữ liệu của người dùng?",
-    "a5": "Khi kích hoạt lệnh /autoquests remove, Token và tất cả các tệp thống kê liên đới về tài khoản sẽ bị xoá vĩnh viễn không thể khôi phục khỏi hệ thống cơ sở dữ liệu.",
+    "a5": "Khi kích hoạt lệnh /autoquests-remove, Token và tất cả các tệp thống kê liên đới về tài khoản sẽ bị xoá vĩnh viễn không thể khôi phục khỏi hệ thống cơ sở dữ liệu.",
     "q6": "Mô hình kinh doanh của dự án là gì?",
     "a6": "Dự án vận hành trên cơ sở 100% phi lợi nhuận (Open-source free tier). Không phát sinh phí dịch vụ ngầm.",
     "q7": "Kênh hỗ trợ và báo cáo lỗi?",
@@ -163,17 +176,27 @@
     "q9": "Tại sao tôi cần bật chế độ Mobile khi lấy token?",
     "a9": "Discord chặn việc truy cập hàm getToken() trên bản Web/Desktop thông thường như một biện pháp bảo vệ. Chế độ Mobile giả lập môi trường cho phép truy cập tài nguyên này.",
     "q10": "Bot có cần máy tính của tôi phải bật không?",
-    "a10": "Không. Nếu bạn dùng lệnh /autoquests add, hệ thống Cloud của chúng tôi sẽ tự động vận hành 24/7 mà không cần máy tính của bạn hoạt động.",
+    "a10": "Không. Nếu bạn dùng lệnh /autoquests save, hệ thống Cloud của chúng tôi sẽ tự động vận hành 24/7 mà không cần máy tính của bạn hoạt động.",
     "q11": "Tôi có thể sử dụng nhiều tài khoản cùng lúc không?",
-    "a11": "Có. Bạn có thể thêm không giới hạn tài khoản bằng cách sử dụng lại lệnh /autoquests add với các token khác nhau.",
+    "a11": "Có. Bạn có thể thêm không giới hạn tài khoản bằng cách sử dụng lại lệnh /autoquests save với các token khác nhau.",
     "q12": "Thông tin về mã nguồn mở và đóng góp?",
-    "a12": "Toàn bộ mã nguồn được lưu trữ trên GitHub dưới giấy phép MIT. Chúng tôi hoan nghênh mọi đóng góp về code, bản dịch hoặc báo cáo lỗ hổng bảo mật."
+    "a12": "Toàn bộ mã nguồn được lưu trữ trên GitHub dưới giấy phép MIT. Chúng tôi hoan nghênh mọi đóng góp về code, bản dịch hoặc báo cáo lỗ hổng bảo mật.",
+    "q13": "Single Mode là gì?",
+    "a13": "Single Mode xử lý từng quest một. Quest tiếp theo chỉ bắt đầu sau khi quest hiện tại kết thúc hoặc thất bại và bot đã chờ 10 giây.",
+    "q14": "Multi Mode khác Single Mode như thế nào?",
+    "a14": "Multi Mode ưu tiên tốc độ bằng cách chạy nhiều quest đồng thời. Single Mode giảm số request đồng thời bằng cách xử lý tuần tự.",
+    "q15": "Làm thế nào để đổi chế độ chạy?",
+    "a15": "Dùng lệnh <code>/autoquests mode single</code> hoặc <code>/autoquests mode multi</code>. Cài đặt được lưu theo tài khoản của bạn.",
+    "q16": "10 giây trong Single Mode có nghĩa là gì?",
+    "a16": "Đó là khoảng nghỉ giữa hai quest, không phải giới hạn thời gian của từng quest. Một quest video hoặc heartbeat vẫn có thể cần nhiều phút để hoàn thành.",
+    "q17": "Đổi mode có dừng phiên đang chạy không?",
+    "a17": "Không. Mode mới được áp dụng cho các lần chạy sau. Phiên đang chạy sẽ hoàn tất theo mode đã chọn lúc bắt đầu."
   },
   "oss": {
     "title": "Dự án Nguồn mở & Cộng đồng",
     "subtitle": "Minh bạch là nền tảng của sự tin cậy.",
     "architecture_title": "Kiến trúc Hệ thống",
-    "architecture_desc": "Xây dựng trên nền tảng Python & Disnake, sử dụng SQLite để quản lý dữ liệu hiệu năng cao và Docker để triển khai ổn định.",
+    "architecture_desc": "Xây dựng trên nền tảng Python & discord.py, sử dụng SQLite để quản lý dữ liệu hiệu năng cao và Docker để triển khai ổn định.",
     "contribute_title": "Đóng góp",
     "contribute_desc": "Chúng tôi sử dụng quy trình Pull Request chuẩn. Bạn có thể giúp cải thiện logic làm quest hoặc giao diện website.",
     "selfhost_title": "Tự vận hành (Self-hosting)",
@@ -197,7 +220,7 @@
   },
   "privacy": {
     "title": "Chính sách Quyền Riêng Tư",
-    "content": "<p>Chào mừng bạn đến với AutoQuest! Chúng tôi hiểu rằng tính bảo mật và sự riêng tư là yếu tố quan trọng nhất khi sử dụng các dịch vụ tự động hóa. Chính sách này trình bày một cách minh bạch về phương thức chúng tôi bảo vệ bạn.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>1. Thu thập thông tin cốt lõi</h3><p>AutoQuest chỉ yêu cầu một thông tin duy nhất: <strong>Discord Authentication Token</strong> của bạn. Đây là dữ liệu vô cùng nhạy cảm và hệ thống của chúng tôi được thiết kế với tiêu chuẩn <q>Zero-Knowledge</q> (Không Lưu Trữ Bản Rõ).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>2. Tiêu chuẩn mã hóa cấp cao</h3><p>Ngay khi bạn cung cấp Token thông qua lệnh Discord, Token sẽ lập tức được băm và mã hóa ở cấp độ cao nhất bằng thuật toán <strong>AES-256-GCM</strong>. Token gốc không bao giờ được lưu thẳng vào ổ đĩa, file log hay bất cứ báo cáo hệ thống nào dưới dạng văn bản thô (plain-text).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>3. Chính sách không chia sẻ (No-Log / No-Share)</h3><p>AutoQuest cam kết tuyệt đối <strong>không bán, cho thuê, trao đổi</strong> thông tin cá nhân hay Token của bạn dưới bất cứ hình thức nào cho các bên thứ ba (third-party), công ty quảng cáo hay dịch vụ phân tích.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>4. Quyền Rút lui Tuyệt đối (Absolute Opt-out)</h3><p>Là chủ sở hữu dữ liệu, bạn có quyền <strong>Xóa 100%</strong> dấu vết của mình chỉ bằng một thao tác duy nhất. Cú pháp <code>/autoquests remove</code> sẽ ép hệ thống xóa vĩnh viễn mọi bản ghi mã hóa, các lệnh tự động đang chạy (thread) cũng như mọi bảng thống kê cá nhân có liên quan khỏi máy chủ điện toán ngay lập tức.</p>"
+    "content": "<p>Chào mừng bạn đến với AutoQuest! Chúng tôi hiểu rằng tính bảo mật và sự riêng tư là yếu tố quan trọng nhất khi sử dụng các dịch vụ tự động hóa. Chính sách này trình bày một cách minh bạch về phương thức chúng tôi bảo vệ bạn.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>1. Thu thập thông tin cốt lõi</h3><p>AutoQuest chỉ yêu cầu một thông tin duy nhất: <strong>Discord Authentication Token</strong> của bạn. Đây là dữ liệu vô cùng nhạy cảm và hệ thống của chúng tôi được thiết kế với tiêu chuẩn <q>Zero-Knowledge</q> (Không Lưu Trữ Bản Rõ).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>2. Tiêu chuẩn mã hóa cấp cao</h3><p>Ngay khi bạn cung cấp Token thông qua lệnh Discord, Token sẽ lập tức được băm và mã hóa ở cấp độ cao nhất bằng thuật toán <strong>AES-256-GCM</strong>. Token gốc không bao giờ được lưu thẳng vào ổ đĩa, file log hay bất cứ báo cáo hệ thống nào dưới dạng văn bản thô (plain-text).</p><h3 style='margin-top:20px; color:var(--accent-primary);'>3. Chính sách không chia sẻ (No-Log / No-Share)</h3><p>AutoQuest cam kết tuyệt đối <strong>không bán, cho thuê, trao đổi</strong> thông tin cá nhân hay Token của bạn dưới bất cứ hình thức nào cho các bên thứ ba (third-party), công ty quảng cáo hay dịch vụ phân tích.</p><h3 style='margin-top:20px; color:var(--accent-primary);'>4. Quyền Rút lui Tuyệt đối (Absolute Opt-out)</h3><p>Là chủ sở hữu dữ liệu, bạn có quyền <strong>Xóa 100%</strong> dấu vết của mình chỉ bằng một thao tác duy nhất. Cú pháp <code>/autoquests-remove</code> sẽ ép hệ thống xóa vĩnh viễn mọi bản ghi mã hóa, các lệnh tự động đang chạy (thread) cũng như mọi bảng thống kê cá nhân có liên quan khỏi máy chủ điện toán ngay lập tức.</p>"
   },
   "terms": {
     "title": "Điều khoản Dịch vụ",

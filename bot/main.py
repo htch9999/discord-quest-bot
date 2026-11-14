@@ -31,6 +31,7 @@ COGS = [
     "bot.cogs.info",
     "bot.cogs.admin",
     "bot.cogs.help",
+    "bot.cogs.language",
 ]
 
 
@@ -61,11 +62,8 @@ class QuestBot(commands.Bot):
 
         # Load cogs
         for cog in COGS:
-            try:
-                await self.load_extension(cog)
-                logger.info("Loaded cog: %s", cog)
-            except Exception as e:
-                logger.error("Failed to load cog %s: %s", cog, e)
+            await self.load_extension(cog)
+            logger.info("Loaded cog: %s", cog)
 
         # Sync slash commands
         try:
@@ -76,6 +74,9 @@ class QuestBot(commands.Bot):
 
         # Start scheduler
         self.scheduler.start()
+
+        # Clean stale records before on_ready schedules active tokens.
+        await self.scheduler.cleanup_dead_tokens()
 
         # Start FastAPI server in background
         asyncio.create_task(self._start_api_server())
@@ -119,6 +120,7 @@ class QuestBot(commands.Bot):
         # Startup auto-run for active tokens
         asyncio.create_task(self.scheduler.run_all_active())
 
+
     async def close(self):
         """Clean shutdown."""
         logger.info("Shutting down...")
@@ -150,4 +152,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

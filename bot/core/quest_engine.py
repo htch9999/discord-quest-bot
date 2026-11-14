@@ -17,6 +17,7 @@ from bot.config import (
     HEARTBEAT_INTERVAL,
     AUTO_ACCEPT,
     MAX_PARALLEL_PLAY,
+    SINGLE_MODE_DELAY_SECONDS,
     SUPPORTED_TASKS,
     DEBUG,
 )
@@ -30,6 +31,9 @@ ProgressCallback = Optional[Callable[[str, str, str, float, float], Awaitable[No
 
 CompleteCallback = Optional[Callable[[str, str, str, int], Awaitable[None]]]
 # (quest_id, quest_name, task_type, duration_secs)
+StartCallback = Optional[Callable[[list[dict]], Awaitable[None]]]
+# (quest_id, quest_name, task_type)
+QuestStartCallback = Optional[Callable[[str, str, str], Awaitable[None]]]
 
 
 # ── Quest helper functions ───────────────────────────────────────────────────
@@ -151,10 +155,19 @@ class QuestEngine:
         api: DiscordAPI,
         on_progress: ProgressCallback = None,
         on_complete: CompleteCallback = None,
+        on_start: StartCallback = None,
+        on_quest_start: QuestStartCallback = None,
+        run_mode: str = "multi",
     ):
+        if run_mode not in {"single", "multi"}:
+            raise ValueError("Unsupported quest run mode")
         self.api = api
         self.on_progress = on_progress
         self.on_complete = on_complete
+        self.on_start = on_start
+        self.on_quest_start = on_quest_start
+        self.run_mode = run_mode
+        self.single_mode_delay = max(0, SINGLE_MODE_DELAY_SECONDS)
         self.completed_ids: set = set()
         self._running_tasks: dict[str, asyncio.Task] = {}
         self._semaphore = asyncio.Semaphore(MAX_PARALLEL_PLAY)
@@ -186,6 +199,13 @@ class QuestEngine:
         if self.on_complete:
             try:
                 await self.on_complete(qid, name, task_type, duration)
+            except Exception:
+                pass
+
+    async def _notify_quest_start(self, qid: str, name: str, task_type: str):
+        if self.on_quest_start:
+            try:
+                await self.on_quest_start(qid, name, task_type)
             except Exception:
                 pass
 
@@ -301,7 +321,7 @@ class QuestEngine:
 
     # ── Complete: WATCH_VIDEO ────────────────────────────────────────────────
 
-    async def complete_video(self, quest: dict):
+    async def complete_video(self, quest: dict) -> bool:
         name = get_quest_name(quest)
         qid = quest["id"]
         seconds_needed = get_seconds_needed(quest)
@@ -340,7 +360,7 @@ class QuestEngine:
                             duration = int(time.time() - start_ts)
                             logger.info("✅ Hoàn thành: %s", name)
                             await self._notify_complete(qid, name, "WATCH_VIDEO", duration)
-                            return
+                            return True
                         seconds_done = min(seconds_needed, timestamp)
                         logger.debug("  [%s] %d/%ds", name, seconds_done, seconds_needed)
                         await self._notify_progress(
@@ -364,21 +384,34 @@ class QuestEngine:
                 break
             await asyncio.sleep(interval)
 
-        # Final push
+        if self._cancelled:
+            return False
+
+        # Final push. A quest is successful only if Discord accepts the final
+        # progress update and the target was reached (or Discord marks it done).
+        completed = False
         try:
-            await self.api.post(
+            response = await self.api.post(
                 f"/quests/{qid}/video-progress", {"timestamp": seconds_needed}
             )
-        except Exception:
-            pass
+            if 200 <= response.status < 300 and seconds_needed > 0:
+                try:
+                    body = await response.json()
+                except Exception:
+                    body = {}
+                completed = bool(body.get("completed_at")) or seconds_done >= seconds_needed
+        except Exception as e:
+            logger.error("Final video progress update failed for %s: %s", name, e)
 
-        duration = int(time.time() - start_ts)
-        logger.info("✅ Hoàn thành: %s", name)
-        await self._notify_complete(qid, name, "WATCH_VIDEO", duration)
+        if completed:
+            duration = int(time.time() - start_ts)
+            logger.info("✅ Hoàn thành: %s", name)
+            await self._notify_complete(qid, name, "WATCH_VIDEO", duration)
+        return completed
 
     # ── Complete: PLAY_ON_DESKTOP / STREAM_ON_DESKTOP ────────────────────────
 
-    async def complete_heartbeat(self, quest: dict):
+    async def complete_heartbeat(self, quest: dict) -> bool:
         name = get_quest_name(quest)
         qid = quest["id"]
         task_type = get_task_type(quest)
@@ -417,7 +450,7 @@ class QuestEngine:
                         duration = int(time.time() - start_ts)
                         logger.info("✅ Hoàn thành: %s", name)
                         await self._notify_complete(qid, name, task_type, duration)
-                        return
+                        return True
 
                 elif r.status == 429:
                     body = await r.json()
@@ -427,7 +460,7 @@ class QuestEngine:
                     continue
                 elif r.status == 401:
                     logger.warning("  Token unauthorized for %s, stopping", name)
-                    return
+                    return False
                 else:
                     text = await r.text()
                     logger.warning(
@@ -439,22 +472,37 @@ class QuestEngine:
 
             await asyncio.sleep(HEARTBEAT_INTERVAL)
 
-        # Terminal heartbeat
+        if self._cancelled:
+            return False
+
+        # Terminal heartbeat. Do not report success merely because the loop
+        # ended; only a confirmed target/completion from Discord counts.
+        completed = False
         try:
-            await self.api.post(
+            response = await self.api.post(
                 f"/quests/{qid}/heartbeat",
                 {"stream_key": f"call:0:{pid}", "terminal": True},
             )
-        except Exception:
-            pass
+            if 200 <= response.status < 300:
+                try:
+                    body = await response.json()
+                except Exception:
+                    body = {}
+                completed = bool(body.get("completed_at")) or (
+                    seconds_needed > 0 and seconds_done >= seconds_needed
+                )
+        except Exception as e:
+            logger.error("Terminal heartbeat failed for %s: %s", name, e)
 
-        duration = int(time.time() - start_ts)
-        logger.info("✅ Hoàn thành: %s", name)
-        await self._notify_complete(qid, name, task_type, duration)
+        if completed:
+            duration = int(time.time() - start_ts)
+            logger.info("✅ Hoàn thành: %s", name)
+            await self._notify_complete(qid, name, task_type, duration)
+        return completed
 
     # ── Complete: PLAY_ACTIVITY ──────────────────────────────────────────────
 
-    async def complete_activity(self, quest: dict):
+    async def complete_activity(self, quest: dict) -> bool:
         name = get_quest_name(quest)
         qid = quest["id"]
         seconds_needed = get_seconds_needed(quest)
@@ -467,6 +515,7 @@ class QuestEngine:
         )
 
         stream_key = "call:0:1"
+        completed = False
         await self._notify_progress(qid, name, "PLAY_ACTIVITY", seconds_done, seconds_needed)
 
         while seconds_done < seconds_needed and not self._cancelled:
@@ -489,6 +538,7 @@ class QuestEngine:
                     )
 
                     if body.get("completed_at") or seconds_done >= seconds_needed:
+                        completed = seconds_needed > 0
                         break
                 elif r.status == 429:
                     body = await r.json()
@@ -498,7 +548,7 @@ class QuestEngine:
                     continue
                 elif r.status == 401:
                     logger.warning("  Token unauthorized for %s, stopping", name)
-                    return
+                    return False
                 else:
                     text = await r.text()
                     logger.warning(
@@ -509,18 +559,30 @@ class QuestEngine:
 
             await asyncio.sleep(HEARTBEAT_INTERVAL)
 
-        # Terminal
+        if self._cancelled:
+            return False
+
+        # Terminal heartbeat
         try:
-            await self.api.post(
+            response = await self.api.post(
                 f"/quests/{qid}/heartbeat",
                 {"stream_key": stream_key, "terminal": True},
             )
-        except Exception:
-            pass
+            if not completed and 200 <= response.status < 300:
+                try:
+                    body = await response.json()
+                except Exception:
+                    body = {}
+                completed = bool(body.get("completed_at"))
+        except Exception as e:
+            logger.error("Terminal activity heartbeat failed for %s: %s", name, e)
+            completed = False
 
-        duration = int(time.time() - start_ts)
-        logger.info("✅ Hoàn thành: %s", name)
-        await self._notify_complete(qid, name, "PLAY_ACTIVITY", duration)
+        if completed:
+            duration = int(time.time() - start_ts)
+            logger.info("✅ Hoàn thành: %s", name)
+            await self._notify_complete(qid, name, "PLAY_ACTIVITY", duration)
+        return completed
 
     # ── Process a single quest ───────────────────────────────────────────────
 
@@ -542,13 +604,17 @@ class QuestEngine:
         async def _run():
             async with self._semaphore:
                 try:
+                    await self._notify_quest_start(qid, name, task_type)
                     if task_type in ("WATCH_VIDEO", "WATCH_VIDEO_ON_MOBILE"):
-                        await self.complete_video(quest)
+                        completed = await self.complete_video(quest)
                     elif task_type == "PLAY_ACTIVITY":
-                        await self.complete_activity(quest)
+                        completed = await self.complete_activity(quest)
                     elif task_type in ("PLAY_ON_DESKTOP", "STREAM_ON_DESKTOP"):
-                        await self.complete_heartbeat(quest)
-                    self.completed_ids.add(qid)
+                        completed = await self.complete_heartbeat(quest)
+                    else:
+                        completed = False
+                    if completed:
+                        self.completed_ids.add(qid)
                 except asyncio.CancelledError:
                     logger.info("Task cancelled: %s", name)
                 except Exception as e:
@@ -571,15 +637,18 @@ class QuestEngine:
         self._cancelled = False
         summary = {
             "total": 0,
+            "fetched_total": 0,
+            "actionable_total": 0,
             "enrolled": 0,
             "completed_before": 0,
             "completed_now": 0,
             "errors": 0,
+            "run_mode": self.run_mode,
             "quests": [],
         }
 
         quests = await self.fetch_quests()
-        summary["total"] = len(quests)
+        summary["fetched_total"] = len(quests)
 
         if not quests:
             logger.info("Không có quest nào")
@@ -601,27 +670,61 @@ class QuestEngine:
             and str(q.get("id")) not in self.completed_ids
         ]
 
+        # ``total`` is kept for compatibility with existing progress renderers,
+        # but now means the number of quests actually scheduled in this run.
+        summary["actionable_total"] = len(actionable)
+        summary["total"] = len(actionable)
+
         if not actionable:
             logger.info("Không có quest nào cần hoàn thành lúc này")
             return summary
 
         logger.info("%d quest(s) cần hoàn thành:", len(actionable))
 
-        # Start all quest processing tasks
-        for q in actionable:
-            qid = str(q.get("id"))
-            await self.process_quest(q)
-            summary["quests"].append({
-                "id": qid,
-                "name": get_quest_name(q),
-                "task_type": get_task_type(q),
-            })
+        # Notify callers only after finding work, but before launching it. This
+        # lets Discord integrations create one live progress message per run.
+        if self.on_start:
+            try:
+                await self.on_start(actionable)
+            except Exception as e:
+                logger.warning("Run start callback failed: %s", e)
 
-        # Wait for all tasks to complete
-        if self._running_tasks:
-            await asyncio.gather(
-                *self._running_tasks.values(), return_exceptions=True
-            )
+        if self.run_mode == "single":
+            # Single mode deliberately waits for each quest before moving to
+            # the next one. The delay is between quests, never after the last.
+            for index, q in enumerate(actionable):
+                if self._cancelled:
+                    break
+                qid = str(q.get("id"))
+                await self.process_quest(q)
+                await self.wait_all()
+                summary["quests"].append({
+                    "id": qid,
+                    "name": get_quest_name(q),
+                    "task_type": get_task_type(q),
+                })
+                if self._cancelled:
+                    break
+                if (
+                    index < len(actionable) - 1
+                    and self.single_mode_delay
+                ):
+                    await asyncio.sleep(self.single_mode_delay)
+        else:
+            # Multi mode preserves the existing parallel scheduling behavior.
+            for q in actionable:
+                qid = str(q.get("id"))
+                await self.process_quest(q)
+                summary["quests"].append({
+                    "id": qid,
+                    "name": get_quest_name(q),
+                    "task_type": get_task_type(q),
+                })
+
+            if self._running_tasks:
+                await asyncio.gather(
+                    *self._running_tasks.values(), return_exceptions=True
+                )
 
         summary["completed_now"] = len(self.completed_ids)
         return summary

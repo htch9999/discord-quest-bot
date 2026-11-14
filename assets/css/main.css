@@ -619,6 +619,14 @@ section { padding: var(--section-padding); }
 .feature-card h3 { font-size: 1.4rem; margin-bottom: 0.75rem; }
 .feature-card p { color: var(--text-secondary); font-size: 0.95rem; }
 
+.mode-command-card {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
 /* ─── Guide (How it Works) ────────────────────────────────────────────────── */
 .guide-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 1rem; }
 .guide-step { position: relative; }

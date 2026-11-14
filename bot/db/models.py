@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS saved_tokens (
     last_run_at DATETIME,
     next_run_at DATETIME,
     is_active   BOOLEAN DEFAULT 1,
+    fail_count  INTEGER DEFAULT 0,
     UNIQUE(discord_uid, label)
 );
 
@@ -54,7 +55,9 @@ CREATE TABLE IF NOT EXISTS user_interactions (
     discord_uid     TEXT PRIMARY KEY,
     first_seen_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_seen_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    interaction_count INTEGER DEFAULT 1
+    interaction_count INTEGER DEFAULT 1,
+    language        TEXT NOT NULL DEFAULT 'en',
+    quest_mode      TEXT NOT NULL DEFAULT 'multi'
 );
 
 -- Chỉ mục tối ưu hiệu năng
@@ -94,3 +97,16 @@ FIRST_QUEST_RECORD_IDS = (
     "SELECT MIN(id) FROM quest_stats GROUP BY discord_uid, quest_id"
 )
 
+# Migration: track consecutive validation failures in saved_tokens so dead
+# tokens can be cleaned up automatically (added after the initial schema).
+MIGRATION_ADD_FAIL_COUNT = (
+    "ALTER TABLE saved_tokens ADD COLUMN fail_count INTEGER DEFAULT 0"
+)
+
+MIGRATION_ADD_USER_LANGUAGE = (
+    "ALTER TABLE user_interactions ADD COLUMN language TEXT NOT NULL DEFAULT 'en'"
+)
+
+MIGRATION_ADD_QUEST_MODE = (
+    "ALTER TABLE user_interactions ADD COLUMN quest_mode TEXT NOT NULL DEFAULT 'multi'"
+)

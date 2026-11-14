@@ -16,8 +16,14 @@ from bot.config import (
     SCHEDULER_CHECK_HOURS,
     SCHEDULER_JITTER_MINS,
     AUTO_RUN_INTERVAL_DAYS,
+    SCHEDULER_CLEANUP_HOURS,
+    TOKEN_MAX_FAILURES,
+    TOKEN_INACTIVE_CLEANUP_DAYS,
 )
 from bot.utils.logger import get_logger
+from bot.utils.formatter import auto_run_embed, token_invalid_embed, token_deleted_embed
+from bot.utils.i18n import tr
+from bot.services.progress_message import ProgressMessage
 
 logger = get_logger("scheduler")
 
@@ -37,6 +43,13 @@ class QuestScheduler:
             name="Auto-run quests",
             replace_existing=True,
         )
+        self.scheduler.add_job(
+            self.cleanup_dead_tokens,
+            trigger=IntervalTrigger(hours=SCHEDULER_CLEANUP_HOURS),
+            id="dead_token_cleanup",
+            name="Clean up dead saved tokens",
+            replace_existing=True,
+        )
         self.scheduler.start()
         self._running = True
         logger.info(
@@ -44,6 +57,32 @@ class QuestScheduler:
             SCHEDULER_CHECK_HOURS,
             SCHEDULER_JITTER_MINS,
         )
+
+    async def cleanup_dead_tokens(self):
+        """Remove tokens repeatedly rejected by Discord or stale while paused."""
+        try:
+            tokens = await self.bot.db.get_dead_tokens(
+                TOKEN_MAX_FAILURES, TOKEN_INACTIVE_CLEANUP_DAYS
+            )
+            removed = 0
+            for token in tokens:
+                deleted = await self.bot.db.delete_token_by_id(token["id"])
+                removed += bool(deleted)
+                if deleted:
+                    try:
+                        language = await self.bot.db.get_user_language(token["discord_uid"])
+                        user = await self.bot.fetch_user(int(token["discord_uid"]))
+                        await user.send(embed=token_deleted_embed(
+                            token.get("label", "default"),
+                            token.get("token_hint", "????"),
+                            language=language,
+                        ))
+                    except Exception:
+                        logger.debug("Could not notify user about token cleanup")
+            if removed:
+                logger.info("Removed %d dead or stale saved token(s)", removed)
+        except Exception:
+            logger.exception("Dead-token cleanup failed")
 
     def stop(self):
         if self._running:
@@ -56,7 +95,7 @@ class QuestScheduler:
         from bot.db.database import Database
         from bot.services.crypto import decrypt_token
         from bot.core.discord_api import DiscordAPI, fetch_latest_build_number
-        from bot.core.quest_engine import QuestEngine
+        from bot.core.quest_engine import QuestEngine, get_quest_name, get_task_type, get_seconds_needed
         from bot.core.task_manager import TaskManager
 
         db: Database = self.bot.db
@@ -76,6 +115,7 @@ class QuestScheduler:
                 token_id = token_data["id"]
                 label = token_data.get("label", "default")
                 hint = token_data.get("token_hint", "????")
+                language = await db.get_user_language(uid)
 
                 # Jitter: delay by random minutes
                 jitter = random.randint(0, SCHEDULER_JITTER_MINS * 60)
@@ -104,14 +144,65 @@ class QuestScheduler:
                         _token_id=token_id,
                         _label=label,
                         _hint=hint,
+                        _language=language,
                     ):
                         api = None
+                        progress = None
+                        quest_mode = await db.get_user_quest_mode(_uid)
+
+                        async def on_start(actionable):
+                            nonlocal progress
+                            try:
+                                user = await self.bot.fetch_user(int(_uid))
+                                channel = await user.create_dm()
+                                progress = ProgressMessage(
+                                    channel=channel,
+                                    token_hint=_hint,
+                                    user_name=user.display_name,
+                                    language=_language,
+                                    run_mode="scheduled",
+                                    quest_mode=quest_mode,
+                                )
+                                for quest in actionable:
+                                    progress.update_quest(
+                                        str(quest.get("id")),
+                                        get_quest_name(quest),
+                                        get_task_type(quest) or "Quest",
+                                        0,
+                                        get_seconds_needed(quest),
+                                        status="queued",
+                                    )
+                                await progress.start()
+                            except Exception as e:
+                                progress = None
+                                logger.warning("Could not start progress message for %s: %s", _uid, e)
+
+                        async def on_progress(qid, name, task_type, done, total):
+                            if progress:
+                                progress.update_quest(qid, name, task_type, done, total)
+
+                        async def on_complete(qid, name, task_type, duration):
+                            if progress:
+                                progress.mark_complete(qid, name, task_type, duration)
+
+                        async def on_quest_start(qid, name, task_type):
+                            if progress:
+                                progress.mark_running(qid, name, task_type)
+
                         try:
                             build_number = await fetch_latest_build_number()
                             api = DiscordAPI(_token, build_number)
 
-                            if not await api.validate_token():
-                                # Token invalid — deactivate
+                            valid, status = await api.validate_token_status()
+                            if not valid:
+                                if status != 401:
+                                    try:
+                                        user = await self.bot.fetch_user(int(_uid))
+                                        await user.send(tr(_language, "temporary_validation"))
+                                    except Exception:
+                                        pass
+                                    return
+                                failures = await db.record_token_failure(_token_id)
                                 await db.set_token_active(_token_id, False)
                                 logger.warning(
                                     "Token %s/%s invalid, deactivated",
@@ -120,15 +211,23 @@ class QuestScheduler:
                                 # DM user
                                 try:
                                     user = await self.bot.fetch_user(int(_uid))
-                                    await user.send(
-                                        f"⚠️ Token **{_label}** (`...{_hint}`) "
-                                        "không hợp lệ. Auto-schedule đã bị tắt."
-                                    )
+                                    if failures >= TOKEN_MAX_FAILURES:
+                                        await db.delete_token_by_id(_token_id)
+                                        await user.send(embed=token_deleted_embed(_label, _hint, language=_language))
+                                    else:
+                                        await user.send(embed=token_invalid_embed(_label, _hint, failures, TOKEN_MAX_FAILURES, _language))
                                 except Exception:
                                     pass
                                 return
 
-                            engine = QuestEngine(api=api)
+                            engine = QuestEngine(
+                                api=api,
+                                on_progress=on_progress,
+                                on_complete=on_complete,
+                                on_start=on_start,
+                                on_quest_start=on_quest_start,
+                                run_mode=quest_mode,
+                            )
                             summary = await engine.run_once()
                             await engine.wait_all()
 
@@ -137,8 +236,12 @@ class QuestScheduler:
                             next_run = now + timedelta(days=AUTO_RUN_INTERVAL_DAYS)
                             await db.update_run_times(_token_id, now, next_run)
 
+                            if progress:
+                                await progress.finish(summary, next_run)
+
                             # Save stats
                             completed_names = []
+                            newly_completed = 0
                             for qid in engine.completed_ids:
                                 quest_info = next(
                                     (
@@ -154,7 +257,7 @@ class QuestScheduler:
                                     if quest_name:
                                         name_str = f"{quest_name} [{task_type}]" if task_type else quest_name
                                         completed_names.append(name_str)
-                                    await db.save_quest_stat(
+                                    inserted = await db.save_quest_stat(
                                         token_id=_token_id,
                                         discord_uid=_uid,
                                         quest_id=qid,
@@ -163,28 +266,22 @@ class QuestScheduler:
                                         duration_secs=0,
                                         run_mode="auto",
                                     )
+                                    newly_completed += int(bool(inserted))
+                            await db.reset_token_failures(_token_id)
                             await db.increment_global_stat(
-                                "total_quests_done", len(engine.completed_ids)
+                                "total_quests_done", newly_completed
                             )
 
-                            # DM summary
-                            try:
-                                user = await self.bot.fetch_user(int(_uid))
-                                completed = len(engine.completed_ids)
-                                if completed > 0:
-                                    names_text = ""
-                                    if completed_names:
-                                        names_text = "\n".join(f"- {name}" for name in completed_names)
-                                        names_text = f"\n**Chi tiết:**\n{names_text}\n"
-                                        
-                                    msg = (
-                                        f"✅ Auto-run **{_label}** hoàn thành: "
-                                        f"{completed} quest(s).\n{names_text}"
-                                        f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
-                                    )
-                                    await user.send(msg)
-                            except Exception:
-                                pass
+                            # Do not send a success notification when nothing completed.
+                            if engine.completed_ids and not progress:
+                                try:
+                                    user = await self.bot.fetch_user(int(_uid))
+                                    await user.send(embed=auto_run_embed(
+                                        _label, _hint, len(engine.completed_ids), completed_names, next_run,
+                                        language=_language, quest_mode=quest_mode,
+                                    ))
+                                except Exception:
+                                    pass
 
                             logger.info(
                                 "Auto-run completed: %s/%s (%d quests)",
@@ -225,7 +322,7 @@ class QuestScheduler:
         from bot.db.database import Database
         from bot.services.crypto import decrypt_token
         from bot.core.discord_api import DiscordAPI, fetch_latest_build_number
-        from bot.core.quest_engine import QuestEngine
+        from bot.core.quest_engine import QuestEngine, get_quest_name, get_task_type, get_seconds_needed
         from bot.core.task_manager import TaskManager
 
         db: Database = self.bot.db
@@ -245,6 +342,7 @@ class QuestScheduler:
                 token_id = token_data["id"]
                 label = token_data.get("label", "default")
                 hint = token_data.get("token_hint", "????")
+                language = await db.get_user_language(uid)
 
                 # Skip if already running
                 if task_manager.is_running(uid, token_id):
@@ -265,13 +363,65 @@ class QuestScheduler:
                         _token_id=token_id,
                         _label=label,
                         _hint=hint,
+                        _language=language,
                     ):
                         api = None
+                        progress = None
+                        quest_mode = await db.get_user_quest_mode(_uid)
+
+                        async def on_start(actionable):
+                            nonlocal progress
+                            try:
+                                user = await self.bot.fetch_user(int(_uid))
+                                channel = await user.create_dm()
+                                progress = ProgressMessage(
+                                    channel=channel,
+                                    token_hint=_hint,
+                                    user_name=user.display_name,
+                                    language=_language,
+                                    run_mode="startup",
+                                    quest_mode=quest_mode,
+                                )
+                                for quest in actionable:
+                                    progress.update_quest(
+                                        str(quest.get("id")),
+                                        get_quest_name(quest),
+                                        get_task_type(quest) or "Quest",
+                                        0,
+                                        get_seconds_needed(quest),
+                                        status="queued",
+                                    )
+                                await progress.start()
+                            except Exception as e:
+                                progress = None
+                                logger.warning("Could not start startup progress message for %s: %s", _uid, e)
+
+                        async def on_progress(qid, name, task_type, done, total):
+                            if progress:
+                                progress.update_quest(qid, name, task_type, done, total)
+
+                        async def on_complete(qid, name, task_type, duration):
+                            if progress:
+                                progress.mark_complete(qid, name, task_type, duration)
+
+                        async def on_quest_start(qid, name, task_type):
+                            if progress:
+                                progress.mark_running(qid, name, task_type)
+
                         try:
                             build_number = await fetch_latest_build_number()
                             api = DiscordAPI(_token, build_number)
 
-                            if not await api.validate_token():
+                            valid, status = await api.validate_token_status()
+                            if not valid:
+                                if status != 401:
+                                    try:
+                                        user = await self.bot.fetch_user(int(_uid))
+                                        await user.send(tr(_language, "temporary_validation"))
+                                    except Exception:
+                                        pass
+                                    return
+                                failures = await db.record_token_failure(_token_id)
                                 await db.set_token_active(_token_id, False)
                                 logger.warning(
                                     "Startup: token %s/%s invalid, deactivated",
@@ -279,15 +429,23 @@ class QuestScheduler:
                                 )
                                 try:
                                     user = await self.bot.fetch_user(int(_uid))
-                                    await user.send(
-                                        f"⚠️ Token **{_label}** (`...{_hint}`) "
-                                        "không hợp lệ. Auto-schedule đã bị tắt."
-                                    )
+                                    if failures >= TOKEN_MAX_FAILURES:
+                                        await db.delete_token_by_id(_token_id)
+                                        await user.send(embed=token_deleted_embed(_label, _hint, language=_language))
+                                    else:
+                                        await user.send(embed=token_invalid_embed(_label, _hint, failures, TOKEN_MAX_FAILURES, _language))
                                 except Exception:
                                     pass
                                 return
 
-                            engine = QuestEngine(api=api)
+                            engine = QuestEngine(
+                                api=api,
+                                on_progress=on_progress,
+                                on_complete=on_complete,
+                                on_start=on_start,
+                                on_quest_start=on_quest_start,
+                                run_mode=quest_mode,
+                            )
 
                             # Register engine for active quest tracking
                             task_manager.register_engine(_uid, _token_id, engine)
@@ -300,8 +458,12 @@ class QuestScheduler:
                             next_run = now + timedelta(days=AUTO_RUN_INTERVAL_DAYS)
                             await db.update_run_times(_token_id, now, next_run)
 
+                            if progress:
+                                await progress.finish(summary, next_run)
+
                             # Save stats
                             completed_names = []
+                            newly_completed = 0
                             for qid in engine.completed_ids:
                                 quest_info = next(
                                     (
@@ -318,7 +480,7 @@ class QuestScheduler:
                                         name_str = f"{quest_name} [{task_type}]" if task_type else quest_name
                                         completed_names.append(name_str)
                                     try:
-                                        await db.save_quest_stat(
+                                        inserted = await db.save_quest_stat(
                                             token_id=_token_id,
                                             discord_uid=_uid,
                                             quest_id=qid,
@@ -327,33 +489,27 @@ class QuestScheduler:
                                             duration_secs=0,
                                             run_mode="auto",
                                         )
+                                        newly_completed += int(bool(inserted))
                                     except Exception as e:
                                         logger.error("Startup: failed to save quest stat: %s", e)
+                            await db.reset_token_failures(_token_id)
                             try:
                                 await db.increment_global_stat(
-                                    "total_quests_done", len(engine.completed_ids)
+                                    "total_quests_done", newly_completed
                                 )
                             except Exception as e:
                                 logger.error("Startup: failed to increment global stat: %s", e)
 
-                            # DM summary
-                            try:
-                                user = await self.bot.fetch_user(int(_uid))
-                                completed = len(engine.completed_ids)
-                                if completed > 0:
-                                    names_text = ""
-                                    if completed_names:
-                                        names_text = "\n".join(f"- {name}" for name in completed_names)
-                                        names_text = f"\n**Chi tiết:**\n{names_text}\n"
-                                        
-                                    msg = (
-                                        f"✅ Startup auto-run **{_label}** hoàn thành: "
-                                        f"{completed} quest(s).\n{names_text}"
-                                        f"Lần chạy tiếp: <t:{int(next_run.timestamp())}:R>"
-                                    )
-                                    await user.send(msg)
-                            except Exception:
-                                pass
+                            # Do not send a success notification when nothing completed.
+                            if engine.completed_ids and not progress:
+                                try:
+                                    user = await self.bot.fetch_user(int(_uid))
+                                    await user.send(embed=auto_run_embed(
+                                        _label, _hint, len(engine.completed_ids), completed_names, next_run,
+                                        startup=True, language=_language, quest_mode=quest_mode,
+                                    ))
+                                except Exception:
+                                    pass
 
                             logger.info(
                                 "Startup: completed %s/%s (%d quests)",
@@ -387,4 +543,3 @@ class QuestScheduler:
 
         except Exception as e:
             logger.error("Startup quest check failed: %s", e)
-

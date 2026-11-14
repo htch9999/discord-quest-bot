@@ -1,164 +1,71 @@
-"""
-Help command — comprehensive usage guide for users.
-"""
+"""Localized user guide."""
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
 from bot.config import VERSION
-from bot.utils.logger import get_logger
-
-logger = get_logger("cog.help")
+from bot.utils.i18n import tr
 
 
 class HelpCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="help",
-        description="Hướng dẫn sử dụng chi tiết tất cả lệnh của bot",
-    )
+    @app_commands.command(name="help", description="Show the bot user guide")
     async def help_command(self, interaction: discord.Interaction):
-        # ── Page 1: Overview ──
-        embed1 = discord.Embed(
-            title="Discord Quest Bot — Hướng dẫn sử dụng",
+        language = await self.bot.db.get_user_language(str(interaction.user.id))
+        vi = language == "vi"
+        embed = discord.Embed(
+            title=tr(language, "help_title"),
             description=(
-                "Bot tự động hoàn thành mọi quest Discord cho bạn.\n"
-                "Bảo mật AES-256-GCM · Song song · Real-time progress\n\n"
-                f"**Phiên bản:** v{VERSION}"
+                "Bot tự động hoàn thành Discord Quest cho bạn.\n"
+                "Mã hóa AES-256-GCM · Chạy song song · Theo dõi tiến độ trực tiếp"
+                if vi else
+                "Automatically complete Discord Quests.\n"
+                "AES-256-GCM encryption · Parallel runs · Live progress"
             ),
             color=0x5865F2,
         )
-
-        # ── Quick Start ──
-        embed1.add_field(
-            name="Bắt đầu nhanh",
+        embed.add_field(
+            name=tr(language, "help_quick"),
             value=(
-                "**Chạy 1 lần (không lưu token):**\n"
-                "`/quests <discord_token>`\n\n"
-                "**Tự động (lưu token, chạy mỗi 2 ngày):**\n"
-                "`/autoquests <discord_token> [label]`"
+                ("**Chạy một lần:** `/quests <token>`\n"
+                 "**Lưu và tự động chạy:** `/autoquests save <token> [label]`\n"
+                 "**Chọn chế độ chạy:** `/autoquests mode single|multi`\n"
+                 "**Chọn ngôn ngữ:** `/language en|vi`\n"
+                 "**Thêm token hết hạn/không hoạt động:** tự động dọn theo chính sách cấu hình.")
+                if vi else
+                ("**Run once:** `/quests <token>`\n"
+                 "**Save and schedule:** `/autoquests save <token> [label]`\n"
+                 "**Choose execution mode:** `/autoquests mode single|multi`\n"
+                 "**Choose a language:** `/language en|vi`\n"
+                 "**Expired or inactive tokens:** removed automatically by the configured cleanup policy.")
             ),
             inline=False,
         )
-
-        # ── Page 2: All Commands ──
-        embed2 = discord.Embed(
-            title="Danh sách lệnh",
-            color=0x5865F2,
-        )
-
-        embed2.add_field(
-            name="/quests `<token>`",
-            value="Chạy quest một lần. Token **không** được lưu lại.",
-            inline=False,
-        )
-
-        embed2.add_field(
-            name="/autoquests `<token>` `[label]`",
+        embed.add_field(
+            name=tr(language, "help_commands"),
             value=(
-                "Lưu token (mã hoá AES-256-GCM) và tự động chạy quest mỗi 2 ngày.\n"
-                "`label` = tên hiển thị (mặc định: `default`)."
+                "/autoquests-list · /autoquests-run · /autoquests-status\n"
+                "/autoquests-pause · /autoquests-resume · /autoquests-remove · /autoquests-rename\n"
+                "/autoquests-info · /info · /help · /language"
             ),
             inline=False,
         )
-
-        embed2.add_field(
-            name="/autoquests run `[label]`",
-            value="Chạy thủ công ngay lập tức (không chờ scheduler).",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests pause `[label]`",
-            value="Tạm dừng auto-schedule.",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests resume `[label]`",
-            value="Bật lại auto-schedule.",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests list",
-            value="Xem danh sách token đã lưu.",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests remove `<label>`",
-            value="Xoá token + tất cả thống kê liên quan.",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests rename `<old>` `<new>`",
-            value="Đổi tên label.",
-            inline=True,
-        )
-
-        embed2.add_field(
-            name="/autoquests status `[label]`",
-            value="Xem trạng thái chi tiết token.",
-            inline=True,
-        )
-
-        # ── Page 3: Info + Security ──
-        embed3 = discord.Embed(
-            title="Thông tin & Bảo mật",
-            color=0x5865F2,
-        )
-
-        embed3.add_field(
-            name="/autoquests-info",
-            value="Thống kê cá nhân: tổng quest, token đã lưu, phiên chạy.",
-            inline=True,
-        )
-
-        embed3.add_field(
-            name="/info",
-            value="Thông tin bot: version, uptime, server, memory.",
-            inline=True,
-        )
-
-        embed3.add_field(
-            name="/help",
-            value="Trang hướng dẫn này.",
-            inline=True,
-        )
-
-        embed3.add_field(
-            name="Bảo mật token",
+        embed.add_field(
+            name=tr(language, "help_security"),
             value=(
-                "• Token mã hoá **AES-256-GCM** với key dẫn xuất từ Discord user ID\n"
-                "• Token **không bao giờ** xuất hiện trong log\n"
-                "• Tất cả lệnh đều **ephemeral** (chỉ bạn nhìn thấy)\n"
-                "• Token hiển thị dạng masked: `MTA...xyz`\n"
-                "• Xoá bất cứ lúc nào với `/autoquests remove`"
+                ("Token đã lưu được mã hóa AES-256-GCM. Token hiển thị đã được che; "
+                 "lệnh trả lời riêng tư. Xóa token bất cứ lúc nào bằng `/autoquests-remove`.")
+                if vi else
+                ("Saved tokens are encrypted with AES-256-GCM. Tokens are masked in displays, "
+                 "and command replies are private. Remove a token with `/autoquests-remove`.")
             ),
             inline=False,
         )
-
-        embed3.add_field(
-            name="Loại quest hỗ trợ",
-            value=(
-                "`WATCH_VIDEO` · `WATCH_VIDEO_ON_MOBILE`\n"
-                "`PLAY_ON_DESKTOP` · `STREAM_ON_DESKTOP`\n"
-                "`PLAY_ACTIVITY`"
-            ),
-            inline=False,
-        )
-
-        embed3.set_footer(text="@htch9999 — Discord Quest Bot · Open Source")
-
-        await interaction.response.send_message(
-            embeds=[embed1, embed2, embed3],
-            ephemeral=True,
-        )
+        embed.set_footer(text=f"Discord Quest Bot · v{VERSION}")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

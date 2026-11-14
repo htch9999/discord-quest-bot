@@ -39,14 +39,17 @@
             <!-- Mobile-only invite button (visible < 1024px) -->
             <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
                 class="btn btn-primary btn-sm mobile-invite-btn" style="display: none" data-i18n="hero.cta_add">
-                <svg class="icon icon-sm" style="margin-right: 4px">
-                    <use href="#i-plus" />
-                </svg>Invite Bot</a>
+                Thêm vào Discord</a>
 
             <ul class="nav-links">
                 <li>
                     <button class="nav-link" data-scroll-to="features" data-i18n="nav.features">
                         Tính năng
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" data-scroll-to="modes" data-i18n="nav.modes">
+                        Chế độ chạy
                     </button>
                 </li>
                 <li>
@@ -78,14 +81,14 @@
                         <svg class="icon icon-sm">
                             <use href="#i-cpu" />
                         </svg>
-                        <span class="dd-label" data-i18n="nav.settings">Settings</span>
+                        <span class="dd-label" data-i18n="nav.settings">Cài đặt</span>
                         <svg class="icon icon-xs">
                             <use href="#i-chevron-down" />
                         </svg>
                     </button>
                     <div class="nav-dropdown-content" style="min-width: 220px">
                         <div class="dropdown-group-label" data-i18n="theme.title">
-                            Display Mode
+                            Chế độ Hiển thị
                         </div>
                         <div style="display: flex; gap: 4px; padding: 4px">
                             <div class="dropdown-item-mini" onclick="setTheme('dark')" data-theme-value="dark"
@@ -110,7 +113,7 @@
 
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-group-label" data-i18n="theme.color">
-                            Accent Color
+                            Màu Chủ đạo
                         </div>
                         <div style="display: flex; gap: 4px; padding: 4px">
                             <div class="dropdown-item-mini" onclick="setColor('emerald')" data-color-value="emerald"
@@ -125,7 +128,7 @@
 
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-group-label" data-i18n="nav.lang">
-                            Language
+                            Ngôn ngữ
                         </div>
                         <div class="dropdown-item" onclick="setLang('vi')" data-lang-value="vi">
                             🇻🇳 Tiếng Việt
@@ -140,7 +143,7 @@
                 </div>
 
                 <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
-                    class="btn btn-primary btn-sm" data-i18n="hero.cta_add">Invite Bot</a>
+                    class="btn btn-primary btn-sm" data-i18n="hero.cta_add">Thêm vào Discord</a>
             </div>
         </div>
     </nav>
@@ -166,14 +169,13 @@
 
         <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
             <div class="hero-content" data-reveal style="text-align: left; max-width: none">
-                <span class="section-tag" data-i18n="hero.badge">v2.0 Production Ready</span>
+                <span class="section-tag" data-i18n="hero.badge">v2.0 Public Beta · Sẵn sàng sử dụng</span>
                 <h1 class="hero-title">
-                    <span data-i18n="hero.title">Hoàn thành Discord Quests</span><br />
-                    <span class="text-gradient" data-i18n="hero.title_accent">Tự động. Bảo mật. Tuyệt đối.</span>
+                    <span data-i18n="hero.title">Auto Quests Bot</span><br />
+                    <span class="text-gradient" data-i18n="hero.title_accent">Giải pháp Tự động hoá Chuyên nghiệp.</span>
                 </h1>
                 <p class="hero-description" data-i18n="hero.subtitle" style="margin-left: 0">
-                    Giải pháp hàng đầu giúp bạn tự động hóa quy trình làm quest trên
-                    Discord. Mã hóa đầu cuối, hiệu suất đa luồng và minh bạch hoàn toàn.
+                    Giải pháp tự động hóa giúp bạn hoàn thành nhanh chóng mọi Quest Discord, dễ dàng tích điểm Orbs. Hiệu suất đa luồng vượt trội, cập nhật real-time và bảo mật tuyệt đối.
                 </p>
                 <div class="hero-buttons" style="justify-content: flex-start">
                     <a href="https://discord.com/oauth2/authorize?client_id=1482428478916657244"
@@ -183,12 +185,12 @@
                             <use href="#i-arrow-right" />
                         </svg>
                     </a>
-                    <a href="#stats" class="btn btn-secondary" data-i18n="nav.stats">Xem Thống kê</a>
+                        <a href="#stats" class="btn btn-secondary" data-i18n="nav.stats">Trạng thái</a>
                     <a href="https://github.com/htch9999/discord-quest-bot" target="_blank" class="btn btn-secondary">
                         <svg class="icon icon-sm">
                             <use href="#i-github" />
                         </svg>
-                        <span data-i18n="footer.github">GitHub</span>
+                        <span data-i18n="footer.github">Mã nguồn GitHub</span>
                     </a>
                 </div>
             </div>
@@ -247,19 +249,10 @@
                             <!-- About Me Section -->
                             <div class="popout-section">
                                 <h3 class="popout-title" data-i18n="profile.about">
-                                    Tiểu sử
+                                    Giới thiệu
                                 </h3>
                                 <div class="popout-text" data-i18n="profile.bio">
-                                    Automatically complete Discord quests — watch, play, stream
-                                    & activity. Runs multiple quests in parallel and updates
-                                    progress in real-time through a single message.<br /><br />
-                                    🚧 Currently in beta — bugs may occur.<br />
-                                    🌐 Website:
-                                    <a href="https://discord-autoquests.vercel.app/"
-                                        style="color: #00a8fc; text-decoration: none">https://discord-autoquests.vercel.app/</a>
-                                    💬 Support: @htch9999 |
-                                    <a href="https://discord.gg/gTVPwvNeEH"
-                                        style="color: #00a8fc; text-decoration: none">https://discord.gg/gTVPwvNeEH</a>
+                                    Tự động hoàn thành các thử thách Discord — xem video, chơi game, stream & hoạt động nhóm. Hỗ trợ chạy đa luồng song song và cập nhật tiến độ theo thời gian thực chỉ trong một tin nhắn duy nhất.
                                 </div>
                             </div>
 
@@ -303,37 +296,37 @@
                             <div class="dash-stat">
                                 <div class="dash-value" id="stat-quests">0</div>
                                 <div class="dash-label" data-i18n="hero.stat_quests">
-                                    Global Quests
+                                    Tổng Quests
                                 </div>
                             </div>
                             <div class="dash-stat">
                                 <div class="dash-value" id="stat-users">0</div>
                                 <div class="dash-label" data-i18n="hero.stat_users">
-                                    Global Users
+                                    Người dùng
                                 </div>
                             </div>
                             <div class="dash-stat">
                                 <div class="dash-value" id="dash-today">0</div>
                                 <div class="dash-label" data-i18n="live_stats.today">
-                                    Today
+                                    Hoàn thành Hôm nay
                                 </div>
                             </div>
                             <div class="dash-stat">
                                 <div class="dash-value" id="stat-active">0</div>
                                 <div class="dash-label" data-i18n="live_stats.active">
-                                    Active Now
+                                    Luồng Đang chạy
                                 </div>
                             </div>
                             <div class="dash-stat">
                                 <div class="dash-value" id="stat-servers">0</div>
                                 <div class="dash-label" data-i18n="hero.stat_servers">
-                                    Servers
+                                    Máy chủ
                                 </div>
                             </div>
                             <div class="dash-stat">
                                 <div class="dash-value" id="stat-ping">—</div>
                                 <div class="dash-label" data-i18n="live_stats.ping">
-                                    Bot Ping
+                                    Độ trễ API (Ping)
                                 </div>
                             </div>
                         </div>
@@ -359,7 +352,7 @@
                     </div>
                     <div class="chart-container-wrapper">
                         <div class="section-tag" data-i18n="live_stats.breakdown">
-                            Phân bổ Quest
+                            Biểu đồ Phân bổ Quest
                         </div>
                         <div class="chart-container">
                             <canvas id="questBreakdownChart"></canvas>
@@ -375,10 +368,9 @@
         <div class="container">
             <div class="section-header" data-reveal>
                 <span class="section-tag">Core Features</span>
-                <h2 data-i18n="features.title">Tại sao chọn AutoQuest?</h2>
+                <h2 data-i18n="features.title">Hệ sinh thái tính năng toàn diện</h2>
                 <p data-i18n="features.subtitle">
-                    Kiến trúc hiện đại tập trung vào sự an toàn và trải nghiệm người
-                    dùng.
+                    Được thiết kế tỉ mỉ cho độ tin cậy, tốc độ và bảo mật cấp doanh nghiệp.
                 </p>
             </div>
 
@@ -391,8 +383,7 @@
                     </div>
                     <h3 data-i18n="features.security_title">Bảo mật Zero-Knowledge</h3>
                     <p data-i18n="features.security_desc">
-                        Token được mã hóa AES-256-GCM với khóa riêng biệt cho từng người
-                        dùng.
+                        Mã hoá tiêu chuẩn quân đội AES-256-GCM. Token của bạn không bao giờ lưu trữ dạng rõ.
                     </p>
                 </div>
 
@@ -402,10 +393,9 @@
                             <use href="#i-zap" />
                         </svg>
                     </div>
-                    <h3 data-i18n="features.parallel_title">Xử lý Đa luồng</h3>
+                    <h3 data-i18n="features.parallel_title">Xử lý Đa luồng (Parallel Execution)</h3>
                     <p data-i18n="features.parallel_desc">
-                        Tự động chạy tối đa 6 quest song song, rút ngắn 90% thời gian chờ
-                        đợi.
+                        Vận hành song song đến 10 quest cùng lúc thông qua các thread hoàn toàn độc lập.
                     </p>
                 </div>
 
@@ -417,8 +407,7 @@
                     </div>
                     <h3 data-i18n="features.auto_title">Lập lịch Thông minh</h3>
                     <p data-i18n="features.auto_desc">
-                        Tự động quét và hoàn thành quest mới mỗi 48h mà không cần can
-                        thiệp thủ công.
+                        Smart Scheduler tự động quét quest mới mỗi 48 giờ và gửi báo cáo chi tiết qua DM.
                     </p>
                 </div>
 
@@ -436,15 +425,70 @@
         </div>
     </section>
 
+    <!-- ══ EXECUTION MODES ══ -->
+    <section id="modes" class="bg-surface" data-reveal>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="modes.badge">Execution Modes</span>
+                <h2 data-i18n="modes.title">Chọn cách bot chạy quest</h2>
+                <p data-i18n="modes.subtitle">
+                    Chọn giữa tốc độ của Multi Mode và nhịp chạy tuần tự, thận trọng hơn của Single Mode.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper">
+                        <svg class="icon icon-lg">
+                            <use href="#i-zap" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="modes.multi_title">Multi Mode · Chạy song song</h3>
+                    <p data-i18n="modes.multi_desc">
+                        Giữ nguyên cơ chế hiện tại: nhiều quest được xử lý cùng lúc để hoàn thành nhanh hơn.
+                    </p>
+                </div>
+
+                <div class="glass-card feature-card" data-reveal>
+                    <div class="icon-wrapper">
+                        <svg class="icon icon-lg">
+                            <use href="#i-activity" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="modes.single_title">Single Mode · Chạy tuần tự</h3>
+                    <p data-i18n="modes.single_desc">
+                        Chỉ một quest được chạy tại mỗi thời điểm. Sau khi quest kết thúc, bot chờ 10 giây rồi chuyển sang quest tiếp theo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="glass-card mode-command-card" data-reveal>
+                <div>
+                    <span class="section-tag" data-i18n="modes.command_title">Cấu hình theo tài khoản</span>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem" data-i18n="modes.command_desc">
+                        Chế độ được lưu cho tài khoản và dùng cho các lần chạy quest về sau.
+                    </p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem">
+                    <div class="command-box" style="padding: 0.85rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                        <code style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests mode single</code>
+                    </div>
+                    <div class="command-box" style="padding: 0.85rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
+                        <code style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests mode multi</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ══ GUIDE (STEP-BY-STEP) ══ -->
     <section id="guide" data-reveal>
         <div class="container">
             <div class="section-header">
-                <span class="section-tag" data-i18n="guide.badge">Đầy đủ 3 bước</span>
-                <h2 data-i18n="guide.title">Bắt đầu Sử dụng Bot</h2>
+                <span class="section-tag" data-i18n="guide.badge">Hướng dẫn 3 Bước</span>
+                <h2 data-i18n="guide.title">Bắt đầu Sử dụng AutoQuest</h2>
                 <p data-i18n="guide.subtitle">
-                    Hướng dẫn chi tiết giúp bạn tự động hóa Discord Quest chỉ trong 3
-                    phút.
+                    Chỉ mất 3 phút để thiết lập hệ thống tự động hóa hoàn toàn.
                 </p>
             </div>
 
@@ -455,11 +499,10 @@
                     <div class="step-content">
                         <h3 data-i18n="guide.step1_title">Mời Bot & Tham gia Support</h3>
                         <p data-i18n="guide.step1_desc">
-                            Thêm bot vào server của bạn. Chúng tôi khuyến khích tham gia
-                            server support để cập nhật tính năng mới nhất.
+                            Thêm bot vào máy chủ của bạn. Đừng quên tham gia cộng đồng để nhận hỗ trợ nhanh nhất.
                         </p>
                         <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
-                            <a href="https://discord.com/oauth2/authorize?client_id=1282428478916657152"
+                                <a href="https://discord.com/oauth2/authorize?client_id=1282428478916657152"
                                 class="btn btn-primary" style="flex: 1; justify-content: center">Invite Bot</a>
                             <a href="https://discord.gg/gTVPwvNe" class="btn btn-secondary"
                                 style="flex: 1; justify-content: center">Support</a>
@@ -472,29 +515,28 @@
                     <div class="step-num">02</div>
                     <div class="step-content">
                         <h3 data-i18n="guide.step2_title">
-                            Lấy Discord Authentication Token
+                            Lấy Authentication Token
                         </h3>
                         <p data-i18n="guide.step2_desc">
-                            Bot cần token này để thực hiện nhiệm vụ xem stream/chơi game.
-                            Tuyệt đối không chia sẻ cho người khác.
+                            Sử dụng script an toàn của chúng tôi để trích xuất token trực tiếp từ trình duyệt.
                         </p>
 
                         <div class="token-instructions"
                             style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
                             <ol style="padding-left: 1.25rem">
                                 <li data-i18n="token.step0">
-                                    Đăng nhập Discord trên trình duyệt.
+                                    Truy cập <a href="https://discord.com/channels/@me">https://discord.com/channels/@me</a> và đăng nhập vào Discord trên trình duyệt.
                                 </li>
-                                <li data-i18n="token.step1">Nhấn F12 > Tab Console.</li>
+                                <li data-i18n="token.step1">Mở Developer Tools bằng phím <code>F12</code> hoặc <code>Ctrl + Shift + I</code>.</li>
                                 <li data-i18n="token.step2">
-                                    Bật chế độ Mobile (Ctrl+Shift+M).
+                                    Bật chế độ giả lập thiết bị di động (Mobile Device Emulation) bằng <code>Ctrl + Shift + M</code>.
                                 </li>
                             </ol>
                         </div>
 
                         <div class="code-container" style="margin-top: 1rem">
                             <div class="code-header">
-                                <span data-i18n="token.step3">Dán code bên dưới:</span>
+                                <span data-i18n="token.step3">Dán đoạn code sau vào tab <strong>Console</strong> và nhấn Enter:</span>
                                 <button class="btn-copy" data-copy-target="token-code-real" title="Copy">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -521,22 +563,21 @@ iframe.remove();</code>
                     <div class="step-content">
                         <h3 data-i18n="guide.step3_title">Kích hoạt Tự động hóa</h3>
                         <p data-i18n="guide.step3_desc">
-                            Sử dụng lệnh trực tiếp trong Discord để lưu cấu hình. Mọi dữ
-                            liệu đều được mã hóa an toàn.
+                            Sử dụng lệnh /autoquests save để lưu token và bắt đầu làm quest 24/7.
                         </p>
 
                         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
                             <div class="command-box"
                                 style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
                                 <code
-                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests add</code>
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests save</code>
                                 <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
                                     data-i18n="guide.cmd_autoquests_add">— Lưu token và bật auto-quest 24/7</span>
                             </div>
                             <div class="command-box"
                                 style="padding: 0.75rem 1rem; background: var(--bg-void); border-radius: 10px; border: 1px solid var(--border);">
                                 <code
-                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests run</code>
+                                    style="font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">/autoquests-run</code>
                                 <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"
                                     data-i18n="guide.cmd_autoquests_run">— Chạy ngay phiên quest đầu tiên</span>
                             </div>
@@ -566,9 +607,9 @@ iframe.remove();</code>
         <div class="container">
             <div class="section-header" data-reveal>
                 <span class="section-tag">Documentation</span>
-                <h2 data-i18n="commands.title">Danh mục Lệnh đầy đủ</h2>
+                <h2 data-i18n="commands.title">Danh mục Lệnh</h2>
                 <p data-i18n="commands.subtitle">
-                    Mọi công cụ bạn cần để tương tác với AutoQuest v2.0.
+                    Tối ưu, mạnh mẽ và bảo vệ sự riêng tư.
                 </p>
             </div>
 
@@ -578,17 +619,17 @@ iframe.remove();</code>
                         <thead style="background: var(--bg-void)">
                             <tr>
                                 <th
-                                    style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                                    style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;"
                                     data-i18n="commands.col_command">
-                                    Lệnh
+                                    Lệnh Hệ thống
                                 </th>
                                 <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;"
                                     data-i18n="commands.col_desc">
-                                    Mô tả
+                                    Mô tả Chức năng
                                 </th>
                                 <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;"
                                     data-i18n="commands.col_example">
-                                    Cú pháp Ví dụ
+                                    Cú pháp Mẫu
                                 </th>
                             </tr>
                         </thead>
@@ -599,8 +640,7 @@ iframe.remove();</code>
                                     /quests &lt;token&gt;
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.q_desc">
-                                    Xử lý ngay lập tức toàn bộ quest có sẵn cho token này (Một
-                                    lần).
+                                    Xử lý ngay lập tức toàn bộ quest có sẵn cho token này (Một lần).
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
                                     /quests MTQ4O...
@@ -609,64 +649,76 @@ iframe.remove();</code>
                             <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
                                 <td
                                     style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
-                                    /autoquests add &lt;token&gt;
+                                    /autoquests save &lt;token&gt;
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.a_add">
                                     Lưu token mã hóa và tự động làm quest mỗi khi có sự kiện mới
                                     24/7.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                                    /autoquests add
+                                    /autoquests save
                                 </td>
                             </tr>
                             <tr style="border-top: 1px solid var(--border)">
                                 <td
                                     style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
-                                    /autoquests list
+                                    /autoquests-list
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.a_list">
                                     Hiển thị danh sách các tài khoản đang trong trạng thái Tự
                                     động.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                                    /autoquests list
+                                    /autoquests-list
                                 </td>
                             </tr>
                             <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
                                 <td
                                     style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
-                                    /autoquests remove
+                                    /autoquests-remove
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.a_rem">
                                     Gỡ bỏ token và xóa sạch lịch sử thống kê của bạn khỏi cơ sở
                                     dữ liệu.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                                    /autoquests remove [label]
+                                    /autoquests-remove [label]
                                 </td>
                             </tr>
                             <tr style="border-top: 1px solid var(--border)">
                                 <td
                                     style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
-                                    /autoquests run
+                                    /autoquests-run
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.a_run">
-                                    Kích hoạt phiên chạy ngay lập tức cho token đã lưu.
+                                    Kích hoạt phiên chạy ngay lập tức cho token đã lưu (không chờ lịch).
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                                    /autoquests run [label]
+                                    /autoquests-run [label]
                                 </td>
                             </tr>
                             <tr style="border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.01);">
                                 <td
                                     style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
-                                    /autoquests status
+                                    /autoquests-status
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.a_status">
-                                    Xem trạng thái chi tiết và lịch chạy tiếp theo.
+                                    Xem trạng thái chi tiết, thời gian chạy cuối và lịch chạy tiếp theo.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
-                                    /autoquests status
+                                    /autoquests-status
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid var(--border)">
+                                <td
+                                    style="padding: 1.5rem 2rem; font-family: var(--font-mono); color: var(--accent-primary); font-weight: 600;">
+                                    /autoquests mode &lt;single|multi&gt;
+                                </td>
+                                <td style="padding: 1.5rem 2rem" data-i18n="commands.a_mode">
+                                    Chọn chạy tuần tự từng quest hoặc chạy nhiều quest song song cho các lần chạy sau.
+                                </td>
+                                <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
+                                    /autoquests mode single
                                 </td>
                             </tr>
                             <tr style="border-top: 1px solid var(--border)">
@@ -675,7 +727,7 @@ iframe.remove();</code>
                                     /autoquests-info
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
-                                    Báo cáo chi tiết hiệu suất và khối lượng quest cá nhân.
+                                    Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn thành.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
                                     /autoquests-info
@@ -687,8 +739,7 @@ iframe.remove();</code>
                                     /stats user
                                 </td>
                                 <td style="padding: 1.5rem 2rem" data-i18n="commands.s_user">
-                                    Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn
-                                    thành.
+                                    Báo cáo chi tiết hiệu suất và khối lượng quest bạn đã hoàn thành.
                                 </td>
                                 <td style="padding: 1.5rem 2rem; color: var(--text-muted)">
                                     /stats user
@@ -705,8 +756,8 @@ iframe.remove();</code>
     <section id="faq">
         <div class="container">
             <div class="section-header" data-reveal>
-                <span class="section-tag">Security & Policy</span>
-                <h2 data-i18n="faq.title">Câu hỏi & Giải đáp chuyên sâu</h2>
+                <span class="section-tag">Security &amp; Policy</span>
+                <h2 data-i18n="faq.title">Hỏi &amp; Đáp (FAQ)</h2>
                 <p data-i18n="faq.subtitle">
                     Mọi điều bạn cần biết về cơ chế hoạt động và bảo mật của AutoQuest.
                 </p>
@@ -847,6 +898,61 @@ iframe.remove();</code>
                         <div class="faq-answer-inner" data-i18n="faq.a12"></div>
                     </div>
                 </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q13"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a13"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q14"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a14"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q15"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a15"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q16"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a16"></div>
+                    </div>
+                </div>
+                <div class="faq-item" data-reveal>
+                    <button class="faq-question">
+                        <span data-i18n="faq.q17"></span>
+                        <svg class="icon icon-sm faq-icon">
+                            <use href="#i-chevron-down" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner" data-i18n="faq.a17"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -862,7 +968,7 @@ iframe.remove();</code>
                         <span>AutoQuest</span>
                     </a>
                     <p data-i18n="footer.tagline">
-                        Giải pháp tự động hóa quest chuyên nghiệp, mã nguồn mở và an toàn.
+                        Quản trị Quest thông minh. Bảo mật tối đa Token.
                     </p>
                     <div class="footer-donate">
                         <p class="footer-donate-label" data-i18n="footer.donate">Ủng hộ tác giả ☕</p>
@@ -900,10 +1006,10 @@ iframe.remove();</code>
                     <h4 class="footer-title">Legal</h4>
                     <ul class="footer-links">
                         <li>
-                            <a href="legal.html#privacy" data-i18n="footer.privacy">Privacy Policy</a>
+                            <a href="legal.html#privacy" data-i18n="footer.privacy">Chính sách Quyền Riêng Tư</a>
                         </li>
                         <li>
-                            <a href="legal.html#terms" data-i18n="footer.terms">Terms of Service</a>
+                            <a href="legal.html#terms" data-i18n="footer.terms">Điều khoản Dịch vụ</a>
                         </li>
                     </ul>
                 </div>
@@ -915,7 +1021,7 @@ iframe.remove();</code>
                                 <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
                                     <use href="#i-discord" />
                                 </svg>
-                                <span data-i18n="footer.discord">Discord Server</span>
+                                <span data-i18n="footer.discord">Máy chủ Discord</span>
                             </a>
                         </li>
                         <li>
@@ -923,7 +1029,7 @@ iframe.remove();</code>
                                 <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
                                     <use href="#i-github" />
                                 </svg>
-                                <span data-i18n="footer.github">GitHub</span>
+                                <span data-i18n="footer.github">Mã nguồn GitHub</span>
                             </a>
                         </li>
                         <li>
@@ -932,7 +1038,7 @@ iframe.remove();</code>
                                 <svg class="icon icon-sm" style="vertical-align: middle; margin-right: 6px">
                                     <use href="#i-plus" />
                                 </svg>
-                                <span data-i18n="hero.cta_add">Invite Bot</span>
+                                <span data-i18n="hero.cta_add">Thêm vào Discord</span>
                             </a>
                         </li>
                     </ul>
@@ -941,11 +1047,10 @@ iframe.remove();</code>
             <div
                 style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
                 <p data-i18n="footer.made_by">
-                    Made by @htch9999🌷. Licensed under MIT.
+                    Phát triển bởi @htch9999 · Open Source · MIT License
                 </p>
                 <p style="margin-top: 0.5rem; font-size: 0.75rem" data-i18n="footer.disclaimer">
-                    Not affiliated with Discord Inc. AutoQuest does not store your
-                    personal data.
+                    Không liên kết với Discord Inc. AutoQuest không lưu trữ dữ liệu của bạn.
                 </p>
             </div>
         </div>
@@ -957,25 +1062,25 @@ iframe.remove();</code>
             <svg class="icon">
                 <use href="#i-zap" />
             </svg>
-            <span data-i18n="nav.features">Features</span>
+            <span data-i18n="nav.features">Tính năng</span>
         </button>
         <button class="mobile-nav-item" data-scroll-to="stats">
             <svg class="icon">
                 <use href="#i-activity" />
             </svg>
-            <span data-i18n="nav.stats">Stats</span>
+            <span data-i18n="nav.stats">Trạng thái</span>
         </button>
         <button class="mobile-nav-item" data-scroll-to="commands">
             <svg class="icon">
                 <use href="#i-terminal" />
             </svg>
-            <span data-i18n="nav.commands">Commands</span>
+            <span data-i18n="nav.commands">Lệnh</span>
         </button>
         <button class="mobile-nav-item" onclick="openMobileSettings()">
             <svg class="icon">
                 <use href="#i-cpu" />
             </svg>
-            <span data-i18n="nav.settings">Settings</span>
+            <span data-i18n="nav.settings">Cài đặt</span>
         </button>
     </nav>
 
@@ -983,7 +1088,7 @@ iframe.remove();</code>
     <div class="mobile-settings-modal" id="mobile-settings-modal">
         <div class="mobile-settings-content">
             <div class="mobile-settings-header">
-                <h3 data-i18n="nav.settings">Settings</h3>
+                <h3 data-i18n="nav.settings">Cài đặt</h3>
                 <button class="mobile-settings-close" onclick="closeMobileSettings()">
                     <svg class="icon">
                         <use href="#i-x" />
@@ -992,7 +1097,7 @@ iframe.remove();</code>
             </div>
 
             <div class="dropdown-group-label" data-i18n="theme.title">
-                Display Mode
+                Chế độ Hiển thị
             </div>
             <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
                 <div class="dropdown-item-mini" onclick="setTheme('dark'); closeMobileSettings();"
@@ -1016,7 +1121,7 @@ iframe.remove();</code>
             </div>
 
             <div class="dropdown-group-label" data-i18n="theme.color">
-                Accent Color
+                Màu Chủ đạo
             </div>
             <div style="display: flex; gap: 8px; padding: 4px; margin-bottom: 20px">
                 <div class="dropdown-item-mini" onclick="setColor('emerald'); closeMobileSettings();"
@@ -1029,7 +1134,7 @@ iframe.remove();</code>
                 </div>
             </div>
 
-            <div class="dropdown-group-label" data-i18n="nav.lang">Language</div>
+            <div class="dropdown-group-label" data-i18n="nav.lang">Ngôn ngữ</div>
             <div class="dropdown-item" onclick="setLang('vi'); closeMobileSettings();" data-lang-value="vi">
                 🇻🇳 Tiếng Việt
             </div>

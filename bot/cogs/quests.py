@@ -8,12 +8,18 @@ from discord.ext import commands
 import re
 
 from bot.core.discord_api import DiscordAPI, fetch_latest_build_number
-from bot.core.quest_engine import QuestEngine
+from bot.core.quest_engine import (
+    QuestEngine,
+    get_quest_name,
+    get_task_type,
+    get_seconds_needed,
+)
 from bot.core.task_manager import TaskManager
 from bot.services.progress_message import ProgressMessage
 from bot.db.database import Database
 from bot.utils.token_mask import mask_token
 from bot.utils.logger import get_logger
+from bot.utils.i18n import tr
 
 logger = get_logger("cog.quests")
 
@@ -27,18 +33,18 @@ class QuestsCog(commands.Cog):
 
     @app_commands.command(
         name="quests",
-        description="Chạy auto-complete quest một lần (token không được lưu)",
+        description="Run quests once without saving your token",
     )
-    @app_commands.describe(token="Discord user token của bạn")
+    @app_commands.describe(token="Your Discord user token")
     async def quests(self, interaction: discord.Interaction, token: str):
         """Run quest auto-completer once without saving the token."""
         uid = str(interaction.user.id)
+        language = await self.bot.db.get_user_language(uid)
         hint = token[-4:] if len(token) > 4 else token
 
         # Ephemeral reply immediately (hide token from channel)
         await interaction.response.send_message(
-            f"⏳ Đang xử lý quest cho token `...{hint}`...\n"
-            "Kết quả sẽ được gửi qua DM.",
+            tr(language, "working", hint=hint),
             ephemeral=True,
         )
 
@@ -49,7 +55,7 @@ class QuestsCog(commands.Cog):
         # Validate token format
         if not TOKEN_PATTERN.match(token):
             await interaction.followup.send(
-                "❌ Token không đúng định dạng.", ephemeral=True
+                tr(language, "bad_token_format"), ephemeral=True
             )
             return
 
@@ -57,7 +63,7 @@ class QuestsCog(commands.Cog):
         task_manager: TaskManager = self.bot.task_manager
         if task_manager.is_running(uid, "once"):
             await interaction.followup.send(
-                "⚠️ Bạn đã có một task đang chạy. Vui lòng đợi hoàn thành.",
+                tr(language, "already_running"),
                 ephemeral=True,
             )
             return
@@ -67,17 +73,21 @@ class QuestsCog(commands.Cog):
             dm_channel = await interaction.user.create_dm()
         except discord.HTTPException:
             await interaction.followup.send(
-                "❌ Không thể gửi DM. Hãy bật DM từ server này.",
+                tr(language, "dm_disabled"),
                 ephemeral=True,
             )
             return
 
         # Run quest completion in background
         async def _run_quests():
+            db = self.bot.db
+            quest_mode = await db.get_user_quest_mode(uid)
             progress = ProgressMessage(
                 channel=dm_channel,
                 token_hint=hint,
                 user_name=interaction.user.display_name,
+                language=language,
+                quest_mode=quest_mode,
             )
 
             try:
@@ -86,13 +96,32 @@ class QuestsCog(commands.Cog):
                 api = DiscordAPI(token, build_number)
 
                 # Validate token
-                if not await api.validate_token():
-                    await dm_channel.send("❌ Token không hợp lệ hoặc đã hết hạn.")
+                valid, status = await api.validate_token_status()
+                if not valid:
+                    await dm_channel.send(embed=discord.Embed(
+                        title=tr(language, "error"),
+                        description=tr(
+                            language,
+                            "invalid_token" if status == 401 else "temporary_validation",
+                        ),
+                        color=0xED4245,
+                    ))
                     await api.close()
                     return
 
                 # Create progress message
                 await progress.start()
+
+                async def on_start(actionable):
+                    for quest in actionable:
+                        progress.update_quest(
+                            str(quest.get("id")),
+                            get_quest_name(quest),
+                            get_task_type(quest) or "Quest",
+                            0,
+                            get_seconds_needed(quest),
+                            status="queued",
+                        )
 
                 # Create engine with progress callbacks
                 engine = QuestEngine(
@@ -103,6 +132,11 @@ class QuestsCog(commands.Cog):
                     on_complete=lambda qid, name, tt, dur: _on_complete(
                         progress, qid, name, tt, dur
                     ),
+                    on_start=on_start,
+                    on_quest_start=lambda qid, name, tt: _on_quest_start(
+                        progress, qid, name, tt
+                    ),
+                    run_mode=quest_mode,
                 )
 
                 # Register engine for active quest tracking
@@ -116,7 +150,7 @@ class QuestsCog(commands.Cog):
                 await progress.finish(summary)
 
                 # Save stats to DB
-                db = self.bot.db
+                newly_completed = 0
                 for qid in engine.completed_ids:
                     quest_info = next(
                         (q for q in summary.get("quests", []) if q["id"] == qid),
@@ -124,7 +158,7 @@ class QuestsCog(commands.Cog):
                     )
                     if quest_info:
                         try:
-                            await db.save_quest_stat(
+                            inserted = await db.save_quest_stat(
                                 token_id=None,
                                 discord_uid=uid,
                                 quest_id=qid,
@@ -133,18 +167,19 @@ class QuestsCog(commands.Cog):
                                 duration_secs=0,
                                 run_mode="once",
                             )
+                            newly_completed += int(bool(inserted))
                         except Exception as e:
                             logger.error("Failed to save quest stat: %s", e)
                 try:
                     await db.increment_global_stat(
-                        "total_quests_done", len(engine.completed_ids)
+                        "total_quests_done", newly_completed
                     )
                 except Exception as e:
                     logger.error("Failed to increment global stat: %s", e)
 
             except Exception as e:
                 logger.error("Quest run failed for %s: %s", uid, e)
-                await progress.finish_error(f"Lỗi: {e}")
+                await progress.finish_error(tr(language, "run_failed"))
             finally:
                 try:
                     await api.close()
@@ -160,7 +195,7 @@ class QuestsCog(commands.Cog):
         )
         if not started:
             await interaction.followup.send(
-                "⚠️ Không thể bắt đầu task.", ephemeral=True
+                tr(language, "could_not_start"), ephemeral=True
             )
 
 
@@ -183,6 +218,15 @@ async def _on_complete(
     duration: int,
 ):
     progress.mark_complete(qid, name, task_type, duration)
+
+
+async def _on_quest_start(
+    progress: ProgressMessage,
+    qid: str,
+    name: str,
+    task_type: str,
+):
+    progress.mark_running(qid, name, task_type)
 
 
 async def setup(bot: commands.Bot):
